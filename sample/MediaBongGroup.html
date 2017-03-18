@@ -1,0 +1,949 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript">
+    var mediabong = mediabong || {};
+
+    mediabong.init = function() {
+        var path = document.location.pathname.match(/(?:([^/]+))/g);
+
+        this.colors = {
+            admin     : '#ffa600',
+            agency    : '#ab46d1',
+            publisher : '#2282bf',
+            producer  : '#9e794a',
+            brand     : '#9d3959',
+            client    : '#70c6b4'
+        }
+
+        this.number = {
+            decimals      : 0,
+            dec_point     : ".",
+            thousands_sep : ","        };
+
+        if (path[0]) {
+            this.board       = path[0];
+            this.board_color = this.colors[this.board];
+        }
+
+        if (path[1]) {
+            this.controller = path[1];
+        }
+
+        if (path[2]) {
+            this.action = path[2];
+        }
+
+        this.i18n = {};
+
+        delete mediabong.init;
+    };
+
+    mediabong.init();
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="UTF-8" />
+<title>Publisher performance  : Mediabong</title>
+<link rel="icon" href="/favicon_publisher.ico?new" />
+
+<script type="text/javascript" src="http://www.mediabong.net/medias/player/js/swfobject.js"></script>
+<script type="text/javascript" src="http://www.mediabong.net/medias/player/js/entjoy_player.js"></script>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script><script type="text/javascript" src="/js/jquery-ui.min.js"></script><script type="text/javascript" src="/js/jquery.autocomplete.min.js"></script><script type="text/javascript" src="/js/jquery-migrate.js"></script><script type="text/javascript" src="/js/base.js"></script><script type="text/javascript" src="/theme/admin/js/cookie.js"></script><script type="text/javascript" src="/theme/admin/js/jquery.zclip.js"></script><script type="text/javascript" src="/js/chosen.jquery.min.js"></script><script type="text/javascript" src="/js/bootstrap.min.js"></script><script type="text/javascript" src="/js/plugins.min.js"></script><script type="text/javascript" src="/js/holder.min.js"></script><script type="text/javascript" src="/js/moment.js"></script><script type="text/javascript" src="/js/daterangepicker.js"></script><script type="text/javascript" src="/js/write-to-excel.js"></script><script type="text/javascript" src="/js/DataTables/datatables.min.js"></script><script type="text/javascript" src="/js/DataTables/colResize-master/dataTables.colResize.js"></script><script type="text/javascript" src="/js/FileSaver.min.js"></script>
+<script type="text/javascript" src="http://www.mediabong.net/resources/fancybox/jquery.fancybox.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.mediabong.net/resources/fancybox/jquery.fancybox.css" media="screen" />
+
+<link rel="stylesheet" type="text/css" href="/style/daterangepicker.css" media="all" /><link type="text/css" href="/css/mediabong.css?new" rel="stylesheet" media="screen" /><script type="text/javascript">$(document).ready(function() {
+    //daterange picker
+    $.dateRangePickerLanguages.en['past']     = '';
+    $.dateRangePickerLanguages.en['previous'] = '';
+
+    $(".daterange, #dateSelector").dateRangePicker({
+        shortcut_place       : 'left',
+        showEmpty            : false,
+        specialDateList      : [],
+        specialDateClassName : "",
+        show1dayShortcut     : true,
+        show14daysShortcut   : false,
+        showQuarterShortcut  : false,
+        showYearShortcut     : false,
+        showBeforeShortcut   : true,
+        showAfterShortcut    : true,
+        format               : 'MM/DD/YYYY',
+        seperator            : ' - ',
+        language             : 'en',
+        startOfWeek          : 'monday', // sunday or monday
+        getValue             : function() {
+            return this.value;
+        },
+        setValue             : function(s) {
+            this.value = s;
+        },
+        startDate            : new Date(Date.parse("2010-01-01")),
+        endDate              : new Date(Date.parse("2016-10-31")),
+        minDays              : 0,
+        maxDays              : 0
+    });
+});
+/** ** ** ** **/
+$(document).ready(function(){
+  $(".helpbutton").on("click", function(e){
+    var id = $(this).attr("id");
+    $("#"+id+"-help .modal").modal({
+        show:true,
+        keyboard:true
+    }).on("shown.bs.modal", function(e){
+            var bodyWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            var bodyHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            if (bodyWidth/2 >= 600)
+                var width = parseInt(bodyWidth/2);
+            else {
+                var width = $("#"+id+"-help .modal").width();
+            }
+            $("#"+id+"-help .modal").css({
+                //"max-height":parseInt(bodyHeight*0.8),
+                "overflow":"hidden",
+                "width":width
+            });
+            $("#"+id+"-help .modal-body").css({
+                "height":parseInt(bodyHeight*0.6),
+                "overflow":"auto"
+            });
+            $("#"+id+"-help .modal").draggable({});
+            $("#"+id+"-help .close-modal").on("click", function(e){
+              $("#"+id+"-help .modal").modal("close");
+            });
+        })
+  });
+});
+/** ** ** ** **/
+$(document).on("click", "#nav_prev", function() {
+    animateSlider('#navigation','left');
+});
+$(document).on("click", "#nav_next", function() {
+    animateSlider('#navigation','right');
+});
+/** ** ** ** **/
+var boards = {"default":"default","admin":"admin","producer":"producer","publisher":"publisher","agency":"agency","client":"client","brand":"brand","catalog":"catalog","catalogue":"catalogue"};
+/** ** ** ** **/
+$(document).ready(function(){loginBox_addUser({"firstname":"Kevin","lastname":"Bai","company":"Android Authority","id":"714","type":"publisher","board":"Publisher"});})
+/** ** ** ** **/
+</script></head>
+
+<body class="board-publisher reporting-group">
+
+    <div id="templates" class="hidden">
+            </div>
+
+    <div id="page-layout" >
+
+                    <div class="sidebar-bg"></div>
+<div id="sidebar-wrapper" >
+
+<div id="sidebar">
+<div class="logo-container">
+        <a href="/publisher/" class="logonew" title="publisher" >
+            <img class="img img-responsive" src="/style/img/logo_publisher.png"/>
+        </a>
+</div>
+<div class="extra-headers"></div>
+<div class="user-control"><!-- user-control -->
+<a id="hello-happy-fellow" href="#switchUser" title="Android Authority (androidauthority@mediabong.com)" class="btn btn-sm toggle-switchUser has-tooltip" data-placement="top" role="button"><span class=" icon icon-account"></span></a><a href="/publisher/cart" title="Cart" class="btn btn-sm has-tooltip" data-placement="bottom"><span class=" icon icon-cart"></span></a><a href="/catalogue" title="Catalog" class="btn btn-sm has-tooltip" data-placement="bottom"><span class=" icon icon-catalog"></span></a><a href="/publisher/account" title="Manage you account" class="btn btn-sm has-tooltip" data-placement="bottom"><span class=" icon icon-option"></span></a><a href="/publisher/index/logout" title="Log out" class="btn btn-sm has-tooltip" data-placement="bottom"><span class=" icon icon-connect"></span></a>
+<!-- /user-control --></div>
+    <div id="switchUser" class="switchUser-container collapse" >
+    </div>
+
+
+<div id="main-nav"><div class="sidebar-separator-menu"></div><nav><a href="#submenu58a4670aa83764295ea1aca8334697e3" class="menu-item selected" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="submenu58a4670aa83764295ea1aca8334697e3"><span class="icon icon-next"></span> Reporting</a><div id="submenu58a4670aa83764295ea1aca8334697e3" class="submenu-group collapse in"><a href="/publisher/reporting#overview" class="menu-item">Overview</a><a href="/publisher/reporting/syncroll" class="menu-item">Archive (syncroll)</a><a href="/publisher/reporting/group" class="menu-item selected">Archive (Group)</a><span class="menu-selected-arrow"></span></div></nav></div></div>
+
+<a class="small-logo-container" href="/publisher"><span class="small-logo"></span></a>
+<button class="toggleSidebar" type="button" id="toggleSidebar">
+    <span></span>
+</button>
+
+</div>
+
+        <div id="page-content-wrapper">
+            <div id="head_messages" class="col-xs-12">
+                            </div>
+            <div class="page-title col-xs-12">
+                                <h1 class="nice help">
+                    Publisher performance
+                                    </h1>
+                            </div>
+
+            <div class="page-content col-xs-12"><!-- content -->
+                <div class="row">
+
+            <div class="content-box div_filtre col-md-6">
+            <form class="form-horizontal" action="http://www.mediabong.net/publisher/reporting/group" method="GET">
+
+	<div class="form-group col-md-5">
+		<label class="control-label">Date range</label>
+
+            <input
+                type  = "text"
+                name  = "date_range"
+                value = "10/31/2016 - 10/31/2016"
+                 id="form-daterange-date_range" class="form-control daterange"
+                />
+        	</div>
+
+
+	<div class="form-group pull-right col-md-2" style="text-align:right;">
+		<label>&nbsp;</label>
+		<br/>
+		<button type="submit" class="btn btn-default">Filter</button>
+	</div>
+</form>
+        </div>
+
+
+</div>
+
+
+
+            <h1>Publisher reporting</h1>
+
+    <div class="row">
+    <table id="table-id-58ae3c0182f99" class="table table-stats table-striped table-bordered col-md-12 table-condensed hidden" cellspacing="0">
+        <thead>
+            <tr>
+                                    <th class              = "f-publisher_id-title text"
+                        data-type          = "text"
+                                                >
+                             -                     </th>
+                                    <th class              = "f-views number text-right"
+                        data-type          = "number"
+                                                >
+                            # video viewed                    </th>
+                                    <th class              = "f-nb_interne-nb_mediabong-nb_prod number text-right"
+                        data-type          = "number"
+                                                >
+                            # ad views (A1+A2)                    </th>
+                                    <th class              = "f-amount_interne-amount_mediabong-amount_prod price text-right"
+                        data-type          = "price"
+                                                >
+                            <strong>Publisher payback  ( A1+A2)</strong>                    </th>
+                                    <th class              = "f-nb_interne-nb_prod number text-right"
+                        data-type          = "number"
+                                                >
+                            among which # ad views (external ads) - A1                    </th>
+                                    <th class              = "f-amount_interne-amount_prod price text-right"
+                        data-type          = "price"
+                                                >
+                            among which Publisher payback (external ads) - A1                    </th>
+                                    <th class              = "f-nb_mediabong number text-right"
+                        data-type          = "number"
+                                                >
+                            among which # ad views (Mediabong ads) - A2                    </th>
+                                    <th class              = "f-amount_mediabong price text-right"
+                        data-type          = "price"
+                                                >
+                            among which Publisher payback (Mediabong ads) - A2                    </th>
+                                    <th class              = "f-nb_diff number text-right"
+                        data-type          = "number"
+                                                >
+                            # views video purchased                    </th>
+                                    <th class              = "f-cpm_net price text-right"
+                        data-type          = "price"
+                                                >
+                            Video purchase CPM                    </th>
+                                    <th class              = "f-a_reverser_par_le_diffuseur price text-right"
+                        data-type          = "price"
+                                                >
+                            Publisher total cost (B)                    </th>
+                                    <th class              = "f-bilan A+B-C price text-right"
+                        data-type          = "price"
+                                                >
+                            Total publisher payback (A-B)                    </th>
+                            </tr>
+            <tr class="datatable-row-total">
+                                    <th class="f-publisher_id-title text">TOTAL</th>
+                                    <th class="f-views number text-right">0</th>
+                                    <th class="f-nb_interne-nb_mediabong-nb_prod number text-right">16,512</th>
+                                    <th class="f-amount_interne-amount_mediabong-amount_prod price text-right">$ 104.70</th>
+                                    <th class="f-nb_interne-nb_prod number text-right">16,446</th>
+                                    <th class="f-amount_interne-amount_prod price text-right">$ 104.17</th>
+                                    <th class="f-nb_mediabong number text-right">66</th>
+                                    <th class="f-amount_mediabong price text-right">$ 0.53</th>
+                                    <th class="f-nb_diff number text-right">0</th>
+                                    <th class="f-cpm_net price text-right">$ 0.00</th>
+                                    <th class="f-a_reverser_par_le_diffuseur price text-right">$ 0.00</th>
+                                    <th class="f-bilan A+B-C price text-right">$ 104.70</th>
+                            </tr>
+        </thead>
+    </table>
+</div>
+
+
+
+<!-- The content of this element will be added above header in xls files -->
+<div id="table-id-58ae3c0182f99-export-legend" class="hidden"></div>
+
+
+            <h1>Producer reporting</h1>
+
+    <div class="row">
+    <table id="table-id-58ae3c0184155" class="table table-stats table-striped table-bordered col-md-12 table-condensed hidden" cellspacing="0">
+        <thead>
+            <tr>
+                                    <th class              = "f-title text"
+                        data-type          = "text"
+                                                >
+                            ID                    </th>
+                                    <th class              = "f-views number text-right"
+                        data-type          = "number"
+                                                >
+                            # video viewed                    </th>
+                                    <th class              = "f-nb(mediabong-sponsor)-nb_interne-nb_prod number text-right"
+                        data-type          = "number"
+                                                >
+                            # videos views                    </th>
+                                    <th class              = "f-nb_interne-nb_prod number text-right"
+                        data-type          = "number"
+                                                >
+                            among which # ad views (external ads) - A1                    </th>
+                                    <th class              = "f-amount_interne-amount_prod price text-right"
+                        data-type          = "price"
+                                                >
+                            among which Producer payback (external ads) - A1                    </th>
+                                    <th class              = "f-nb(mediabong-sponsor) number text-right"
+                        data-type          = "number"
+                                                >
+                            among which # ad views (Mediabong ads) - A2                    </th>
+                                    <th class              = "f-amount(mediabong-sponsor) price text-right"
+                        data-type          = "price"
+                                                >
+                            among which Producer payback (Mediabong ads) - A2                    </th>
+                                    <th class              = "f-amount(mediabong-sponsor)-amount_interne-amount_prod price text-right"
+                        data-type          = "price"
+                                                >
+                            Producer total revenues                    </th>
+                                    <th class              = "f-amount(mediabong-sponsor)-amount_interne price text-right"
+                        data-type          = "price"
+                                                >
+                            Producer payback                    </th>
+                            </tr>
+            <tr class="datatable-row-total">
+                                    <th class="f-title text">TOTAL</th>
+                                    <th class="f-views number text-right">0</th>
+                                    <th class="f-nb(mediabong-sponsor)-nb_interne-nb_prod number text-right">0</th>
+                                    <th class="f-nb_interne-nb_prod number text-right">0</th>
+                                    <th class="f-amount_interne-amount_prod price text-right">$ 0.00</th>
+                                    <th class="f-nb(mediabong-sponsor) number text-right">0</th>
+                                    <th class="f-amount(mediabong-sponsor) price text-right">$ 0.00</th>
+                                    <th class="f-amount(mediabong-sponsor)-amount_interne-amount_prod price text-right">$ 0.00</th>
+                                    <th class="f-amount(mediabong-sponsor)-amount_interne price text-right">$ 0.00</th>
+                            </tr>
+        </thead>
+    </table>
+</div>
+
+
+
+<!-- The content of this element will be added above header in xls files -->
+<div id="table-id-58ae3c0184155-export-legend" class="hidden"></div>
+
+            </div><!-- /content -->
+
+        </div><!-- /page-content-wrapper-->
+
+        <div id="footer">
+
+<script type="text/javascript">
+    supp_confirm = 'Sure you wanna do this ?';
+</script>
+
+<div id="hook-bottom"></div>
+        </div>
+    </div><!-- /page-layout -->
+
+    <div id="message"></div>
+
+    <div id="fade" style="display:none;z-index:300"></div>
+
+    <div id="my_video_wrapper" style="display:none;z-index:400">
+        <div tabindex="-1"
+            class="fancybox-wrap fancybox-desktop fancybox-type-inline fancybox-opened"
+            style="width: 350px; height: auto; position: fixed; top: 159px; left: 339px; opacity: 1; overflow: visible;">
+            <div class="fancybox-skin" style="padding: 15px; width: auto; height: auto;">
+                <div class="fancybox-outer">
+                    <div class="fancybox-inner" style="overflow: auto; width: 320px; height: 240px;">
+                        <div style="width: 320px; height: 240px; display: block;" id="my_video_innerwrapper">
+                            <div id="my_video_container"></div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="fancybox-item fancybox-close" title="Close"></a>
+            </div>
+        </div>
+    </div>
+
+    <div  class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+    <div style="display:none" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="btn-move btn btn-sm btn-default"><span class="glyphicon glyphicon-move"></span></span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Help</h4>
+      </div>
+			<div class="modal-body" ></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+    <script type="text/javascript">
+
+
+    $(document).ready(function(){
+
+        var dataSet  = [[{"value":"656 - MMAtv","rendered":"656 - MMAtv"},{"rendered":"0","value":0},{"rendered":"2","value":2},{"rendered":"$ 0.01","value":0.0096},{"rendered":"2","value":2},{"rendered":"$ 0.01","value":0.0096},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.01","value":0.0096}],[{"value":"714 - Android Authority","rendered":"714 - Android Authority"},{"rendered":"0","value":0},{"rendered":"3,415","value":3415},{"rendered":"$ 19.45","value":19.4464},{"rendered":"3,415","value":3415},{"rendered":"$ 19.45","value":19.4464},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 19.45","value":19.4464}],[{"value":"1316 - Chevy TV","rendered":"1316 - Chevy TV"},{"rendered":"0","value":0},{"rendered":"4","value":4},{"rendered":"$ 0.03","value":0.0284},{"rendered":"4","value":4},{"rendered":"$ 0.03","value":0.0284},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.03","value":0.0284}],[{"value":"738 - Entimports","rendered":"738 - Entimports"},{"rendered":"0","value":0},{"rendered":"1,106","value":1106},{"rendered":"$ 5.78","value":5.7792},{"rendered":"1,106","value":1106},{"rendered":"$ 5.78","value":5.7792},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 5.78","value":5.7792}],[{"value":"1315 - Vette TV","rendered":"1315 - Vette TV"},{"rendered":"0","value":0},{"rendered":"10","value":10},{"rendered":"$ 0.06","value":0.0608},{"rendered":"10","value":10},{"rendered":"$ 0.06","value":0.0608},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.06","value":0.0608}],[{"value":"1314 - The Tab","rendered":"1314 - The Tab"},{"rendered":"0","value":0},{"rendered":"11,968","value":11968},{"rendered":"$ 79.33","value":79.3256},{"rendered":"11,902","value":11902},{"rendered":"$ 78.80","value":78.7976},{"rendered":"66","value":66},{"rendered":"$ 0.53","value":0.528},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 79.33","value":79.3256}],[{"value":"1317 - Cool Fords","rendered":"1317 - Cool Fords"},{"rendered":"0","value":0},{"rendered":"7","value":7},{"rendered":"$ 0.05","value":0.05},{"rendered":"7","value":7},{"rendered":"$ 0.05","value":0.05},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"0","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.00","value":0},{"rendered":"$ 0.05","value":0.05}]],
+            selector = '#table-id-58ae3c0182f99',
+            columns  = [{"type":"text","className":"f-publisher_id-title text"},{"type":"number","className":"f-views number text-right"},{"type":"number","className":"f-nb_interne-nb_mediabong-nb_prod number text-right"},{"type":"price","className":"f-amount_interne-amount_mediabong-amount_prod price text-right"},{"type":"number","className":"f-nb_interne-nb_prod number text-right"},{"type":"price","className":"f-amount_interne-amount_prod price text-right"},{"type":"number","className":"f-nb_mediabong number text-right"},{"type":"price","className":"f-amount_mediabong price text-right"},{"type":"number","className":"f-nb_diff number text-right"},{"type":"price","className":"f-cpm_net price text-right"},{"type":"price","className":"f-a_reverser_par_le_diffuseur price text-right"},{"type":"price","className":"f-bilan A+B-C price text-right"}];
+
+
+        var render = function( data, type, full, meta )
+        {
+            var columnType = meta.settings.aoColumns[meta.col].type;
+
+            // sort | display | filter
+            if (type == 'sort') {
+                return data.value;
+            }
+
+            if (type == 'filter' && columnType != 'text' && columnType != 'date') {
+                // numbers and prices must be filtered on their value
+                return data.rendered.replace(/\s/g, "");
+            }
+
+            /**/
+            if (type == 'export') {
+
+                // Format the values to export as XLS
+                var $wrapper = $('<div>');
+                $wrapper.html(data.rendered);
+
+                // remove the tooltips first
+                if ($wrapper.children('a').length) {
+                    var value = $wrapper.children('a').text();
+                }
+                else {
+                    var value = data.rendered;
+                }
+
+                // remove the spaces
+                if (columnType == 'date')
+                    value = value.replace(/\s/g, "");
+
+                // for openoffice
+                if (columnType == 'price' || columnType == 'percent' || columnType == 'percent4')
+                    value = value.replace(/\s/g, "");
+
+//                console.log(columnType, value, meta);
+                return value;
+            }
+            /**/
+
+            return data.rendered;
+        }
+
+        for (var i in columns) {
+            columns[i].render = render;
+        }
+
+        // avoids the display of the squeleton of the table before datatable init
+        $(selector).removeClass('hidden');
+
+        $(selector).DataTable({
+            lengthMenu     : [
+                [10, 25, 50, 100, 150, 300, -1],
+                [10, 25, 50, 100, 150, 300, "All"]
+            ],
+            pageLength     : 100,
+            scrollY        : 400,
+            scrollCollapse : true,
+            scrollX        : true,
+            dom            : ''
+                           + "<'row'<'col-sm-2 datatable-filter'f><'col-sm-10 datatable-buttons'B>>"
+                           + "<'row'<'col-sm-12'tr>>"
+                           + "<'row'<'col-sm-5'l><'col-sm-7'p>>",
+            buttons        : [
+                'colvis',
+                'copy',
+                {
+                    extend         : 'excel',
+                    filename       : function() {
+
+                        var dt      = new Date(),
+                            seconds = dt.getSeconds(),
+                            minutes = dt.getMinutes(),
+                            hours   = dt.getHours(),
+                            month   = dt.getMonth() + 1,
+                            day     = dt.getDate(),
+                            postfix = dt.getFullYear()
+                                    + "-" + (month   >= 10 ? month   : '0' + month)
+                                    + "-" + (day     >= 10 ? day     : '0' + day)
+                                    + " " + (hours   >= 10 ? hours   : '0' + hours)
+                                    + "-" + (minutes >= 10 ? minutes : '0' + minutes)
+                                    + "-" + (seconds >= 10 ? seconds : '0' + seconds);
+
+                        var title = 'export Group-publishers 714 - Kevin Bai';
+
+                        filename = (title != '' ? title : 'export') + ' ' + postfix + '.xls';
+
+                        return filename;
+                    },
+                    sheetTitle     : 'Sheet 1',
+                    legendSelector : '#table-id-58ae3c0182f99-export-legend',
+                    action         : function( e, dt, button, config ) {
+
+                        // This is an almost complete override of the builtin Excel
+                        // button of dataTable. The goal, here, is to generate an
+                        // file using the ability of Excel to read xlsx written as
+                        // html. This way, we can preserve the display of our table
+                        // including the formats, font weight, complex header...
+                        //
+                        // To do that, we mimic the render process uppon the html
+                        // so the rules applied to export as CSV are still applied
+                        // to the xls content.
+                        //
+                        // nb : the replied export process corresponds to
+                        // var exportedData = dt.buttons.exportData( config.exportOptions );
+
+//                        var exportedData = dt.buttons.exportData( config.exportOptions );
+//                        console.log(exportedData);
+
+                        var $container = $(dt.containers()[0]),
+                            $table     = $container.find('.dataTables_scrollBody table')
+                                         .clone(),
+                            columns    = dt.settings()[0].aoColumns;
+
+                        $table.find('br').replaceWith("\n");
+
+                        var data      = dt.data(),
+                            $rows     = $table.find('tbody tr');
+                            $headRows = $table.find('thead tr'),
+                            $totalRow = $headRows.find('.datatable-row-total'),
+                            settings  = dt.settings()[0];
+
+                        $headRows.find('.dataTables_sizing').each(function() {
+                            var $this = $(this);
+                            $this.replaceWith( $this.html().trim() );
+                        });
+
+//                        $table.find('.pre').removeClass('pre');
+                        $table.find('*').removeAttr('class')
+                            .removeAttr('aria-controls')
+                            .removeAttr('aria-label')
+                            .removeAttr('aria-sort')
+
+                            .removeAttr('data-original-title')
+                            .removeAttr('data-type')
+                            .removeAttr('data-container')
+                            .removeAttr('data-toggle')
+                            .removeAttr('data-placement');
+
+                        var $formatted = $table.find('tr, td, th');
+
+                        /**/
+                        $formatted.each( function() {
+                            var $this  = $(this),
+                                height = $this.height();
+
+                            if (height) {
+//                                $this.attr('width', height + 30);
+                            }
+                            else {
+                                $this.removeAttr('width')
+                            }
+                        });
+                        /**/
+
+                        $formatted.removeAttr('style');
+
+                        $totalRow.find('th').css('text-align', 'right');
+
+                        meta = {
+                            settings : settings
+                        }
+
+                        var visibleColumns = $.grep( columns, function( column ) {
+                            return column.bVisible;
+                        });
+
+                        // fake render of TOTAL row
+                        $totalRow.find('th').each(function( colIndexInVisibles ){
+
+                            var columnIndexInData = visibleColumns[colIndexInVisibles].idx;
+                            meta.col = columnIndexInData;
+
+                            $(this).html(
+                                render( {'rendered' : $(this).html()}, 'export', null, meta )
+                            );
+                        });
+
+                        // fake render of body rows
+                        $rows.each( function( rowIndex ) {
+
+                            var $this  = $(this),
+                                $cells = $this.find('td');
+
+                            $cells.each(function( colIndexInVisibles ){
+
+                                var columnIndexInData = visibleColumns[colIndexInVisibles].idx;
+                                meta.col = columnIndexInData;
+
+                                $(this).html(
+                                    render( dt.data()[rowIndex][columnIndexInData], 'export', null, meta )
+                                );
+                            });
+                        });
+
+
+                        var content = '<table>' + $table.html() + '</table>';
+
+                        // console.log($table, content);
+
+                        // insert the legend above the array
+                        if (config.legendSelector) {
+                            var $legend = $(config.legendSelector);
+                            content = $legend.html() + content;
+                        }
+
+
+                        var excel = writeToExcel( content, config.sheetTitle );
+
+                        // We use FileSaver.js
+                        saveAs (
+                            new Blob( [excel], {type: 'application/vnd.ms-excel'} ),
+                            config.filename()
+                        );
+                    },
+                    exportOptions: {
+//                        stripHtml : true,
+                        decodeEntities : true,
+                        trim           : true,
+                        orthogonal     : 'export',
+                        columns        : ':visible',
+                        stripHtml      : false
+                    },
+                },
+                {
+                    extend : 'csv',
+                    exportOptions: {
+                        decodeEntities : true,
+                        trim           : true,
+                        orthogonal     : 'export',
+                        columns        : ':visible'
+                    }
+                }
+//                'print',
+            ],
+            fixedColumns   : {
+                leftColumns : 1,
+            },
+//            fixedHeader    : true,
+//            colReorder     : true,
+            orderCellsTop  : true,   // attach the sort buttons to the first thead's row
+
+//            rowReorder     : true,
+//            responsive     : true
+            deferRender    : true,   // generates td on the fly to accelerate rendering of big tables
+
+            data           : dataSet,
+            columns        : columns,  // required to have the column class on each td
+            language       : {"emptyTable":"No data available in table","info":"Showing _START_ to _END_ of _TOTAL_ entries","infoEmpty":"Showing 0 to 0 of 0 entries","infoFiltered":"(filtered from _MAX_ total entries)","infoThousands":",","infoPostFix":"","lengthMenu":"Show _MENU_ entries","loadingRecords":"Loading...","processing":"Processing...","search":"Search:","zeroRecords":"No matching records found","paginate":{"first":"First","last":"Last","next":"Next","previous":"Pr\u00e9c\u00e9dent"},"aria":{"sortAscending":": activate to sort column ascending","sortDescending":": activate to sort column descending"},"buttons":{"copyTitle":"Copier","copySuccess":{"_":"%d rows copied to clipboard","1":"1 row copied to clipboard"},"colvis":"Select columns"}}        });
+    });
+
+
+
+    $(document).ready(function(){
+        // this is in a separate call to be inserted only once
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+
+    $(document).ready(function(){
+
+        var dataSet  = [],
+            selector = '#table-id-58ae3c0184155',
+            columns  = [{"type":"text","className":"f-title text"},{"type":"number","className":"f-views number text-right"},{"type":"number","className":"f-nb(mediabong-sponsor)-nb_interne-nb_prod number text-right"},{"type":"number","className":"f-nb_interne-nb_prod number text-right"},{"type":"price","className":"f-amount_interne-amount_prod price text-right"},{"type":"number","className":"f-nb(mediabong-sponsor) number text-right"},{"type":"price","className":"f-amount(mediabong-sponsor) price text-right"},{"type":"price","className":"f-amount(mediabong-sponsor)-amount_interne-amount_prod price text-right"},{"type":"price","className":"f-amount(mediabong-sponsor)-amount_interne price text-right"}];
+
+
+        var render = function( data, type, full, meta )
+        {
+            var columnType = meta.settings.aoColumns[meta.col].type;
+
+            // sort | display | filter
+            if (type == 'sort') {
+                return data.value;
+            }
+
+            if (type == 'filter' && columnType != 'text' && columnType != 'date') {
+                // numbers and prices must be filtered on their value
+                return data.rendered.replace(/\s/g, "");
+            }
+
+            /**/
+            if (type == 'export') {
+
+                // Format the values to export as XLS
+                var $wrapper = $('<div>');
+                $wrapper.html(data.rendered);
+
+                // remove the tooltips first
+                if ($wrapper.children('a').length) {
+                    var value = $wrapper.children('a').text();
+                }
+                else {
+                    var value = data.rendered;
+                }
+
+                // remove the spaces
+                if (columnType == 'date')
+                    value = value.replace(/\s/g, "");
+
+                // for openoffice
+                if (columnType == 'price' || columnType == 'percent' || columnType == 'percent4')
+                    value = value.replace(/\s/g, "");
+
+//                console.log(columnType, value, meta);
+                return value;
+            }
+            /**/
+
+            return data.rendered;
+        }
+
+        for (var i in columns) {
+            columns[i].render = render;
+        }
+
+        // avoids the display of the squeleton of the table before datatable init
+        $(selector).removeClass('hidden');
+
+        $(selector).DataTable({
+            lengthMenu     : [
+                [10, 25, 50, 100, 150, 300, -1],
+                [10, 25, 50, 100, 150, 300, "All"]
+            ],
+            pageLength     : 100,
+            scrollY        : 400,
+            scrollCollapse : true,
+            scrollX        : true,
+            dom            : ''
+                           + "<'row'<'col-sm-2 datatable-filter'f><'col-sm-10 datatable-buttons'B>>"
+                           + "<'row'<'col-sm-12'tr>>"
+                           + "<'row'<'col-sm-5'l><'col-sm-7'p>>",
+            buttons        : [
+                'colvis',
+                'copy',
+                {
+                    extend         : 'excel',
+                    filename       : function() {
+
+                        var dt      = new Date(),
+                            seconds = dt.getSeconds(),
+                            minutes = dt.getMinutes(),
+                            hours   = dt.getHours(),
+                            month   = dt.getMonth() + 1,
+                            day     = dt.getDate(),
+                            postfix = dt.getFullYear()
+                                    + "-" + (month   >= 10 ? month   : '0' + month)
+                                    + "-" + (day     >= 10 ? day     : '0' + day)
+                                    + " " + (hours   >= 10 ? hours   : '0' + hours)
+                                    + "-" + (minutes >= 10 ? minutes : '0' + minutes)
+                                    + "-" + (seconds >= 10 ? seconds : '0' + seconds);
+
+                        var title = 'export Group-producers 714 - Kevin Bai';
+
+                        filename = (title != '' ? title : 'export') + ' ' + postfix + '.xls';
+
+                        return filename;
+                    },
+                    sheetTitle     : 'Sheet 1',
+                    legendSelector : '#table-id-58ae3c0184155-export-legend',
+                    action         : function( e, dt, button, config ) {
+
+                        // This is an almost complete override of the builtin Excel
+                        // button of dataTable. The goal, here, is to generate an
+                        // file using the ability of Excel to read xlsx written as
+                        // html. This way, we can preserve the display of our table
+                        // including the formats, font weight, complex header...
+                        //
+                        // To do that, we mimic the render process uppon the html
+                        // so the rules applied to export as CSV are still applied
+                        // to the xls content.
+                        //
+                        // nb : the replied export process corresponds to
+                        // var exportedData = dt.buttons.exportData( config.exportOptions );
+
+//                        var exportedData = dt.buttons.exportData( config.exportOptions );
+//                        console.log(exportedData);
+
+                        var $container = $(dt.containers()[0]),
+                            $table     = $container.find('.dataTables_scrollBody table')
+                                         .clone(),
+                            columns    = dt.settings()[0].aoColumns;
+
+                        $table.find('br').replaceWith("\n");
+
+                        var data      = dt.data(),
+                            $rows     = $table.find('tbody tr');
+                            $headRows = $table.find('thead tr'),
+                            $totalRow = $headRows.find('.datatable-row-total'),
+                            settings  = dt.settings()[0];
+
+                        $headRows.find('.dataTables_sizing').each(function() {
+                            var $this = $(this);
+                            $this.replaceWith( $this.html().trim() );
+                        });
+
+//                        $table.find('.pre').removeClass('pre');
+                        $table.find('*').removeAttr('class')
+                            .removeAttr('aria-controls')
+                            .removeAttr('aria-label')
+                            .removeAttr('aria-sort')
+
+                            .removeAttr('data-original-title')
+                            .removeAttr('data-type')
+                            .removeAttr('data-container')
+                            .removeAttr('data-toggle')
+                            .removeAttr('data-placement');
+
+                        var $formatted = $table.find('tr, td, th');
+
+                        /**/
+                        $formatted.each( function() {
+                            var $this  = $(this),
+                                height = $this.height();
+
+                            if (height) {
+//                                $this.attr('width', height + 30);
+                            }
+                            else {
+                                $this.removeAttr('width')
+                            }
+                        });
+                        /**/
+
+                        $formatted.removeAttr('style');
+
+                        $totalRow.find('th').css('text-align', 'right');
+
+                        meta = {
+                            settings : settings
+                        }
+
+                        var visibleColumns = $.grep( columns, function( column ) {
+                            return column.bVisible;
+                        });
+
+                        // fake render of TOTAL row
+                        $totalRow.find('th').each(function( colIndexInVisibles ){
+
+                            var columnIndexInData = visibleColumns[colIndexInVisibles].idx;
+                            meta.col = columnIndexInData;
+
+                            $(this).html(
+                                render( {'rendered' : $(this).html()}, 'export', null, meta )
+                            );
+                        });
+
+                        // fake render of body rows
+                        $rows.each( function( rowIndex ) {
+
+                            var $this  = $(this),
+                                $cells = $this.find('td');
+
+                            $cells.each(function( colIndexInVisibles ){
+
+                                var columnIndexInData = visibleColumns[colIndexInVisibles].idx;
+                                meta.col = columnIndexInData;
+
+                                $(this).html(
+                                    render( dt.data()[rowIndex][columnIndexInData], 'export', null, meta )
+                                );
+                            });
+                        });
+
+
+                        var content = '<table>' + $table.html() + '</table>';
+
+                        // console.log($table, content);
+
+                        // insert the legend above the array
+                        if (config.legendSelector) {
+                            var $legend = $(config.legendSelector);
+                            content = $legend.html() + content;
+                        }
+
+
+                        var excel = writeToExcel( content, config.sheetTitle );
+
+                        // We use FileSaver.js
+                        saveAs (
+                            new Blob( [excel], {type: 'application/vnd.ms-excel'} ),
+                            config.filename()
+                        );
+                    },
+                    exportOptions: {
+//                        stripHtml : true,
+                        decodeEntities : true,
+                        trim           : true,
+                        orthogonal     : 'export',
+                        columns        : ':visible',
+                        stripHtml      : false
+                    },
+                },
+                {
+                    extend : 'csv',
+                    exportOptions: {
+                        decodeEntities : true,
+                        trim           : true,
+                        orthogonal     : 'export',
+                        columns        : ':visible'
+                    }
+                }
+//                'print',
+            ],
+            fixedColumns   : {
+                leftColumns : 1,
+            },
+//            fixedHeader    : true,
+//            colReorder     : true,
+            orderCellsTop  : true,   // attach the sort buttons to the first thead's row
+
+//            rowReorder     : true,
+//            responsive     : true
+            deferRender    : true,   // generates td on the fly to accelerate rendering of big tables
+
+            data           : dataSet,
+            columns        : columns,  // required to have the column class on each td
+            language       : {"emptyTable":"No data available in table","info":"Showing _START_ to _END_ of _TOTAL_ entries","infoEmpty":"Showing 0 to 0 of 0 entries","infoFiltered":"(filtered from _MAX_ total entries)","infoThousands":",","infoPostFix":"","lengthMenu":"Show _MENU_ entries","loadingRecords":"Loading...","processing":"Processing...","search":"Search:","zeroRecords":"No matching records found","paginate":{"first":"First","last":"Last","next":"Next","previous":"Pr\u00e9c\u00e9dent"},"aria":{"sortAscending":": activate to sort column ascending","sortDescending":": activate to sort column descending"},"buttons":{"copyTitle":"Copier","copySuccess":{"_":"%d rows copied to clipboard","1":"1 row copied to clipboard"},"colvis":"Select columns"}}        });
+    });
+
+        </script>
+</body>
+</html>
