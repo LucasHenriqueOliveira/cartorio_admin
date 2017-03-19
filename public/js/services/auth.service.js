@@ -19,35 +19,27 @@
 
                     User.getUser(function (res) {
                         App.user = res.data;
-                        App.publishers = res.publishers;
-                        App.sources = res.sources;
                         $localStorage.setObject('user', App.user);
-                        $localStorage.setObject('publishers', App.publishers);
-                        $localStorage.setObject('sources', App.sources);
                         $rootScope.$broadcast('user', App.user);
                         $location.path('/dashboard');
                     }, function (error) {
                         // error
-                        $rootScope.$broadcast('error-login', {message: 'User not found!'});
+                        $rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
                     });
                 }, function (error) {
                     // error
-                    $rootScope.$broadcast('error-login', {message: 'User not found!'});
+                    $rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
                 });
             },
             isAuthenticated: function(){
                 if (!App.user) {
                     User.getUser(function (res) {
                         App.user = res.data;
-                        App.publishers = res.publishers;
-                        App.sources = res.sources;
                         $localStorage.setObject('user', App.user);
-                        $localStorage.setObject('publishers', App.publishers);
-                        $localStorage.setObject('sources', App.sources);
                         $rootScope.$broadcast('user', App.user);
                     }, function (error) {
                         // error
-                        $rootScope.$broadcast('error-login', {message: 'User not found!'});
+                        //$rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
                     });
                 }
                 return App.user;
