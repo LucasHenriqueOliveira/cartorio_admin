@@ -57,11 +57,11 @@
             }
 
             $scope.hasFornecedor = false;
-            $scope.nome_fornecedor = '';
+            $scope.fornecedor = {};
         };
 
         $scope.detalhesFornecedor = function() {
-            
+
         };
 
         $scope.removerFornecedor = function(id) {
@@ -72,7 +72,7 @@
                 toastr.error('Erro ao remover o fornecedor', 'Fornecedor', {timeOut: 3000});
             });
             $scope.hasFornecedor = false;
-            $scope.nome_fornecedor = '';
+            $scope.fornecedor = {};
         };
 
         $scope.editarFornecedor = function(fornecedor) {
