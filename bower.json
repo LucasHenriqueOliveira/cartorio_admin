@@ -13,7 +13,8 @@
     "chart.js": "~2.3.0",
     "angular-chart.js": "^1.1.1",
     "angular-resource": "~1.4.1",
-    "datatables.net": "^2.1.1"
+    "datatables.net": "^2.1.1",
+    "angular-input-masks": "^2.5.0"
   },
   "resolutions": {
     "angular": "~1.4.1",

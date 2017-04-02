@@ -5,56 +5,62 @@
         .module('app')
         .controller('ProdutosController', ProdutosController);
 
-    ProdutosController.$inject = ['$scope'];
+    ProdutosController.$inject = ['$scope', 'DataService'];
 
-    function ProdutosController($scope) {
-        $scope.notas = [
-            {
-                'numero':'001-000.000.002-010.804.210-7',
-                'fornecedor':'Shanid',
-                'cnpj':'99.999.999/9999-99',
-                'data':'01/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-8',
-                'fornecedor':'Abraham',
-                'cnpj':'99.999.999/9999-99',
-                'data':'02/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-9',
-                'fornecedor':'Mathew',
-                'cnpj':'99.999.999/9999-99',
-                'data':'03/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-7',
-                'fornecedor':'Shanid',
-                'cnpj':'99.999.999/9999-99',
-                'data':'01/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-8',
-                'fornecedor':'Abraham',
-                'cnpj':'99.999.999/9999-99',
-                'data':'02/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-9',
-                'fornecedor':'Mathew',
-                'cnpj':'99.999.999/9999-99',
-                'data':'03/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-7',
-                'fornecedor':'Shanid',
-                'cnpj':'99.999.999/9999-99',
-                'data':'01/02/2017'
-            }];
+    function ProdutosController($scope, DataService) {
+        $scope.hasProduto = false;
+        $scope.label_type = 'Salvar';
+
+        DataService.getProdutos().then(function(response) {
+            $scope.produtos = response;
+        }, function (error) {
+            toastr.error('Erro ao buscar os produtos', 'Produto', {timeOut: 3000});
+        });
+
+        $scope.clickProduto = function(type) {
+            if(type == 'Salvar') {
+                DataService.addProduto({nome: $scope.nome_produto}).then(function(response) {
+                    $scope.produtos = response;
+                    toastr.success('Produto cadastrado com sucesso!', 'Produto', {timeOut: 3000});
+                }, function (error) {
+                    toastr.error('Erro ao cadastrar o produto', 'Produto', {timeOut: 3000});
+                });
+            } else {
+                DataService.atualizarProduto({id: $scope.id, nome: $scope.nome_produto}).then(function(response) {
+                    $scope.produtos = response;
+                    toastr.success('Produto alterado com sucesso!', 'Produto', {timeOut: 3000});
+                }, function (error) {
+                    toastr.error('Erro ao alterar o produto', 'Produto', {timeOut: 3000});
+                });
+            }
+
+            $scope.hasProduto = false;
+            $scope.nome_produto = '';
+        };
+
+        $scope.removerProduto = function(id) {
+            DataService.removeProduto({id: id}).then(function(response) {
+                $scope.produtos = response;
+                toastr.success('Produto removido com sucesso!', 'Produto', {timeOut: 3000});
+            }, function (error) {
+                toastr.error('Erro ao remover o produto', 'Produto', {timeOut: 3000});
+            });
+            $scope.hasProduto = false;
+            $scope.nome_produto = '';
+        };
+
+        $scope.editarProduto = function(produto) {
+            $scope.hasProduto = true;
+            $scope.nome_produto = produto.name;
+            $scope.label_type = 'Alterar';
+            $scope.id = produto.product_id;
+        };
 
         setTimeout(function(){
             jQuery(document).ready(function(){
-                $('table.display').DataTable();
+                $scope.table = $('table.display').DataTable({
+                    "aaSorting": []
+                });
             } );
         }, 300);
     }

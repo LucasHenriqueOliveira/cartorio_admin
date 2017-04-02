@@ -17,10 +17,55 @@ $api = $app->make(Dingo\Api\Routing\Router::class);
 
 
 $api->version('v1', function ($api) {
-    // tests for sources
-    $api->get('/test/mediabong', [
-        'uses' => 'App\Http\Controllers\Test\TestController@mediabong',
-        'as' => 'test'
+
+    $api->get('/produtos', [
+        'uses' => 'App\Http\Controllers\ProdutoController@produtos',
+        'as' => 'api.produtos'
+    ]);
+
+    $api->post('/produto', [
+        'uses' => 'App\Http\Controllers\ProdutoController@addProduto',
+        'as' => 'api.add.produto'
+    ]);
+
+    $api->delete('/produto', [
+        'uses' => 'App\Http\Controllers\ProdutoController@removeProduto',
+        'as' => 'api.remove.produto'
+    ]);
+
+    $api->put('/produto', [
+        'uses' => 'App\Http\Controllers\ProdutoController@atualizarProduto',
+        'as' => 'api.atualizar.produto'
+    ]);
+
+    $api->get('/fornecedores', [
+        'uses' => 'App\Http\Controllers\FornecedorController@fornecedores',
+        'as' => 'api.fornecedores'
+    ]);
+
+    $api->post('/fornecedor', [
+        'uses' => 'App\Http\Controllers\FornecedorController@addFornecedor',
+        'as' => 'api.add.fornecedor'
+    ]);
+
+    $api->delete('/fornecedor', [
+        'uses' => 'App\Http\Controllers\FornecedorController@removeFornecedor',
+        'as' => 'api.remove.fornecedor'
+    ]);
+
+    $api->put('/fornecedor', [
+        'uses' => 'App\Http\Controllers\FornecedorController@atualizarFornecedor',
+        'as' => 'api.atualizar.fornecedor'
+    ]);
+
+    $api->get('/estados', [
+        'uses' => 'App\Http\Controllers\EstadoCidadeController@estados',
+        'as' => 'api.estados'
+    ]);
+
+    $api->get('/cidades', [
+        'uses' => 'App\Http\Controllers\EstadoCidadeController@cidades',
+        'as' => 'api.cidades'
     ]);
 
 
