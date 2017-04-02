@@ -58,6 +58,10 @@
 
             $scope.hasFornecedor = false;
             $scope.fornecedor = {};
+
+            jQuery(document).ready(function(){
+                $(window).scrollTop(0);
+            });
         };
 
         $scope.detalhesFornecedor = function() {
