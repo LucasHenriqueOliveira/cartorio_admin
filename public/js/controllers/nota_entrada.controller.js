@@ -5,58 +5,95 @@
         .module('app')
         .controller('NotaEntradaController', NotaEntradaController);
 
-    NotaEntradaController.$inject = ['$scope'];
+    NotaEntradaController.$inject = ['$scope', 'DataService', 'ModalService', '$rootScope'];
 
-    function NotaEntradaController($scope) {
-        $scope.notas = [
-            {
-                'numero':'001-000.000.002-010.804.210-7',
-                'fornecedor':'Shanid',
-                'cnpj':'99.999.999/9999-99',
-                'data':'01/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-8',
-                'fornecedor':'Abraham',
-                'cnpj':'99.999.999/9999-99',
-                'data':'02/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-9',
-                'fornecedor':'Mathew',
-                'cnpj':'99.999.999/9999-99',
-                'data':'03/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-7',
-                'fornecedor':'Shanid',
-                'cnpj':'99.999.999/9999-99',
-                'data':'01/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-8',
-                'fornecedor':'Abraham',
-                'cnpj':'99.999.999/9999-99',
-                'data':'02/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-9',
-                'fornecedor':'Mathew',
-                'cnpj':'99.999.999/9999-99',
-                'data':'03/02/2017'
-            },
-            {
-                'numero':'001-000.000.002-010.804.210-7',
-                'fornecedor':'Shanid',
-                'cnpj':'99.999.999/9999-99',
-                'data':'01/02/2017'
-            }];
+    function NotaEntradaController($scope, DataService, ModalService, $rootScope) {
+        $scope.hasNota = false;
+        $scope.label_type = 'Salvar';
+        $scope.nota = {};
+
+        DataService.getProdutos().then(function(response) {
+            $scope.produtos = response;
+        }, function (error) {
+            toastr.error('Erro ao buscar os produtos', 'Produto', {timeOut: 3000});
+        });
+
+        DataService.getFornecedores().then(function(response) {
+            $scope.fornecedores = response;
+        }, function (error) {
+            toastr.error('Erro ao buscar os fornecedores', 'Fornecedor', {timeOut: 3000});
+        });
+
+        DataService.getNotasEntrada().then(function(response) {
+            $scope.notas_entrada = response;
+        }, function (error) {
+            toastr.error('Erro ao buscar as notas de entrada', 'Notas de Entrada', {timeOut: 3000});
+        });
+
+        $scope.clickNotaEntrada = function(type)  {
+            if(type == 'Salvar') {
+                DataService.addNotaEntrada($scope.nota).then(function(response) {
+                    $scope.notas_entrada = response;
+                    toastr.success('Nota de entrada cadastrada com sucesso!', 'Nota de Entrada', {timeOut: 3000});
+                }, function (error) {
+                    toastr.error('Erro ao cadastrar a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
+                });
+            } else {
+                DataService.atualizarNotaEntrada($scope.nota).then(function(response) {
+                    $scope.notas_entrada = response;
+                    toastr.success('Nota de entrada alterada com sucesso!', 'Nota de Entrada', {timeOut: 3000});
+                }, function (error) {
+                    toastr.error('Erro ao alterar a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
+                });
+            }
+
+            $scope.hasNota = false;
+            $scope.nota = {};
+        };
+
+        $scope.removerNotaEntrada = function(id) {
+            DataService.removeNotaEntrada({id: id}).then(function(response) {
+                $scope.notas_entrada = response;
+                toastr.success('Nota de entrada removida com sucesso!', 'Nota de Entrada', {timeOut: 3000});
+            }, function (error) {
+                toastr.error('Erro ao remover a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
+            });
+            $scope.hasNota = false;
+            $scope.nota = {};
+        };
+
+        $scope.editarNotaEntrada = function(nota) {
+            $scope.hasNota = true;
+            $scope.nota = nota;
+            $scope.label_type = 'Alterar';
+        };
+
+        $scope.cancelar = function() {
+            $scope.hasNota = false;
+            $scope.nota = {};
+
+            jQuery(document).ready(function(){
+                $('table.display').DataTable();
+            });
+        };
+
+        $scope.detalhesNotaEntrada = function(nota) {
+            $rootScope.nota = nota;
+            ModalService.showModal({
+                templateUrl: "templates/detalhes_nota_entrada.html",
+                controller: function() {
+
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+            });
+        };
 
         setTimeout(function(){
             jQuery(document).ready(function(){
                 $('table.display').DataTable();
-            } );
-        }, 300);
+            });
+        }, 500);
     }
 
 })();

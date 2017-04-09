@@ -5,9 +5,9 @@
         .module('app')
         .controller('FornecedoresController', FornecedoresController);
 
-    FornecedoresController.$inject = ['$scope', 'DataService'];
+    FornecedoresController.$inject = ['$scope', 'DataService', 'ModalService', '$rootScope'];
 
-    function FornecedoresController($scope, DataService) {
+    function FornecedoresController($scope, DataService, ModalService, $rootScope) {
         $scope.hasFornecedor = false;
         $scope.label_type = 'Salvar';
         $scope.fornecedor = {};
@@ -48,7 +48,7 @@
                     toastr.error('Erro ao cadastrar o fornecedor', 'Fornecedor', {timeOut: 3000});
                 });
             } else {
-                DataService.atualizarFornecedor({id: $scope.id, nome: $scope.nome_fornecedor}).then(function(response) {
+                DataService.atualizarFornecedor($scope.fornecedor).then(function(response) {
                     $scope.fornecedores = response;
                     toastr.success('Fornecedor alterado com sucesso!', 'Fornecedor', {timeOut: 3000});
                 }, function (error) {
@@ -64,8 +64,40 @@
             });
         };
 
-        $scope.detalhesFornecedor = function() {
+        $scope.detalhesFornecedor = function(fornecedor) {
+            $rootScope.fornecedor = fornecedor;
+            ModalService.showModal({
+                templateUrl: "templates/detalhes_fornecedor.html",
+                controller: function($scope) {
+                    $scope.checkEndereco = function(fornecedor) {
+                        var endereco = fornecedor.logradouro;
 
+                        if(fornecedor.complemento) {
+                            endereco += ', ' + fornecedor.complemento;
+                        }
+
+                        if(fornecedor.bairro) {
+                            endereco += ', ' + fornecedor.bairro;
+                        }
+
+                        if(fornecedor.cidade) {
+                            endereco += ' - ' + fornecedor.cidade;
+                        }
+
+                        if(fornecedor.uf) {
+                            endereco += '/' + fornecedor.uf;
+                        }
+
+                        if(fornecedor.cep) {
+                            endereco += ' - ' + fornecedor.cep;
+                        }
+
+                        return endereco;
+                    };
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         };
 
         $scope.removerFornecedor = function(id) {
@@ -81,9 +113,46 @@
 
         $scope.editarFornecedor = function(fornecedor) {
             $scope.hasFornecedor = true;
-            $scope.nome_fornecedor = fornecedor.name;
+            $scope.fornecedor = fornecedor;
             $scope.label_type = 'Alterar';
-            $scope.id = fornecedor.product_id;
+
+
+            if($scope.fornecedor.cnpj_cpf.length == 11) {
+                $scope.fornecedor.tipo = 'pf';
+                $scope.tipo_fornecedor = 'CPF';
+            } else {
+                $scope.fornecedor.tipo = 'pj';
+                $scope.tipo_fornecedor = 'CNPJ';
+            }
+
+            $scope.estados.forEach(function(entry){
+                if(entry.uf == fornecedor.uf) {
+                    $scope.fornecedor.estado = entry;
+                }
+            });
+
+            if($scope.fornecedor.estado.id) {
+                DataService.getCidades({id: $scope.fornecedor.estado.id}).then(function(response) {
+                    $scope.cidades = response;
+
+                    $scope.cidades.forEach(function(entry){
+                        if(entry.id == fornecedor.cidade_id) {
+                            $scope.fornecedor.cidade = entry.id;
+                        }
+                    });
+                });
+            }
+        };
+
+        $scope.cancelar = function() {
+            $scope.hasFornecedor = false;
+            $scope.fornecedor = {};
+
+            jQuery(document).ready(function(){
+                $scope.table = $('table.display').DataTable({
+                    "aaSorting": []
+                });
+            });
         };
 
         setTimeout(function(){
@@ -91,8 +160,8 @@
                 $scope.table = $('table.display').DataTable({
                     "aaSorting": []
                 });
-            } );
-        }, 300);
+            });
+        }, 500);
     }
 
 })();

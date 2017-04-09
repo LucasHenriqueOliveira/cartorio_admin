@@ -213,6 +213,82 @@
                     });
 
                 return deferred.promise;
+            },
+            getNotasEntrada: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'notas-entrada',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao consultar as notas de entrada', 'Notas de Entrada', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            addNotaEntrada: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: App.api + 'nota-entrada',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao cadastrar a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            removeNotaEntrada: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'DELETE',
+                    url: App.api + 'nota-entrada',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao remover a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            atualizarNotaEntrada: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'PUT',
+                    url: App.api + 'nota-entrada',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao alterar a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
             }
         }
     }

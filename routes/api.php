@@ -68,6 +68,26 @@ $api->version('v1', function ($api) {
         'as' => 'api.cidades'
     ]);
 
+    $api->get('/notas-entrada', [
+        'uses' => 'App\Http\Controllers\NotaEntradaController@notas',
+        'as' => 'api.notas.entrada'
+    ]);
+
+    $api->post('/nota-entrada', [
+        'uses' => 'App\Http\Controllers\NotaEntradaController@addNotaEntrada',
+        'as' => 'api.add.nota.entrada'
+    ]);
+
+    $api->delete('/nota-entrada', [
+        'uses' => 'App\Http\Controllers\NotaEntradaController@removeNotaEntrada',
+        'as' => 'api.remove.nota.entrada'
+    ]);
+
+    $api->put('/nota-entrada', [
+        'uses' => 'App\Http\Controllers\NotaEntradaController@atualizarNotaEntrada',
+        'as' => 'api.atualizar.nota.entrada'
+    ]);
+
 
     // dashboard
     $api->get('/dashboard', [

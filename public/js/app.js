@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'chart.js', 'ngResource', 'ui.utils.masks'])
+        .module('app', ['ngRoute', 'chart.js', 'ngResource', 'ui.utils.masks', 'idf.br-filters', 'angularModalService'])
         .config(config)
         .run(run);
 

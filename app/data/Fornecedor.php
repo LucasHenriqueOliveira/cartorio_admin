@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 class Fornecedor {
 
     public function getFornecedores() {
-        return DB::select("SELECT * FROM fornecedor WHERE `ativo` = :ativo ORDER BY `fornecedor_id` DESC", ['ativo' => 1]);
+        return DB::select("SELECT *, c.id AS cidade_id, f.nome AS nome, c.nome AS cidade, DATE_FORMAT(f.data_add, '%d/%m/%Y %H:%i') as data_add FROM fornecedor AS f INNER JOIN cidade AS c ON f.cidade = c.id WHERE `ativo` = :ativo ORDER BY `fornecedor_id` DESC", ['ativo' => 1]);
     }
 
     public function addFornecedor($request) {

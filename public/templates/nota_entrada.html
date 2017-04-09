@@ -4,50 +4,131 @@
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
-    <div class="row top_tiles" ng-hide="!notas.length">
+    <div class="row top_tiles">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Nota Fiscal de Entrada</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
-                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Novo</button>
+                            <button type="button" class="btn btn-primary" ng-click="hasNota = !hasNota; label_type = 'Salvar';">
+                                <i class="fa" ng-class="{'fa-plus': !hasNota, 'fa-minus': hasNota}"></i> Novo
+                            </button>
                         </li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <table class="table table-striped table-bordered display">
-                    <thead>
-                        <tr>
-                            <th>Número</th>
-                            <th>Fornecedor</th>
-                            <th class="text-center">CNPJ</th>
-                            <th class="text-center">Data</th>
-                            <th class="text-center">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="nota in notas">
-                            <td>{{nota.numero}}</td>
-                            <td>{{nota.fornecedor}}</td>
-                            <td class="text-center">{{nota.cnpj}}</td>
-                            <td class="text-center">{{nota.data}}</td>
-                            <td class="text-center">
-                                <ul class="nav panel_toolbox">
-                                    <li>
-                                        <a class="collapse-link"><i class="fa fa-plus"></i></a>
-                                    </li>
-                                    <li>
-                                        <a class="close-link"><i class="fa fa-pencil"></i></a>
-                                    </li>
-                                    <li>
-                                        <a class="close-link"><i class="fa fa-trash"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <form class="form-horizontal form-label-left" ng-if="hasNota">
+                    <div class="form-group margin-bottom">
+                        <div class="x_content">
+                            <form id="demo-form2" class="form-horizontal form-label-left" novalidate="">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Produto</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select ng-model="nota.produto_id" ng-options="produto.product_id as produto.name for produto in produtos" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantidade</label>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <input id="quantidade" class="form-control col-md-7 col-xs-12" ng-model="nota.quantidade" type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <select ng-model="nota.unidade" ng-options="unidade for unidade in ['KG', 'LT', 'ML', 'GR']" class="form-control">
+                                            <option value="">Unidade</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Fornecedor</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select ng-model="nota.fornecedor_id" ng-options="fornecedor.fornecedor_id as fornecedor.nome for fornecedor in fornecedores" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Data da Compra</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="data_compra" class="form-control col-md-7 col-xs-12" ng-model="nota.data_compra" type="text" ui-date-mask>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Data do Pagamento</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="data_pagamento" class="form-control col-md-7 col-xs-12" ng-model="nota.data_pagamento" type="text" ui-date-mask>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Número NF-e</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="numero_nfe" class="form-control col-md-7 col-xs-12" ng-model="nota.nfe" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor da Nota</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="valor_nota" class="form-control col-md-7 col-xs-12" ng-model="nota.valor_nota" type="text" ui-money-mask="mdecimals">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor Total</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="valor_total" class="form-control col-md-7 col-xs-12" ng-model="nota.valor_total" type="text" ui-money-mask="mdecimals">
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="button" ng-click="cancelar()">Cancelar</button>
+                                        <button type="submit" class="btn btn-success" ng-click="clickNotaEntrada(label_type)">{{label_type}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </form>
+                <div ng-if="!hasNota">
+                    <div class="x_content" ng-hide="!notas_entrada.length">
+                        <table class="table table-striped table-bordered display">
+                            <thead>
+                            <tr>
+                                <th>NF-e</th>
+                                <th class="text-center">Produto</th>
+                                <th class="text-center">Quantidade</th>
+                                <th class="text-center">Fornecedor</th>
+                                <th class="text-center">Dt. Compra</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="nota in notas_entrada">
+                                <td>{{nota.nfe}}</td>
+                                <td class="text-center">{{nota.name}}</td>
+                                <td class="text-center">{{nota.quantidade}}{{nota.unidade}}</td>
+                                <td class="text-center">{{nota.nome}}</td>
+                                <td class="text-center">{{nota.data_compra}}</td>
+                                <td class="text-center">
+                                    <ul class="nav panel_toolbox">
+                                        <li>
+                                            <a class="close-link" ng-click="detalhesNotaEntrada(nota)"><i class="fa fa-plus"></i></a>
+                                        </li>
+                                        <li>
+                                            <a class="close-link" ng-click="editarNotaEntrada(nota)"><i class="fa fa-pencil"></i></a>
+                                        </li>
+                                        <li>
+                                            <a class="close-link" ng-click="removerNotaEntrada(nota.nota_entrada_id)"><i class="fa fa-trash"></i></a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="x_content text-center" ng-show="!notas_entrada.length">
+                        <span style="font-size: 22px;">Não possui nenhuma nota de entrada cadastrada.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
