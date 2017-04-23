@@ -1070,7 +1070,6 @@ h2 {
 .x_title {
     border-bottom: 2px solid #E6E9ED;
     margin-bottom: 10px;
-    background: #f5f5f5;
 }
 .x_title .filter {
     width: 40%;
@@ -4628,4 +4627,7 @@ h6{
     .x_panel {
         flex: 1;
     }
+}
+.nota_fiscal_entrada {
+    background: #f5f5f5;
 }
