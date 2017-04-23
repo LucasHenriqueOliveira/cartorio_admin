@@ -1,0 +1,30 @@
+<ng-include src="'templates/sidebar.html'"></ng-include>
+<ng-include src="'templates/header.html'"></ng-include>
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <!-- top tiles -->
+    <div class="row top_tiles" ng-hide="!notas.length">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Produtos</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Novo</button>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content text-center">
+                    <img src="/images/logo.svg" width="200px">
+                    <br><br>
+                    <span style="font-size: 22px;">Em desenvolvimento...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<ng-include src="'templates/footer.html'"></ng-include>

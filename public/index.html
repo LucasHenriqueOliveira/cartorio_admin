@@ -27,7 +27,7 @@
     <![endif]-->
 
 </head>
-<body id="main" class="nav-md" ng-controller="AppController">
+<body id="main" class="nav-md" ng-class="{login: (page == 'login' || page == 'register' || page == 'admin'), 'nav-md': menuSize == 'md', 'nav-sm': menuSize == 'sm'}" ng-controller="AppController">
 
 <section class="container body">
     <div class="main_container" ng-view autoscroll="true"></div>
@@ -76,6 +76,7 @@
 <script src="/js/controllers/estoque.controller.js"></script>
 <script src="/js/controllers/produtos.controller.js"></script>
 <script src="/js/controllers/fornecedores.controller.js"></script>
+<script src="/js/controllers/relatorios.controller.js"></script>
 
 
 <!-- Custom Theme Scripts -->

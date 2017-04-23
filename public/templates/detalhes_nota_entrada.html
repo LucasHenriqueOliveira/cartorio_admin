@@ -28,6 +28,11 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        Valor do produto: {{nota.valor_produto | finance:true:2}}
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         Valor da compra: {{nota.valor_nota | finance:true:2}}
                     </div>

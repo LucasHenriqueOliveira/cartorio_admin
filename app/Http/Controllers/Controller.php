@@ -11,12 +11,11 @@ use Illuminate\Http\Exception\HttpResponseException;
 class Controller extends BaseController{
 
     public function dashboard(Request $request) {
-        $dashboard = new \App\Data\Source();
+        $dashboard = new \App\Data\Dashboard();
 
         $res = $dashboard->dashboard([
             'start' => $request->input('start'),
-            'end' => $request->input('end'),
-            'publisher' => $request->input('publisher')
+            'end' => $request->input('end')
         ]);
 
         echo json_encode($res);

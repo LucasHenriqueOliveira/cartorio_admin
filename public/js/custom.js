@@ -61,9 +61,30 @@ function init_daterangepicker(text) {
         $(text + ' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     };
 
+    var stored = localStorage.getItem('dashboardQuery');
+    var start, end;
+    if (stored) {
+        stored = JSON.parse(stored);
+        start = moment(stored.start);
+        end = moment(stored.end);
+    }
+
+    if (!start) {
+        start = moment().subtract(6, 'days');
+    }
+    if (!end) {
+        end = moment();
+    }
+
+    var year = moment().subtract(365, 'days');
+    var date = moment("20170312");
+    if(date < year) {
+        date = moment().subtract(365, 'days');
+    }
+
     var optionSet1 = {
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment(),
+        startDate: start,
+        endDate: end,
         minDate: '01/01/2012',
         maxDate: '12/31/2020',
         dateLimit: {
@@ -79,8 +100,7 @@ function init_daterangepicker(text) {
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            'Year to Date': [date, moment()]
         },
         opens: 'center',
         buttonClasses: ['btn btn-default'],
@@ -100,17 +120,7 @@ function init_daterangepicker(text) {
         }
     };
 
-    var curr = new Date;
-    var dd = ("0" + (curr.getDate() - 1)).slice(-2);
-    var mm = ("0" + (curr.getMonth() + 1)).slice(-2);
-    var yyyy = curr.getFullYear();
-    var first = curr.getDate() - curr.getDay();
-
-    var start = yyyy + '' + mm + '' + first;
-    var end = yyyy + '' + mm + '' + dd;
-
-    //$(text + ' span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-    $(text + ' span').html(moment(start, "YYYYMMDD").format('MMMM D, YYYY') + ' - ' + moment(end, "YYYYMMDD").format('MMMM D, YYYY'));
+    $(text + ' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
     $(text).daterangepicker(optionSet1, cb);
     $(text).on('show.daterangepicker', function() {
@@ -140,6 +150,25 @@ function init_daterangepicker(text) {
         $(text).data('daterangepicker').remove();
     });
 
+}
+
+function init_daterangepicker_report(text) {
+    console.log('init_daterangepicker_report');
+
+    var cb = function(start, end, label) {
+        $(text + ' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    };
+
+    var optionSet1 = {
+        startDate: moment().subtract(6, 'days'),
+        endDate: moment(),
+        alwaysShowCalendars: true,
+        singleDatePicker: true,
+        autoUpdateInput: true,
+        autoapply: true
+    };
+
+    $(text).daterangepicker(optionSet1, cb);
 }
 
 function init_daterangepicker_single_call() {
@@ -198,6 +227,10 @@ function isEmpty(obj) {
     }
 
     return true;
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 $(document).ready(function() {

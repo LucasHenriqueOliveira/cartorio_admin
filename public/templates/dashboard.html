@@ -4,13 +4,72 @@
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
-    <div class="row top_tiles">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel text-center">
-                <img src="/images/logo.svg" width="200px">
-                <br><br>
-                <span style="font-size: 22px;">Em desenvolvimento...</span>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+                <div class="visual">
+                    <i class="fa fa-cart-plus"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span>{{produtos}}</span>
+                    </div>
+                    <div class="desc"> Produtos </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="#">
+                <div class="visual">
+                    <i class="fa fa-bar-chart-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        R$<span>{{nf_entrada_valor}}</span> </div>
+                    <div class="desc"> NF de Entrada </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+                <div class="visual">
+                    <i class="fa fa-file-text"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span>{{nf_entrada}}</span>
+                    </div>
+                    <div class="desc"> NF de Entrada</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+                <div class="visual">
+                    <i class="fa fa-address-book-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span>{{fornecedores}}</span>
+                    </div>
+                    <div class="desc"> Fornecedores </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="x_row">
+        <div class="dashboard_graph x_panel">
+            <div class="row x_title">
+                <div class="col-md-2">
+                    <h2>Notas Fiscais de Entrada</h2>
+                </div>
             </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 x_content">
+                <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride">
+                </canvas>
+            </div>
+            <div class="clearfix"></div>
         </div>
     </div>
 </div>
