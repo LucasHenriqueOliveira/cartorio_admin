@@ -4631,3 +4631,6 @@ h6{
 .nota_fiscal_entrada {
     background: #f5f5f5;
 }
+.right_col {
+    min-height: 630px;
+}
