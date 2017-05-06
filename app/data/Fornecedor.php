@@ -19,7 +19,8 @@ class Fornecedor {
         return DB::update('UPDATE fornecedor SET `ativo` = ? WHERE fornecedor_id = ?', [0, $id]);
     }
 
-    public function atualizarFornecedor($id, $nome) {
-        return DB::update('UPDATE product SET `name` = ? WHERE product_id = ?', [$nome, $id]);
+    public function atualizarFornecedor($request) {
+        return DB::update('UPDATE fornecedor SET `nome` = ?, `cnpj_cpf` = ?, `logradouro` = ?, `complemento` = ?, `cidade` = ?, `uf` = ?, `bairro` = ?, `cep` = ?, `contato` = ?, `telefone1` = ?, `telefone2` = ? WHERE fornecedor_id = ?',
+        [$request->input('nome'), $request->input('cnpj_cpf'), $request->input('logradouro'), $request->input('complemento'), $request->input('cidade'), $request->input('uf'), $request->input('bairro'), $request->input('cep'), $request->input('contato'), $request->input('telefone1'), $request->input('telefone2'), $request->input('fornecedor_id')]);
     }
 }

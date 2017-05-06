@@ -289,6 +289,25 @@
                     });
 
                 return deferred.promise;
+            },
+            relatorio: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: App.api + 'relatorio',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao consultar o relatório', 'Relatório', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
             }
         }
     }

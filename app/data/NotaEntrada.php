@@ -14,8 +14,8 @@ class NotaEntrada {
     }
 
     public function addNotaEntrada($request) {
-        return DB::insert('INSERT INTO nota_entrada (produto_id, quantidade, unidade, fornecedor_id, nfe, data_compra, data_pagamento, valor_produto, valor_nota, valor_total, data_add) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [$request->input('produto_id'), $request->input('quantidade'), $request->input('unidade'), $request->input('fornecedor_id'), $request->input('nfe'), $this->formataData($request->input('data_compra')), $this->formataData($request->input('data_pagamento')), $request->input('valor_produto'), $request->input('valor_nota'), $request->input('valor_total'), date('Y-m-d h:i:s')]);
+        return DB::insert('INSERT INTO nota_entrada (produto_id, quantidade, unidade, fornecedor_id, nfe, data_compra, data_pagamento, valor_produto, valor_nota, valor_total, data_add, centro_custo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [$request->input('produto_id'), $request->input('quantidade'), $request->input('unidade'), $request->input('fornecedor_id'), $request->input('nfe'), $this->formataData($request->input('data_compra')), $this->formataData($request->input('data_pagamento')), $request->input('valor_produto'), $request->input('valor_nota'), $request->input('valor_total'), date('Y-m-d h:i:s'), $request->input('centro_custo')]);
     }
 
     public function removeNotaEntrada($id) {
@@ -23,8 +23,8 @@ class NotaEntrada {
     }
 
     public function atualizarNotaEntrada($request) {
-        return DB::update('UPDATE nota_entrada SET `produto_id` = ?, `quantidade` = ?, `unidade` = ?, `fornecedor_id` = ?, `nfe` = ?, `data_compra` = ?, `data_pagamento` = ?, `valor_produto` = ?, `valor_nota` = ?, `valor_total` = ? WHERE nota_entrada_id = ?',
-        [$request->input('produto_id'), $request->input('quantidade'), $request->input('unidade'), $request->input('fornecedor_id'), $request->input('nfe'), $this->formataData($request->input('data_compra')), $this->formataData($request->input('data_pagamento')), $request->input('valor_produto'), $request->input('valor_nota'), $request->input('valor_total'), $request->input('nota_entrada_id')]);
+        return DB::update('UPDATE nota_entrada SET `produto_id` = ?, `quantidade` = ?, `unidade` = ?, `fornecedor_id` = ?, `nfe` = ?, `data_compra` = ?, `data_pagamento` = ?, `valor_produto` = ?, `valor_nota` = ?, `valor_total` = ?, `centro_custo` = ? WHERE nota_entrada_id = ?',
+        [$request->input('produto_id'), $request->input('quantidade'), $request->input('unidade'), $request->input('fornecedor_id'), $request->input('nfe'), $this->formataData($request->input('data_compra')), $this->formataData($request->input('data_pagamento')), $request->input('valor_produto'), $request->input('valor_nota'), $request->input('valor_total'), $request->input('centro_custo'), $request->input('nota_entrada_id')]);
     }
 
     private function formataData($data) {

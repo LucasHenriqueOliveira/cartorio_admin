@@ -49,7 +49,7 @@ class FornecedorController extends BaseController{
         $fornecedor = new \App\Data\Fornecedor();
 
         try {
-            $res = $fornecedor->atualizarFornecedor($request->input('id'), $request->input('nome'));
+            $res = $fornecedor->atualizarFornecedor($request);
             $res = $fornecedor->getFornecedores();
         } catch (\Exception $e) {
             $res = ['error' => $e];

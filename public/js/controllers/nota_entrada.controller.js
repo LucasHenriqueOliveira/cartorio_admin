@@ -82,7 +82,11 @@
             ModalService.showModal({
                 templateUrl: "templates/detalhes_nota_entrada.html",
                 controller: function() {
-
+                    if($rootScope.nota.centro_custo == 1) {
+                        $rootScope.nota.centro_custo = 'Fazenda Rio Alegre';
+                    } else {
+                        $rootScope.nota.centro_custo = 'Fazenda Santa Maria';
+                    }
                 }
             }).then(function(modal) {
                 modal.element.modal();

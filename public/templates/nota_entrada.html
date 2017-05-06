@@ -23,6 +23,15 @@
                         <div class="x_content">
                             <form id="demo-form2" class="form-horizontal form-label-left" novalidate="">
                                 <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Centro de Custo</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select ng-model="nota.centro_custo" class="form-control">
+                                            <option value="1">Fazenda Rio Alegre</option>
+                                            <option value="2">Fazenda Santa Maria</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Produto</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select ng-model="nota.produto_id" ng-options="produto.product_id as produto.name for produto in produtos" class="form-control">
@@ -78,7 +87,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor Total</label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor Total da Nota</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input id="valor_total" class="form-control col-md-7 col-xs-12" ng-model="nota.valor_total" type="text" ui-money-mask="mdecimals">
                                     </div>

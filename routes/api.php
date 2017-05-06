@@ -88,6 +88,12 @@ $api->version('v1', function ($api) {
         'as' => 'api.atualizar.nota.entrada'
     ]);
 
+    // relatorio
+    $api->post('/relatorio', [
+        'uses' => 'App\Http\Controllers\RelatorioController@relatorio',
+        'as' => 'api.relatorio'
+    ]);
+
 
     // dashboard
     $api->get('/dashboard', [
