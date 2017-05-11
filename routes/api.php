@@ -94,6 +94,10 @@ $api->version('v1', function ($api) {
         'as' => 'api.relatorio'
     ]);
 
+    $api->get('/pesquisa-nfe', [
+        'uses' => 'App\Http\Controllers\NotaEntradaController@pesquisaNfe',
+        'as' => 'api.pesquisa.nfe'
+    ]);
 
     // dashboard
     $api->get('/dashboard', [

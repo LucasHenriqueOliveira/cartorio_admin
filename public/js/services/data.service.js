@@ -308,6 +308,25 @@
                     });
 
                 return deferred.promise;
+            },
+            pesquisaNfe: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'pesquisa-nfe',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao pesquisar a NF-e', 'NF-e', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
             }
         }
     }

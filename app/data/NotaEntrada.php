@@ -27,6 +27,10 @@ class NotaEntrada {
         [$request->input('produto_id'), $request->input('quantidade'), $request->input('unidade'), $request->input('fornecedor_id'), $request->input('nfe'), $this->formataData($request->input('data_compra')), $this->formataData($request->input('data_pagamento')), $request->input('valor_produto'), $request->input('valor_nota'), $request->input('valor_total'), $request->input('centro_custo'), $request->input('nota_entrada_id')]);
     }
 
+    public function pesquisaNfe($nfe) {
+        return DB::select("SELECT DATE_FORMAT(data_compra, '%d/%m/%Y') as data_compra, DATE_FORMAT(data_pagamento, '%d/%m/%Y') as data_pagamento, valor_total FROM nota_entrada WHERE nfe = :nfe ORDER BY nota_entrada_id DESC LIMIT 1", ['nfe' => $nfe]);
+    }
+
     private function formataData($data) {
         return (new \DateTime($data))->format('Y-m-d');
     }

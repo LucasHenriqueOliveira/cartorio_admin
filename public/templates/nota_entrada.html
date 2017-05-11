@@ -23,6 +23,13 @@
                         <div class="x_content">
                             <form id="demo-form2" class="form-horizontal form-label-left" novalidate="">
                                 <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Número NF-e</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="numero_nfe" class="form-control field-nfe" ng-model="nota.nfe" type="text">
+                                        <button class="btn btn-default btn-sm button-search-nfe" type="button" ng-click="pesquisaNfe()">Pesquisar</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Centro de Custo</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select ng-model="nota.centro_custo" class="form-control">
@@ -66,12 +73,6 @@
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Data do Pagamento</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input id="data_pagamento" class="form-control col-md-7 col-xs-12" ng-model="nota.data_pagamento" type="text" ui-date-mask>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Número NF-e</label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="numero_nfe" class="form-control col-md-7 col-xs-12" ng-model="nota.nfe" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">

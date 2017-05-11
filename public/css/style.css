@@ -4634,3 +4634,12 @@ h6{
 .right_col {
     min-height: 630px;
 }
+.field-nfe {
+    width: auto !important;
+    display: inline-block;
+}
+.button-search-nfe {
+    margin-bottom: 0 !important;
+    margin-top: -4px !important;
+    height: 35px;
+}

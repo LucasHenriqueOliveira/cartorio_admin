@@ -57,4 +57,16 @@ class NotaEntradaController extends BaseController{
         echo json_encode($res);
         exit;
     }
+
+    public function pesquisaNfe(Request $request) {
+        $nota_entrada = new \App\Data\NotaEntrada();
+
+        try {
+            $res = $nota_entrada->pesquisaNfe($request->input('nfe'));
+        } catch (\Exception $e) {
+            $res = ['error' => $e];
+        }
+        echo json_encode($res);
+        exit;
+    }
 }

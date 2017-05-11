@@ -93,6 +93,16 @@
             });
         };
 
+        $scope.pesquisaNfe = function() {
+            DataService.pesquisaNfe({nfe: $scope.nota.nfe}).then(function(response) {
+                $scope.nota.data_compra = response[0].data_compra;
+                $scope.nota.data_pagamento = response[0].data_pagamento;
+                $scope.nota.valor_total = response[0].valor_total;
+            }, function (error) {
+                toastr.error('Erro ao pesquisar a NF-e', 'NF-e', {timeOut: 3000});
+            });
+        };
+
         setTimeout(function(){
             jQuery(document).ready(function(){
                 $('table.display').DataTable();
