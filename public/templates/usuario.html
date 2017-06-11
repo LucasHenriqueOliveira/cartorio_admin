@@ -1,0 +1,138 @@
+<ng-include src="'templates/sidebar.html'"></ng-include>
+<ng-include src="'templates/header.html'"></ng-include>
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <!-- top tiles -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 5px;">
+            <div class="pull-left">
+                <span style="font-size: 12px;"><a href="#/dashboard"><i class="fa fa-home"></i> Página Inicial</a> > <a href="#/novo-usuario">Usuários</a> > Novo</span>
+            </div>
+        </div>
+    </div>
+    <div class="row top_tiles">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Novo usuário</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <form name="formNovoUsuario" role="form" class="form-horizontal">
+                            <div class="form-group" ng-class="{ 'has-error': formNovoUsuario.nome.$dirty && formNovoUsuario.nome.$error.required }">
+                                <label class="col-lg-3 col-sm-3 control-label">Nome</label>
+                                <div class="col-lg-6 col-sm-6">
+                                    <input type="text" class="form-control" name="nome" id="nome" placeholder="Digite o seu nome completo" ng-model="usuario.nome" required>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': formNovoUsuario.email.$dirty && formNovoUsuario.email.$error.required }">
+                                <label class="col-lg-3 col-sm-3 control-label">Email</label>
+                                <div class="col-lg-6 col-sm-6">
+                                    <input type="text" class="form-control" name="email" id="email" placeholder="Digite o seu email" ng-model="usuario.email" required>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': formNovoUsuario.confirm_nome.$dirty && formNovoUsuario.confirm_nome.$error.required }">
+                                <div class="row">
+                                    <label class="col-lg-3 col-sm-3 control-label">Permissão</label>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Quantitativo Mensal - página inicial
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Certidão e Traslados
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-3"></div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Procuração
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Testamento
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-3"></div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Usuários
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Adicionar Usuário
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-3"></div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Editar Usuário
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Remover Usuário
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-3"></div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Relatórios
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value=""> Todos
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space15"></div>
+                            <div class="form-group">
+                                <div class="col-lg-11 text-center">
+                                    <button class="btn btn-primary" type="submit" ng-disabled="formNovoUsuario.$invalid" ng-click="trocarSenha()"><i class="fa fa-check"></i> Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<ng-include src="'templates/footer.html'"></ng-include>

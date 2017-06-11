@@ -7,6 +7,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Support\Facades\DB;
 
 class User extends Model implements
     AuthenticatableContract,
@@ -20,7 +21,7 @@ class User extends Model implements
      * @var array
      */
     protected $fillable = [
-        'name',
+        'nome',
         'email',
     ];
 
@@ -52,5 +53,9 @@ class User extends Model implements
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getPermissions($user_id) {
+        return DB::select("SELECT `dashboard`,`certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios` FROM `permissao` WHERE users_id = :user_id", ['user_id' => $user_id])[0];
     }
 }

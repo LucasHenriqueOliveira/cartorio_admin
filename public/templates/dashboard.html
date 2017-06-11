@@ -4,57 +4,231 @@
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
-    <div class="row">
+    <div class="row" ng-if="user.permissao.dashboard">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 quantidade-mes">
+            <div class="pull-left">
+                <span class="page-dashboard">Quantidade no mês</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="user.permissao.dashboard">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+            <div class="dashboard-stat dashboard-stat-v2 blue" href="#">
                 <div class="visual">
-                    <i class="fa fa-cart-plus"></i>
+                    <i class="fa fa-file-text-o"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span>{{produtos}}</span>
+                        <span>{{mes.certidao}}</span>
                     </div>
-                    <div class="desc"> Produtos </div>
+                    <div class="desc"> Certidão e Traslados </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="#">
+            <div class="dashboard-stat dashboard-stat-v2 red" href="#">
                 <div class="visual">
-                    <i class="fa fa-bar-chart-o"></i>
+                    <i class="fa fa-paste"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        R$<span>{{nf_entrada_valor}}</span> </div>
-                    <div class="desc"> NF de Entrada </div>
+                        <span>{{mes.procuracao}}</span> </div>
+                    <div class="desc"> Procuração </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+            <div class="dashboard-stat dashboard-stat-v2 green" href="#">
                 <div class="visual">
-                    <i class="fa fa-file-text"></i>
+                    <i class="fa fa-files-o"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span>{{nf_entrada}}</span>
+                        <span>{{mes.testamento}}</span>
                     </div>
-                    <div class="desc"> NF de Entrada</div>
+                    <div class="desc"> Testamento</div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+            <div class="dashboard-stat dashboard-stat-v2 purple" href="#">
                 <div class="visual">
-                    <i class="fa fa-address-book-o"></i>
+                    <i class="fa fa-plus-circle"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span>{{fornecedores}}</span>
+                        <span>{{mes.total}}</span>
                     </div>
-                    <div class="desc"> Usuários </div>
+                    <div class="desc"> Total de Solicitações </div>
                 </div>
-            </a>
+            </div>
+        </div>
+    </div>
+    <div class="row top_tiles" ng-if="user.permissao.certidao">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Certidão e Traslados</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" ng-hide="!certidoes.length">
+                    <table class="table table-striped display">
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th class="text-center">Telefone</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">CPF</th>
+                            <th class="text-center">Pedido por</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="certidao in certidoes">
+                            <td>{{certidao.nome}}</td>
+                            <td class="text-center">{{certidao.telefone | brPhoneNumber}}</td>
+                            <td class="text-center">{{certidao.email}}</td>
+                            <td class="text-center">{{certidao.cpf}}</td>
+                            <td class="text-center">{{certidao.pedido_por}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                        Ações
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="detalhesCertidao(certidao)">
+                                                <i class="fa fa-plus"></i> Detalhes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <i class="fa fa-chevron-right"></i> Iniciar Análise
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="pull-right" style="margin-top: 10px;">
+                        <a href="#/procuracao"><span>Ver mais</span></a>
+                    </div>
+                </div>
+                <div class="x_content text-center" ng-show="!certidoes.length">
+                    <span class="no-data-tables">Não possui nenhuma certidão/traslado aguardando.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row top_tiles" ng-if="user.permissao.procuracao">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Procuração</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" ng-hide="!procuracoes.length">
+                    <table class="table table-striped display">
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th class="text-center">Telefone</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="procuracao in procuracoes">
+                            <td>{{procuracao.nome}}</td>
+                            <td class="text-center">{{procuracao.telefone | brPhoneNumber}}</td>
+                            <td class="text-center">{{procuracao.email}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                        Ações
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="detalhesProcuracao(procuracao)">
+                                                <i class="fa fa-plus"></i> Detalhes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <i class="fa fa-arrow-right"></i> Iniciar Análise
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="pull-right" style="margin-top: 10px;">
+                        <a href="#/certidao"><span>Ver mais</span></a>
+                    </div>
+                </div>
+                <div class="x_content text-center" ng-show="!procuracoes.length">
+                    <span class="no-data-tables">Não possui nenhuma procuração aguardando.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12" ng-if="user.permissao.testamento">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Testamento</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" ng-hide="!certidoes.length">
+                    <table class="table table-striped display">
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th class="text-center">Telefone</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="certidao in certidoes">
+                            <td>{{certidao.nome}}</td>
+                            <td class="text-center">{{certidao.telefone | brPhoneNumber}}</td>
+                            <td class="text-center">{{certidao.email}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                        Ações
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a ng-click="detalhesTestamento(testamento)">
+                                                <i class="fa fa-plus"></i> Detalhes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <i class="fa fa-arrow-right"></i> Iniciar Análise
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="pull-right" style="margin-top: 10px;">
+                        <a href="#/testamento"><span>Ver mais</span></a>
+                    </div>
+                </div>
+                <div class="x_content text-center" ng-show="!certidoes.length">
+                    <span class="no-data-tables">Não possui nenhum testamento aguardando.</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

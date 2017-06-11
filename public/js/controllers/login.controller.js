@@ -33,7 +33,6 @@
             $scope.loading = false;
             $scope.loginButtonText = "Entrar";
             $scope.password = '';
-            console.log($scope.message);
         });
     }
 

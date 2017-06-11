@@ -29,104 +29,64 @@
 
                 return deferred.promise;
             },
-            getProdutos: function() {
+            getCertidao: function() {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'GET',
-                    url: App.api + 'produtos'
+                    url: App.api + 'certidao'
                 })
                 .then(function(response) {
 
                     deferred.resolve(response.data);
 
                 }, function(error) {
-                    toastr.error('Erro ao buscar os produtos', 'Produto', {timeOut: 3000});
+                    toastr.error('Erro ao buscar as certidões e traslados', 'Certidão e Traslados', {timeOut: 3000});
                 });
 
                 return deferred.promise;
             },
-            addProduto: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'POST',
-                    url: App.api + 'produto',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao cadastrar o produto', 'Produto', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            removeProduto: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'DELETE',
-                    url: App.api + 'produto',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao remover o produto', 'Produto', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            atualizarProduto: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'PUT',
-                    url: App.api + 'produto',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao alterar o produto', 'Produto', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            getFornecedores: function() {
+            getProcuracao: function() {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'GET',
-                    url: App.api + 'fornecedores'
+                    url: App.api + 'procuracao'
                 })
                     .then(function(response) {
 
                         deferred.resolve(response.data);
 
                     }, function(error) {
-                        toastr.error('Erro ao buscar os fornecedores', 'Fornecedor', {timeOut: 3000});
+                        toastr.error('Erro ao buscar as procurações', 'Procuração', {timeOut: 3000});
                     });
 
                 return deferred.promise;
             },
-            addFornecedor: function(params) {
+            getTestamento: function() {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'testamento'
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao buscar os testamentos', 'Testamento', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            addMovimentacao: function(params) {
 
                 var deferred = $q.defer();
 
                 $http({
                     method: 'POST',
-                    url: App.api + 'fornecedor',
+                    url: App.api + 'usuario',
                     params: params
                 })
                     .then(function(response) {
@@ -134,18 +94,52 @@
                         deferred.resolve(response.data);
 
                     }, function(error) {
-                        toastr.error('Erro ao cadastrar o fornecedor', 'Fornecedor', {timeOut: 3000});
+                        toastr.error('Erro ao movimentar', 'Movimentação', {timeOut: 3000});
                     });
 
                 return deferred.promise;
             },
-            removeFornecedor: function(params) {
+            getUsuarios: function() {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'usuarios'
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao buscar os usuários', 'Usuário', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            getUsuario: function() {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'usuario'
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao buscar o usuário', 'Usuário', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            removeUsuario: function(params) {
 
                 var deferred = $q.defer();
 
                 $http({
                     method: 'DELETE',
-                    url: App.api + 'fornecedor',
+                    url: App.api + 'usuario',
                     params: params
                 })
                     .then(function(response) {
@@ -153,18 +147,18 @@
                         deferred.resolve(response.data);
 
                     }, function(error) {
-                        toastr.error('Erro ao remover o fornecedor', 'Fornecedor', {timeOut: 3000});
+                        toastr.error('Erro ao remover o usuário', 'Usuário', {timeOut: 3000});
                     });
 
                 return deferred.promise;
             },
-            atualizarFornecedor: function(params) {
+            editarUsuario: function(params) {
 
                 var deferred = $q.defer();
 
                 $http({
                     method: 'PUT',
-                    url: App.api + 'fornecedor',
+                    url: App.api + 'usuario',
                     params: params
                 })
                     .then(function(response) {
@@ -172,7 +166,64 @@
                         deferred.resolve(response.data);
 
                     }, function(error) {
-                        toastr.error('Erro ao alterar o fornecedor', 'Fornecedor', {timeOut: 3000});
+                        toastr.error('Erro ao alterar os dados do usuário', 'Usuário', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            addUsuario: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: App.api + 'usuario',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao cadastrar o usuário', 'Usuário', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            trocaSenha: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: App.api + 'troca-senha',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao trocar a senha do usuário', 'Usuário', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            relatorio: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: App.api + 'relatorio',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao consultar o relatório', 'Relatório', {timeOut: 3000});
                     });
 
                 return deferred.promise;
@@ -210,120 +261,6 @@
 
                     }, function(error) {
                         toastr.error('Erro ao consultar as cidades', 'Cidade', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            getNotasEntrada: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'GET',
-                    url: App.api + 'notas-entrada',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao consultar as notas de entrada', 'Notas de Entrada', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            addNotaEntrada: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'POST',
-                    url: App.api + 'nota-entrada',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao cadastrar a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            removeNotaEntrada: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'DELETE',
-                    url: App.api + 'nota-entrada',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao remover a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            atualizarNotaEntrada: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'PUT',
-                    url: App.api + 'nota-entrada',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao alterar a nota de entrada', 'Nota de Entrada', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            relatorio: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'POST',
-                    url: App.api + 'relatorio',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao consultar o relatório', 'Relatório', {timeOut: 3000});
-                    });
-
-                return deferred.promise;
-            },
-            pesquisaNfe: function(params) {
-
-                var deferred = $q.defer();
-
-                $http({
-                    method: 'GET',
-                    url: App.api + 'pesquisa-nfe',
-                    params: params
-                })
-                    .then(function(response) {
-
-                        deferred.resolve(response.data);
-
-                    }, function(error) {
-                        toastr.error('Erro ao pesquisar a NF-e', 'NF-e', {timeOut: 3000});
                     });
 
                 return deferred.promise;

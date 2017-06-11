@@ -37,9 +37,6 @@
                         App.user = res.data;
                         $localStorage.setObject('user', App.user);
                         $rootScope.$broadcast('user', App.user);
-                    }, function (error) {
-                        // error
-                        //$rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
                     });
                 }
                 return App.user;
@@ -49,6 +46,9 @@
                     App.token = $localStorage.get('token');
                 }
                 return App.token;
+            },
+            isLoginDefault : function() {
+                return App.user.login_default ? true : false;
             }
         };
     }

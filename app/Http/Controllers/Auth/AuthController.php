@@ -163,6 +163,10 @@ class AuthController extends Controller
     public function getUser()
     {
         $data = JWTAuth::parseToken()->authenticate();
+        $user = JWTAuth::parseToken()->toUser();
+
+        $permissao = $user->getPermissions($data->id);
+        $data->permissao = $permissao;
 
         return new JsonResponse([
             'message' => 'authenticated_user',

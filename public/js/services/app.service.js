@@ -9,20 +9,50 @@
 
     function App($localStorage) {
 
+        var currentCertidao = {};
+        var currentProcuracao = {};
+        var currentTestamento = {};
+
         function clearData() {
             $localStorage.destroy('token');
             $localStorage.destroy('user');
-            $localStorage.destroy('sources');
-            $localStorage.destroy('publishers');
+        }
+
+        function setCurrentCertidao(certidao) {
+            currentCertidao = certidao;
+        }
+
+        function getCurrentCertidao() {
+            return currentCertidao;
+        }
+
+        function setCurrentProcuracao(procuracao) {
+            currentProcuracao = procuracao;
+        }
+
+        function getCurrentProcuracao() {
+            return currentProcuracao;
+        }
+
+        function setCurrentTestamento(testamento) {
+            currentTestamento = testamento;
+        }
+
+        function getCurrentTestamento() {
+            return currentTestamento;
         }
 
         return {
             api: 'api/',
             user: false,
             token: null,
-            publishers: [],
-            sources: [],
-            clearData: clearData
+            clearData: clearData,
+            setCurrentCertidao: setCurrentCertidao,
+            getCurrentCertidao: getCurrentCertidao,
+            setCurrentProcuracao: setCurrentProcuracao,
+            getCurrentProcuracao: getCurrentProcuracao,
+            setCurrentTestamento: setCurrentTestamento,
+            getCurrentTestamento: getCurrentTestamento
         };
 
     }

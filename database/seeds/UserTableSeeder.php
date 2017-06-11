@@ -12,45 +12,29 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'Lucas Henrique',
-            'email' => 'lucas@ae.studio',
+            'id' => 1,
+            'nome' => 'Lucas Henrique',
+            'email' => 'lucas@cartorioapp.com',
             'password' => app('hash')->make('123456'),
-            'remember_token' => str_random(10),
+            'remember_token' => str_random(10)
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Devin Smith',
-            'email' => 'devin@ae.studio',
+            'id' => 2,
+            'nome' => 'Bernardo Graciano',
+            'email' => 'bernardo@cartorioapp.com',
             'password' => app('hash')->make('123456'),
-            'remember_token' => str_random(10),
+            'remember_token' => str_random(10)
         ]);
 
-        DB::table('users')->insert([
-            'name' => 'Edward Chen',
-            'email' => 'edward@ae.studio',
-            'password' => app('hash')->make('123456'),
-            'remember_token' => str_random(10),
-        ]);
+        DB::statement("
+            INSERT INTO `permissao` (`permissao_id`, `users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios-add`, `usuarios-editar`, `usuarios-remover`, `relatorios`, `dashboard`)
+            VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        ");
 
-        DB::table('users')->insert([
-            'name' => 'James Raj',
-            'email' => 'james@ae.studio',
-            'password' => app('hash')->make('123456'),
-            'remember_token' => str_random(10),
-        ]);
-
-        DB::table('users')->insert([
-            'name' => 'Keith Matthews',
-            'email' => 'keith@alice.caltech.edu',
-            'password' => app('hash')->make('123456'),
-            'remember_token' => str_random(10),
-        ]);
-
-        DB::table('users')->insert([
-            'name' => 'Emily Boucher',
-            'email' => 'emily@publisherdesk.com',
-            'password' => app('hash')->make('123456'),
-            'remember_token' => str_random(10),
-        ]);
+        DB::statement("
+            INSERT INTO `permissao` (`permissao_id`, `users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios-add`, `usuarios-editar`, `usuarios-remover`, `relatorios`, `dashboard`)
+            VALUES (2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        ");
     }
 }

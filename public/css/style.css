@@ -699,7 +699,7 @@ a:focus {
 }
 .top_nav .dropdown-menu li a {
     width: 100%;
-    padding: 12px 20px
+    padding: 7px 20px
 }
 .top_nav li a i {
     font-size: 15px
@@ -1003,7 +1003,7 @@ article.media {
     float: left
 }
 h2 {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 400
 }
 #left,
@@ -1065,7 +1065,7 @@ h2 {
     column-break-inside: avoid;
     opacity: 1;
     transition: all .2s ease;
-    min-height: 260px;
+    min-height: 110px;
 }
 .x_title {
     border-bottom: 2px solid #E6E9ED;
@@ -1519,7 +1519,7 @@ ul.msg_list li a .message {
     display: none;
     float: left;
     font-size: 12px;
-    left: 0;
+    left: -50px;
     list-style: none outside none;
     padding: 0;
     position: absolute;
@@ -3660,7 +3660,9 @@ div[data-role="editor-toolbar"] {
     user-select: none
 }
 .dropdown-menu a {
-    cursor: pointer
+    cursor: pointer;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
 }
 .select2-container--default .select2-selection--single,
 .select2-container--default .select2-selection--multiple {
@@ -4511,7 +4513,7 @@ h6{
     padding-bottom: 10px;
 }
 .page-dashboard{
-    font-size: 20px;
+    font-size: 16px;
     margin-top: 4px;
 }
 .no-text-shadow{
@@ -4642,4 +4644,13 @@ h6{
     margin-bottom: 0 !important;
     margin-top: -4px !important;
     height: 35px;
+}
+.quantidade-mes{
+    margin-top: 10px;
+}
+.no-data-tables{
+    font-size: 14px;
+}
+.label-bold{
+    font-weight: bold;
 }

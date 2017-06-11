@@ -29,6 +29,86 @@
                 cache: false
             })
 
+            .when('/certidao', {
+                controller: 'CertidaoController',
+                templateUrl: 'templates/certidao.html',
+                controllerAs: 'vm',
+                action: 'certidao',
+                cache: false
+            })
+
+            .when('/detalhes-certidao', {
+                controller: 'DetalhesCertidaoController',
+                templateUrl: 'templates/detalhes-certidao.html',
+                controllerAs: 'vm',
+                action: 'detalhes-certidao',
+                cache: false
+            })
+
+            .when('/procuracao', {
+                controller: 'ProcuracaoController',
+                templateUrl: 'templates/procuracao.html',
+                controllerAs: 'vm',
+                action: 'procuracao',
+                cache: false
+            })
+
+            .when('/detalhes-procuracao', {
+                controller: 'DetalhesProcuracaoController',
+                templateUrl: 'templates/detalhes-procuracao.html',
+                controllerAs: 'vm',
+                action: 'detalhes-procuracao',
+                cache: false
+            })
+
+            .when('/testamento', {
+                controller: 'TestamentoController',
+                templateUrl: 'templates/testamento.html',
+                controllerAs: 'vm',
+                action: 'testamento',
+                cache: false
+            })
+
+            .when('/detalhes-testamento', {
+                controller: 'DetalhesTestamentoController',
+                templateUrl: 'templates/detalhes-testamento.html',
+                controllerAs: 'vm',
+                action: 'detalhes-testamento',
+                cache: false
+            })
+
+            .when('/usuarios', {
+                controller: 'UsuariosController',
+                templateUrl: 'templates/usuarios.html',
+                controllerAs: 'vm',
+                action: 'usuarios',
+                cache: false
+            })
+
+            .when('/usuario', {
+                controller: 'UsuarioController',
+                templateUrl: 'templates/usuario.html',
+                controllerAs: 'vm',
+                action: 'usuario',
+                cache: false
+            })
+
+            .when('/troca-senha', {
+                controller: 'TrocaSenhaController',
+                templateUrl: 'templates/troca-senha.html',
+                controllerAs: 'vm',
+                action: 'troca-senha',
+                cache: false
+            })
+
+            .when('/relatorios', {
+                controller: 'RelatoriosController',
+                templateUrl: 'templates/relatorios.html',
+                controllerAs: 'vm',
+                action: 'relatorios',
+                cache: false
+            })
+
             .otherwise({ redirectTo: '/login' });
     }
 
@@ -47,6 +127,8 @@
         $rootScope.$on('$locationChangeStart', function (event, nextRoute, currentRoute) {
             if (isEmpty(Auth.isAuthenticated()) && isEmpty(Auth.isAuthorized())) {
                 $location.path('/login');
+            } else if(Auth.isLoginDefault()) {
+                $location.path("/troca-senha");
             }
         });
         $rootScope.menuSize = 'md';
