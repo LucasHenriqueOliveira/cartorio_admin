@@ -28,12 +28,12 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::statement("
-            INSERT INTO `permissao` (`permissao_id`, `users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios-add`, `usuarios-editar`, `usuarios-remover`, `relatorios`, `dashboard`)
+            INSERT INTO `permissao` (`permissao_id`, `users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`)
             VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         ");
 
         DB::statement("
-            INSERT INTO `permissao` (`permissao_id`, `users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios-add`, `usuarios-editar`, `usuarios-remover`, `relatorios`, `dashboard`)
+            INSERT INTO `permissao` (`permissao_id`, `users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`)
             VALUES (2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         ");
     }

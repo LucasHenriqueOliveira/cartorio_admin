@@ -54,23 +54,24 @@ class CreateSchema extends Migration
         DB::statement("
             CREATE TABLE IF NOT EXISTS `log_permissao` (
               `log_permissao_id` INT NOT NULL AUTO_INCREMENT,
-              `users_id` INT NULL,
               `certidao` TINYINT(1) NULL,
               `procuracao` TINYINT(1) NULL,
+              `testamento` TINYINT(1) NULL,
               `usuarios` TINYINT(1) NULL,
               `usuarios_add` TINYINT(1) NULL,
               `usuarios_editar` TINYINT(1) NULL,
               `usuarios_remover` TINYINT(1) NULL,
               `relatorios` TINYINT(1) NULL,
               `dashboard` TINYINT(1) NULL,
-              `data_hora` TINYINT(1) NULL,
+              `data_hora` DATETIME NULL,
               `users_id_responsavel` INT NULL,
               `permissao_id` INT NULL,
               `ip` VARCHAR(45) NULL,
+              `proxy` VARCHAR(45) NULL,
               PRIMARY KEY (`log_permissao_id`),
-              INDEX `fk_log_permissao_users_idx` (`users_id` ASC),
+              INDEX `fk_log_permissao_users_idx` (`users_id_responsavel` ASC),
               CONSTRAINT `fk_log_permissao_users`
-                FOREIGN KEY (`users_id`)
+                FOREIGN KEY (`users_id_responsavel`)
                 REFERENCES `users` (`id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION)
@@ -78,15 +79,15 @@ class CreateSchema extends Migration
         ");
 
         DB::statement("
-            CREATE TABLE IF NOT EXISTS `usuario` (
-              `usuario_id` INT NOT NULL AUTO_INCREMENT,
+            CREATE TABLE IF NOT EXISTS `cliente` (
+              `cliente_id` INT NOT NULL AUTO_INCREMENT,
               `nome` VARCHAR(100) NULL,
               `cpf` VARCHAR(45) NULL,
               `email` VARCHAR(45) NULL,
               `telefone` VARCHAR(45) NULL,
               `senha` VARCHAR(100) NULL,
               `data_hora` DATETIME NULL,
-              PRIMARY KEY (`usuario_id`))
+              PRIMARY KEY (`cliente_id`))
             ENGINE = InnoDB;
         ");
 
@@ -100,16 +101,16 @@ class CreateSchema extends Migration
               `outorgante` VARCHAR(100) NULL,
               `outorgado` VARCHAR(100) NULL,
               `data_hora` DATETIME NULL,
-              `usuario_id` INT NULL,
+              `cliente_id` INT NULL,
               `status` ENUM('Aguardando', 'Em análise', 'Pronto', 'Entregue', 'Cancelado') NULL,
               `rg` VARCHAR(45) NULL,
               `cpf` VARCHAR(45) NULL,
               `casamento` VARCHAR(45) NULL,
               PRIMARY KEY (`pedido_id`),
-              INDEX `fk_certidao_usuario_idx` (`usuario_id` ASC),
-              CONSTRAINT `fk_certidao_usuario`
-                FOREIGN KEY (`usuario_id`)
-                REFERENCES `usuario` (`usuario_id`)
+              INDEX `fk_certidao_cliente_idx` (`cliente_id` ASC),
+              CONSTRAINT `fk_certidao_cliente`
+                FOREIGN KEY (`cliente_id`)
+                REFERENCES `cliente` (`cliente_id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION)
             ENGINE = InnoDB;
@@ -119,21 +120,21 @@ class CreateSchema extends Migration
             CREATE TABLE IF NOT EXISTS `movimentacao` (
               `movimentacao_id` INT NOT NULL AUTO_INCREMENT,
               `pedido_id` INT NULL,
-              `usuario_id` INT NULL,
+              `cliente_id` INT NULL,
               `data_hora` DATETIME NULL,
               `sequencia` INT NULL,
               `descricao` VARCHAR(255) NULL,
               PRIMARY KEY (`movimentacao_id`),
               INDEX `fk_movimentacao_pedido_idx` (`pedido_id` ASC),
-              INDEX `fk_movimentacao_usuario_idx` (`usuario_id` ASC),
+              INDEX `fk_movimentacao_user_idx` (`user_id` ASC),
               CONSTRAINT `fk_movimentacao_pedido`
                 FOREIGN KEY (`pedido_id`)
                 REFERENCES `pedido` (`pedido_id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION,
-              CONSTRAINT `fk_movimentacao_usuario`
-                FOREIGN KEY (`usuario_id`)
-                REFERENCES `usuario` (`usuario_id`)
+              CONSTRAINT `fk_movimentacao_users`
+                FOREIGN KEY (`user_id`)
+                REFERENCES `users` (`id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION)
             ENGINE = InnoDB;
@@ -146,13 +147,14 @@ class CreateSchema extends Migration
               `data_hora` DATETIME NULL,
               `status_antigo` ENUM('Aguardando', 'Em análise', 'Pronto', 'Entregue', 'Cancelado') NULL,
               `status_novo` ENUM('Aguardando', 'Em análise', 'Pronto', 'Entregue', 'Cancelado') NULL,
-              `usuario_int` INT NULL,
+              `user_id` INT NULL,
               `ip` VARCHAR(45) NULL,
+              `proxy` VARCHAR(45) NULL,
               PRIMARY KEY (`log_status_id`),
-              INDEX `fk_log_status_usuario_idx` (`usuario_int` ASC),
-              CONSTRAINT `fk_log_status_usuario`
-                FOREIGN KEY (`usuario_int`)
-                REFERENCES `usuario` (`usuario_id`)
+              INDEX `fk_log_status_user_idx` (`user_id` ASC),
+              CONSTRAINT `fk_log_status_user`
+                FOREIGN KEY (`user_id`)
+                REFERENCES `users` (`id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION)
             ENGINE = InnoDB;
@@ -160,15 +162,16 @@ class CreateSchema extends Migration
 
         DB::statement("
             CREATE TABLE IF NOT EXISTS `log_session` (
-              `log_session` INT NOT NULL,
-              `usuario_id` INT NULL,
+              `log_session_id` INT NOT NULL AUTO_INCREMENT,
+              `user_id` INT NULL,
               `ip` VARCHAR(45) NULL,
+              `proxy` VARCHAR(45) NULL,
               `data_hora` DATETIME NULL,
-              PRIMARY KEY (`log_session`),
-              INDEX `fk_log_session_usuario_idx` (`usuario_id` ASC),
-              CONSTRAINT `fk_log_session_usuario`
-                FOREIGN KEY (`usuario_id`)
-                REFERENCES `usuario` (`usuario_id`)
+              PRIMARY KEY (`log_session_id`),
+              INDEX `fk_log_session_user_idx` (`user_id` ASC),
+              CONSTRAINT `fk_log_session_user`
+                FOREIGN KEY (`user_id`)
+                REFERENCES `users` (`id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION)
             ENGINE = InnoDB;
@@ -177,14 +180,14 @@ class CreateSchema extends Migration
         DB::statement("
             CREATE TABLE IF NOT EXISTS `auth` (
               `auth_id` INT NOT NULL AUTO_INCREMENT,
-              `usuario_id` INT NULL,
+              `cliente_id` INT NULL,
               `tipo` ENUM('facebook', 'google') NULL,
               `valor` VARCHAR(45) NULL,
               PRIMARY KEY (`auth_id`),
-              INDEX `fk_auth_usuario_idx` (`usuario_id` ASC),
-              CONSTRAINT `fk_auth_usuario`
-                FOREIGN KEY (`usuario_id`)
-                REFERENCES `usuario` (`usuario_id`)
+              INDEX `fk_auth_cliente_idx` (`cliente_id` ASC),
+              CONSTRAINT `fk_auth_cliente`
+                FOREIGN KEY (`cliente_id`)
+                REFERENCES `cliente` (`cliente_id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION)
             ENGINE = InnoDB;
@@ -215,7 +218,7 @@ class CreateSchema extends Migration
         Schema::drop('users');
         Schema::drop('permissao');
         Schema::drop('log_permissao');
-        Schema::drop('usuario');
+        Schema::drop('cliente');
         Schema::drop('pedido');
         Schema::drop('movimentacao');
         Schema::drop('log_status');

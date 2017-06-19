@@ -1,6 +1,17 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
@@ -24,23 +35,28 @@
                             <label class="label-bold">Nome:</label> {{testamento.nome}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">CPF:</label> {{certidao.cpf}} <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
+                            <label class="label-bold">Email:</label> {{testamento.email}}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">RG:</label> <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
+                            <label class="label-bold">CPF:</label> <a ng-href="testamento.cpf"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Certidão de Casamento:</label> <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> Casamento</span></a>
+                            <label class="label-bold">RG:</label> <a ng-href="testamento.rg"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> RG</span></a>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="label-bold">Certidão de Casamento:</label> <a ng-href="testamento.casamento"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> Casamento</span></a>
+                        </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <label class="label-bold">Telefone:</label> {{testamento.telefone | brPhoneNumber}}
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Data/Hora:</label> {{testamento.data_add}}
+                            <label class="label-bold">Data/Hora:</label> {{testamento.data}}
                         </div>
                     </div>
                 </div>
@@ -60,9 +76,9 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="movimentacao in testamento.movimentacoes">
-                            <td>{{movimentacao.numero}}</td>
+                            <td>{{movimentacao.sequencia}}</td>
                             <td>{{movimentacao.descricao}}</td>
-                            <td>{{movimentacao.usuario}}</td>
+                            <td><span ng-if="!movimentacao.nome"> - </span>{{movimentacao.nome}}</td>
                             <td>{{movimentacao.data}}</td>
                         </tr>
                         </tbody>
@@ -88,7 +104,7 @@
                     <button ng-click="movimentar()" type="button" class="btn btn-primary" style="margin-top: 15px;">
                         <i class="fa fa-plus"></i> Movimentar
                     </button>
-                    <button type="button" ng-if="testamento.proximo_passo" class="btn btn-success" style="margin-top: 15px;">
+                    <button type="button" ng-click="addDescricao(testamento.proximo_passo)" ng-if="testamento.proximo_passo" class="btn btn-success" style="margin-top: 15px;">
                         {{testamento.proximo_passo}}
                     </button>
                 </div>

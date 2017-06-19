@@ -10,19 +10,30 @@ use Illuminate\Http\Exception\HttpResponseException;
 
 class CertidaoController extends BaseController{
 
-    public function estados(Request $request) {
-        $estados = new \App\Data\Certidao();
+    public function getCertidoes(Request $request) {
+        $certidoes = new \App\Data\Certidao();
 
-        $res = $estados->getEstados();
+        $res = $certidoes->getCertidoes();
 
         echo json_encode($res);
         exit;
     }
 
-    public function cidades(Request $request) {
-        $cidades = new \App\Data\Certidao();
+    public function getCertidao(Request $request) {
+        $certidao = new \App\Data\Certidao();
 
-        $res = $cidades->getCidades($request->input('id'));
+        $res = $certidao->getCertidao($request->input('id'));
+
+        echo json_encode($res);
+        exit;
+    }
+
+    public function addCertidao(Request $request) {
+        $certidao = new \App\Data\Certidao();
+
+        $res = $certidao->addCertidao($request->input('tipo'), $request->input('ato'), $request->input('livro'),
+                                        $request->input('folha'), $request->input('outorgante'), $request->input('outorgado'),
+                                        date('Y-m-d h:i:s'), $request->input('cliente_id'));
 
         echo json_encode($res);
         exit;

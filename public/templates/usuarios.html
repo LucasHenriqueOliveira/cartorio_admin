@@ -1,6 +1,17 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
@@ -39,7 +50,17 @@
                         <tr ng-repeat="usuario in usuarios">
                             <td>{{usuario.nome}}</td>
                             <td class="text-center">{{usuario.email}}</td>
-                            <td class="text-center">{{usuario.perfil}}</td>
+                            <td class="text-center permissao">
+                                <span ng-if="usuario.certidao">Certidão<br/></span>
+                                <span ng-if="usuario.procuracao">Procuração<br/></span>
+                                <span ng-if="usuario.testamento">Testamento<br/></span>
+                                <span ng-if="usuario.usuarios">Usuários<br/></span>
+                                <span ng-if="usuario.usuarios_add">Adicionar Usuário<br/></span>
+                                <span ng-if="usuario.usuarios_editar">Editar Usuário<br/></span>
+                                <span ng-if="usuario.usuarios_remover">Remover Usuário<br/></span>
+                                <span ng-if="usuario.relatorios">Relatórios<br/></span>
+                                <span ng-if="usuario.dashboard">Quantitativo Página Inicial</span>
+                            </td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -53,7 +74,7 @@
                                             </a>
                                         </li>
                                         <li ng-if="user.permissao.usuarios_remover">
-                                            <a href="javascript:;">
+                                            <a ng-click="remover(usuario)">
                                                 <i class="fa fa-trash"></i> Excluir
                                             </a>
                                         </li>

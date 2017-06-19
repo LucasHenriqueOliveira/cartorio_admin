@@ -1,6 +1,17 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
@@ -21,7 +32,7 @@
                 <div class="x_content">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Tipo/Livro/Ato:</label> {{certidao.tipo}}
+                            <label class="label-bold">Tipo:</label> {{certidao.tipo}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <label class="label-bold">Livro:</label> {{certidao.livro}}
@@ -45,14 +56,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">RG:</label> {{certidao.rg}}
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Telefone:</label> {{certidao.telefone | brPhoneNumber}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
                             <label class="label-bold">Dados do Outorgante:</label> {{certidao.outorgante}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -61,10 +64,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Pedido por:</label> {{certidao.pedido_por}}
+                            <label class="label-bold">Telefone:</label> {{certidao.telefone | brPhoneNumber}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Data/Hora:</label> {{certidao.data_hora}}
+                            <label class="label-bold">Data/Hora:</label> {{certidao.data}}
                         </div>
                     </div>
                 </div>
@@ -84,9 +87,9 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="movimentacao in certidao.movimentacoes">
-                            <td>{{movimentacao.numero}}</td>
+                            <td>{{movimentacao.sequencia}}</td>
                             <td>{{movimentacao.descricao}}</td>
-                            <td>{{movimentacao.usuario}}</td>
+                            <td><span ng-if="!movimentacao.nome"> - </span>{{movimentacao.nome}}</td>
                             <td>{{movimentacao.data}}</td>
                         </tr>
                         </tbody>
@@ -112,7 +115,7 @@
                     <button ng-click="movimentar()" type="button" class="btn btn-primary" style="margin-top: 15px;">
                         <i class="fa fa-plus"></i> Movimentar
                     </button>
-                    <button type="button" ng-if="certidao.proximo_passo" class="btn btn-success" style="margin-top: 15px;">
+                    <button type="button" ng-click="addDescricao(certidao.proximo_passo)" ng-if="certidao.proximo_passo" class="btn btn-success" style="margin-top: 15px;">
                         {{certidao.proximo_passo}}
                     </button>
                 </div>

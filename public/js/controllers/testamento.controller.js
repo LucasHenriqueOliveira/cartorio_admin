@@ -5,91 +5,61 @@
         .module('app')
         .controller('TestamentoController', TestamentoController);
 
-    TestamentoController.$inject = ['$scope', '$location', 'App'];
+    TestamentoController.$inject = ['$scope', '$location', 'App', 'DataService'];
 
-    function TestamentoController($scope, $location, App) {
+    function TestamentoController($scope, $location, App, DataService) {
 
-        $scope.testamentos = [{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Aguardando'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Em análise'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Pronto'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Entregue'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Em análise'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Aguardando'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Entregue'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Pronto'
-        }];
+        var getTestamentos = function(){
+            DataService.getTestamentos({id: App.user.id}).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Testamento', {timeOut: 4000});
+                    $location.path('/dashboard');
+                } else {
+                    $scope.testamentos = response;
 
-        jQuery(document).ready(function(){
-            $('table.display').DataTable( {
-                "aaSorting": []
-            } );
-        });
+                    jQuery(document).ready(function(){
+                        $('table.display').DataTable( {
+                            "aaSorting": []
+                        } );
+                    });
+                }
+            });
+        };
+        getTestamentos();
 
         $scope.detalhesTestamento = function(testamento) {
-            testamento.proximo_passo = '';
+            App.setCurrentTestamento(testamento);
+            $location.path('/detalhes-testamento').search({id: testamento.pedido_id});
+        };
+
+        $scope.movimentar = function(testamento) {
+            var descricao = '';
+
             switch (testamento.status) {
                 case 'Aguardando':
-                    testamento.proximo_passo = "Iniciar Análise";
+                    descricao = "Iniciar Análise";
                     break;
                 case 'Em análise':
-                    testamento.proximo_passo = "Documento pronto";
+                    descricao = "Documento pronto";
                     break;
                 case 'Pronto':
-                    testamento.proximo_passo = "Realizar a entrega";
+                    descricao = "Realizar a entrega";
                     break;
             }
+            var movimentacao = {
+                descricao: descricao,
+                pedido_id: testamento.pedido_id
+            };
 
-            App.setCurrentProcuracao(testamento);
+            DataService.addMovimentacao(movimentacao).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Movimentação', {timeOut: 4000});
+                } else {
+                    toastr.success('Movimentação realizada com sucesso!', 'Movimentação', {timeOut: 3000});
+                    $scope.detalhesTestamento(response);
+                }
+            });
 
-            $location.path('/detalhes-testamento');
         };
     }
 

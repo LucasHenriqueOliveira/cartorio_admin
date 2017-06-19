@@ -4,30 +4,7 @@ namespace App\Data;
 
 use Illuminate\Support\Facades\DB;
 
-class Dashboard {
-
-    private function statistics($params = []) {
-
-        $data = [];
-        $d = [
-            'date1' => $params['start'],
-            'date2' => $params['end']
-        ];
-
-        $stats = DB::select('SELECT count(*) as qtd FROM `product` WHERE active = 1');
-        $data['produtos'] = $stats[0]->qtd;
-
-        $stats = DB::select('SELECT count(*) as qtd FROM `fornecedor` WHERE ativo = 1');
-        $data['fornecedores'] = $stats[0]->qtd;
-
-        $stats = DB::select('SELECT sum(valor_nota) as qtd FROM `nota_entrada` WHERE ativo = 1 and `data_add` BETWEEN :date1 AND :date2', $d);
-        $data['nf_entrada_valor'] = $stats[0]->qtd;
-
-        $stats = DB::select('SELECT count(*) as qtd FROM `nota_entrada` WHERE ativo = 1 and `data_add` BETWEEN :date1 AND :date2', $d);
-        $data['nf_entrada'] = $stats[0]->qtd;
-
-        return $data;
-    }
+class Dashboard extends Utils {
 
     public function dashboard($params) {
         $res['error'] = false;
@@ -41,24 +18,57 @@ class Dashboard {
             'date2' => $params['end']
         ];
 
-        // statists week
-        $res['estatisticas'] = $this->statistics($params);
+        $estatisticas['qtd_certidoes'] = $estatisticas['qtd_procuracoes'] = $estatisticas['qtd_testamentos'] = 0;
+        $result = $this->checkPermissão('dashboard');
 
-        // notas fiscais de entrada
-        $data = [];
-        $result = DB::select('
-            SELECT sum(`valor_nota`) as valor_nota, DATE_FORMAT(`data_compra`,\'%d/%m\') as `data_compra`
-            FROM `nota_entrada`
-            WHERE
-                `data_compra` BETWEEN :date1 AND :date2
-            GROUP BY `data_compra`
-        ', $d);
-        foreach ($result as $nota) {
-            $data['data'] = $nota->data_compra;
-            $data['nota'] = $nota->valor_nota;
-            $notas[] = $data;
+        if($result) {
+
+            $qtd = DB::select("SELECT count(*) AS qtd_certidoes FROM `pedido` WHERE `tipo` = 'Certidão' AND `data_hora` BETWEEN :date1 AND :date2", $d);
+            $estatisticas['qtd_certidoes'] = $qtd[0]->qtd_certidoes;
+
+            $qtd = DB::select("SELECT count(*) AS qtd_procuracoes FROM `pedido` WHERE `tipo` = 'Procuração' AND `data_hora` BETWEEN :date1 AND :date2", $d);
+            $estatisticas['qtd_procuracoes'] = $qtd[0]->qtd_procuracoes;
+
+            $qtd = DB::select("SELECT count(*) AS qtd_testamentos FROM `pedido` WHERE `tipo` = 'Testamento' AND `data_hora` BETWEEN :date1 AND :date2", $d);
+            $estatisticas['qtd_testamentos'] = $qtd[0]->qtd_testamentos;
         }
-        $res['notas'] = $notas;
+
+        $estatisticas['total'] = $estatisticas['qtd_certidoes'] + $estatisticas['qtd_procuracoes'] + $estatisticas['qtd_testamentos'];
+
+        $res['quantitativo'] = $estatisticas;
+
+        // Certidões
+        $result = $this->checkPermissão('certidao');
+        $certidoes = '';
+        if($result) {
+            $certidoes = $this->getPedidosDashboard('Certidão');
+            foreach ($certidoes as $pedido) {
+                $pedido->movimentacoes = $this->getMovimentacoes($pedido->pedido_id);
+            }
+        }
+        $res['certidoes'] = $certidoes;
+
+        // Procurações
+        $result = $this->checkPermissão('procuracao');
+        $procuracoes = '';
+        if($result) {
+            $procuracoes = $this->getPedidosDashboard('Procuração');
+            foreach ($procuracoes as $pedido) {
+                $pedido->movimentacoes = $this->getMovimentacoes($pedido->pedido_id);
+            }
+        }
+        $res['procuracoes'] = $procuracoes;
+
+        // Testamentos
+        $result = $this->checkPermissão('testamento');
+        $procuracoes = '';
+        if($result) {
+            $testamentos = $this->getPedidosDashboard('Testamento');
+            foreach ($testamentos as $pedido) {
+                $pedido->movimentacoes = $this->getMovimentacoes($pedido->pedido_id);
+            }
+        }
+        $res['testamentos'] = $testamentos;
 
         return $res;
     }

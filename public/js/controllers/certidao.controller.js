@@ -5,250 +5,62 @@
         .module('app')
         .controller('CertidaoController', CertidaoController);
 
-    CertidaoController.$inject = ['$scope', '$location', 'App'];
+    CertidaoController.$inject = ['$scope', '$location', 'App', 'DataService'];
 
-    function CertidaoController($scope, $location, App) {
-        $scope.certidoes = [{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Aguardando',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Em análise',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            },{
-                numero: 2,
-                descricao: 'Análise iniciada',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Pronto',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            },{
-                numero: 2,
-                descricao: 'Análise iniciada',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            },{
-                numero: 3,
-                descricao: 'Documento Pronto',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Entregue',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            },{
-                numero: 2,
-                descricao: 'Análise iniciada',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            },{
-                numero: 3,
-                descricao: 'Documento Pronto',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            },{
-                numero: 4,
-                descricao: 'Documento entregue',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Em análise',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            },{
-                numero: 2,
-                descricao: 'Análise iniciada',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Aguardando',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Entregue',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            },{
-                numero: 2,
-                descricao: 'Análise iniciada',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            },{
-                numero: 3,
-                descricao: 'Documento Pronto',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            },{
-                numero: 4,
-                descricao: 'Documento entregue',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Em análise',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            },{
-                numero: 2,
-                descricao: 'Análise iniciada',
-                usuario: 'Reinaldo José',
-                data: '01/06/2017 15:30'
-            }]
-        }];
+    function CertidaoController($scope, $location, App, DataService) {
+
+        var getCertidoes = function(){
+            DataService.getCertidoes({id: App.user.id}).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Certidão', {timeOut: 4000});
+                    $location.path('/dashboard');
+                } else {
+                    $scope.certidoes = response;
+
+                    jQuery(document).ready(function () {
+                        $('table.display').DataTable({
+                            "aaSorting": []
+                        });
+                    });
+                }
+            });
+        };
+        getCertidoes();
 
         $scope.detalhesCertidao = function(certidao) {
-            certidao.proximo_passo = '';
-            switch (certidao.status) {
-                case 'Aguardando':
-                    certidao.proximo_passo = "Iniciar Análise";
-                    break;
-                case 'Em análise':
-                    certidao.proximo_passo = "Documento pronto";
-                    break;
-                case 'Pronto':
-                    certidao.proximo_passo = "Realizar a entrega";
-                    break;
-            }
-
             App.setCurrentCertidao(certidao);
-
-            $location.path('/detalhes-certidao');
+            $location.path('/detalhes-certidao').search({id: certidao.pedido_id});
         };
 
-        jQuery(document).ready(function(){
-            $('table.display').DataTable( {
-                "aaSorting": []
-            } );
-        });
+        $scope.movimentar = function(certidao) {
+            var descricao = '';
+
+            switch (certidao.status) {
+                case 'Aguardando':
+                    descricao = "Iniciar Análise";
+                    break;
+                case 'Em análise':
+                    descricao = "Documento pronto";
+                    break;
+                case 'Pronto':
+                    descricao = "Realizar a entrega";
+                    break;
+            }
+            var movimentacao = {
+                descricao: descricao,
+                pedido_id: certidao.pedido_id
+            };
+
+            DataService.addMovimentacao(movimentacao).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Movimentação', {timeOut: 4000});
+                } else {
+                    toastr.success('Movimentação realizada com sucesso!', 'Movimentação', {timeOut: 3000});
+                    $scope.detalhesCertidao(response);
+                }
+            });
+
+        };
     }
 
 })();

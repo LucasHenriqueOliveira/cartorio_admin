@@ -4,62 +4,138 @@ namespace App\Data;
 
 use Illuminate\Support\Facades\DB;
 
-class Usuario {
+class Usuario extends Utils {
 
-    private function statistics($params = []) {
+    public function getUsuarios() {
+        $result = $this->checkPermissão('usuarios');
 
-        $data = [];
-        $d = [
-            'date1' => $params['start'],
-            'date2' => $params['end']
-        ];
+        if($result) {
+            return DB::select("SELECT u.`nome`, u.`email`, p.*  FROM `users` AS u INNER JOIN `permissao` AS p ON u.`id` = p.`users_id` WHERE u.`ativo` = 1");
 
-        $stats = DB::select('SELECT count(*) as qtd FROM `product` WHERE active = 1');
-        $data['produtos'] = $stats[0]->qtd;
-
-        $stats = DB::select('SELECT count(*) as qtd FROM `fornecedor` WHERE ativo = 1');
-        $data['fornecedores'] = $stats[0]->qtd;
-
-        $stats = DB::select('SELECT sum(valor_nota) as qtd FROM `nota_entrada` WHERE ativo = 1 and `data_add` BETWEEN :date1 AND :date2', $d);
-        $data['nf_entrada_valor'] = $stats[0]->qtd;
-
-        $stats = DB::select('SELECT count(*) as qtd FROM `nota_entrada` WHERE ativo = 1 and `data_add` BETWEEN :date1 AND :date2', $d);
-        $data['nf_entrada'] = $stats[0]->qtd;
-
-        return $data;
+        } else {
+            $res['error'] = true;
+            $res['message'] = 'Usuário sem permissão.';
+            return $res;
+        }
     }
 
-    public function dashboard($params) {
-        $res['error'] = false;
+    public function getUsuario($id) {
+        $result = $this->checkPermissão('usuarios');
 
-        $params['start'] = (new \DateTime($params['start']))->format('Y-m-d H:i:s');
-        $params['end'] = (new \DateTime($params['end']))->format('Y-m-d H:i:s');
+        if($result) {
+            return DB::select("SELECT u.`nome`, u.`email`, p.*  FROM `users` AS u INNER JOIN `permissao` AS p ON u.`id` = p.`users_id` WHERE u.`id` = ?", [$id])[0];
 
-        //setup queries
-        $d = [
-            'date1' => $params['start'],
-            'date2' => $params['end']
-        ];
-
-        // statists week
-        $res['estatisticas'] = $this->statistics($params);
-
-        // notas fiscais de entrada
-        $data = [];
-        $result = DB::select('
-            SELECT sum(`valor_nota`) as valor_nota, DATE_FORMAT(`data_compra`,\'%d/%m\') as `data_compra`
-            FROM `nota_entrada`
-            WHERE
-                `data_compra` BETWEEN :date1 AND :date2
-            GROUP BY `data_compra`
-        ', $d);
-        foreach ($result as $nota) {
-            $data['data'] = $nota->data_compra;
-            $data['nota'] = $nota->valor_nota;
-            $notas[] = $data;
+        } else {
+            $res['error'] = true;
+            $res['message'] = 'Usuário sem permissão.';
+            return $res;
         }
-        $res['notas'] = $notas;
+    }
 
-        return $res;
+    public function addUsuario($nome, $email, $password, $remember_token, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard) {
+
+        $result = $this->checkPermissão('usuarios_add');
+
+        if($result) {
+            try {
+                $response = DB::select("SELECT * FROM `users` WHERE `email` = ? AND `ativo` = ?", [$email, 1]);
+
+                if ($response) {
+                    $res['error'] = true;
+                    $res['message'] = 'Usuário ' . $email . ' já cadastrado.';
+                    return $res;
+                }
+
+                $response = DB::select("SELECT * FROM `users` WHERE `email` = ? AND `ativo` = ?", [$email, 0]);
+
+                if ($response) {
+
+                    DB::update('UPDATE `users` AS u INNER JOIN `permissao` AS p ON u.id = p.users_id
+                        SET u.`nome` = ?, u.`password` = ?, u.`remember_token` = ?, u.`ativo` = ?, u.`updated_at` = ?, p.`certidao` = ?, p.`procuracao` = ?, p.`testamento` = ?, p.`usuarios` = ?, p.`usuarios_add` = ?, p.`usuarios_editar` = ?, p.`usuarios_remover` = ?, p.`relatorios` = ?, p.`dashboard` = ? WHERE u.`email` = ?',
+                    [$nome, $password, $remember_token, 1, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard, $email]);
+
+                } else {
+
+                    DB::insert('INSERT INTO `users` (`nome`, `email`, `password`, `remember_token`, `created_at`) VALUES (?, ?, ?, ?, ?)',
+                    [$nome, $email, $password, $remember_token, $date]);
+
+                    $last_id = DB::getPdo()->lastInsertId();
+
+                    DB::insert('INSERT INTO `permissao` (`users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    [$last_id, $certidao, $procuracao, $testamento , $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard]);
+
+                }
+            } catch (\Exception $e) {
+                $res['error'] = true;
+                $res['message'] = 'Erro ao adicionar o usuário';
+                return $res;
+            }
+
+            $res['error'] = false;
+            $res['message'] = 'Usuário adicionado com sucesso!';
+            return $res;
+
+        } else {
+            $res['error'] = true;
+            $res['message'] = 'Usuário sem permissão.';
+            return $res;
+        }
+    }
+
+    public function editarUsuario($users_id, $nome, $email, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard) {
+
+        $result = $this->checkPermissão('usuarios_editar');
+
+        if($result) {
+            try {
+                DB::beginTransaction();
+
+                $result = DB::select("SELECT * FROM `permissao` WHERE `users_id` = ?", [$users_id])[0];
+
+                if($result) {
+                    DB::insert('INSERT INTO `log_permissao` (`permissao_id`,`users_id_responsavel`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`, `data_hora`, `ip`, `proxy`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    [$result->permissao_id, $this->getUserId()->id, $result->certidao, $result->procuracao, $result->testamento , $result->usuarios, $result->usuarios_add, $result->usuarios_editar, $result->usuarios_remover, $result->relatorios, $result->dashboard, $date, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR']]);
+                }
+
+                DB::update('UPDATE `users` AS u INNER JOIN `permissao` AS p ON u.id = p.users_id
+                    SET u.`nome` = ?, u.`email` = ?, u.`updated_at` = ?, p.`certidao` = ?, p.`procuracao` = ?, p.`testamento` = ?, p.`usuarios` = ?, p.`usuarios_add` = ?, p.`usuarios_editar` = ?, p.`usuarios_remover` = ?, p.`relatorios` = ?, p.`dashboard` = ? WHERE u.`id` = ?',
+                [$nome, $email, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard, $users_id]);
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                $res['error'] = true;
+                $res['message'] = 'Erro ao editar o usuário';
+                return $res;
+            }
+
+            $res['error'] = false;
+            $res['message'] = 'Usuário alterado com sucesso!';
+            return $res;
+
+        } else {
+            $res['error'] = true;
+            $res['message'] = 'Usuário sem permissão.';
+            return $res;
+        }
+    }
+
+    public function removerUsuario($id, $date) {
+        $result = $this->checkPermissão('usuarios_remover');
+
+        if($result) {
+            return DB::update('UPDATE users SET `ativo` = ?, `updated_at` = ? WHERE id = ?', [0, $date, $id]);
+        } else {
+            $res['error'] = true;
+            $res['message'] = 'Usuário sem permissão.';
+            return $res;
+        }
+    }
+
+    public function logSession() {
+        return DB::insert('INSERT INTO `log_session` (`user_id`, `ip`, `proxy`, `data_hora`) VALUES (?, ?, ?, ?)',
+        [$this->getUserId()->id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], date('Y-m-d h:i:s')]);
     }
 }

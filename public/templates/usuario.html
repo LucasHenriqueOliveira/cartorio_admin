@@ -1,13 +1,24 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 5px;">
             <div class="pull-left">
-                <span style="font-size: 12px;"><a href="#/dashboard"><i class="fa fa-home"></i> Página Inicial</a> > <a href="#/novo-usuario">Usuários</a> > Novo</span>
+                <span style="font-size: 12px;"><a href="#/dashboard"><i class="fa fa-home"></i> Página Inicial</a> > <a href="#/usuarios">Usuários</a> > Usuário</span>
             </div>
         </div>
     </div>
@@ -15,7 +26,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Novo usuário</h2>
+                    <h2>Usuário</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -39,31 +50,14 @@
                                     <div class="col-lg-4 col-sm-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value=""> Quantitativo Mensal - página inicial
+                                                <input type="checkbox" ng-model="usuario.dashboard" ng-true-value="1" ng-false-value="0" ng-checked="usuario.dashboard == 1"> Quantitativo - Página inicial
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-sm-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value=""> Certidão e Traslados
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-sm-3"></div>
-                                    <div class="col-lg-4 col-sm-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value=""> Procuração
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value=""> Testamento
+                                                <input type="checkbox" ng-model="usuario.certidao" ng-true-value="1" ng-false-value="0" ng-checked="usuario.certidao == 1"> Certidão e Traslados
                                             </label>
                                         </div>
                                     </div>
@@ -73,31 +67,14 @@
                                     <div class="col-lg-4 col-sm-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value=""> Usuários
+                                                <input type="checkbox" ng-model="usuario.procuracao" ng-true-value="1" ng-false-value="0" ng-checked="usuario.procuracao == 1"> Procuração
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-sm-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value=""> Adicionar Usuário
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-sm-3"></div>
-                                    <div class="col-lg-4 col-sm-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value=""> Editar Usuário
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value=""> Remover Usuário
+                                                <input type="checkbox" ng-model="usuario.testamento" ng-true-value="1" ng-false-value="0" ng-checked="usuario.testamento == 1"> Testamento
                                             </label>
                                         </div>
                                     </div>
@@ -107,14 +84,41 @@
                                     <div class="col-lg-4 col-sm-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value=""> Relatórios
+                                                <input type="checkbox" ng-model="usuario.usuarios" ng-true-value="1" ng-false-value="0" ng-checked="usuario.usuarios == 1"> Usuários
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-sm-4">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value=""> Todos
+                                                <input type="checkbox" ng-model="usuario.usuarios_add" ng-true-value="1" ng-false-value="0" ng-checked="usuario.usuarios_add == 1"> Adicionar Usuário
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-3"></div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="usuario.usuarios_editar" ng-true-value="1" ng-false-value="0" ng-checked="usuario.usuarios_editar == 1"> Editar Usuário
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="usuario.usuarios_remover" ng-true-value="1" ng-false-value="0" ng-checked="usuario.usuarios_remover == 1"> Remover Usuário
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-3"></div>
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="usuario.relatorios" ng-true-value="1" ng-false-value="0" ng-checked="usuario.relatorios == 1"> Relatórios
                                             </label>
                                         </div>
                                     </div>
@@ -123,7 +127,7 @@
                             <div class="space15"></div>
                             <div class="form-group">
                                 <div class="col-lg-11 text-center">
-                                    <button class="btn btn-primary" type="submit" ng-disabled="formNovoUsuario.$invalid" ng-click="trocarSenha()"><i class="fa fa-check"></i> Salvar</button>
+                                    <button class="btn btn-primary" type="submit" ng-disabled="formNovoUsuario.$invalid" ng-click="salvar(usuario)"> Salvar</button>
                                 </div>
                             </div>
                         </form>

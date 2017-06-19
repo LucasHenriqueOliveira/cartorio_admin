@@ -5,28 +5,73 @@
         .module('app')
         .controller('DetalhesCertidaoController', DetalhesCertidaoController);
 
-    DetalhesCertidaoController.$inject = ['$scope', 'DataService', 'App'];
+    DetalhesCertidaoController.$inject = ['$scope', 'DataService', 'App', '$routeParams', 'ModalService'];
 
-    function DetalhesCertidaoController($scope, DataService, App) {
+    function DetalhesCertidaoController($scope, DataService, App, $routeParams, ModalService) {
         $scope.hasAddMovimentacao = false;
         $scope.descricao = '';
         $scope.certidao = App.getCurrentCertidao();
 
+        if (Object.getOwnPropertyNames($scope.certidao).length === 0){
+            DataService.getCertidao({id: $routeParams.id}).then(function(response) {
+                $scope.certidao = response;
+                proximoPasso();
+            });
+        }
+
+        var proximoPasso = function() {
+            switch ($scope.certidao.status) {
+                case 'Aguardando':
+                    $scope.certidao.proximo_passo = "Iniciar Análise";
+                    break;
+                case 'Em análise':
+                    $scope.certidao.proximo_passo = "Documento pronto";
+                    break;
+                case 'Pronto':
+                    $scope.certidao.proximo_passo = "Realizar a entrega";
+                    break;
+            }
+        };
+        proximoPasso();
+
         $scope.movimentar = function() {
-            $scope.hasAddMovimentacao = true;
+            $scope.hasAddMovimentacao = $scope.hasAddMovimentacao ? false : true;
+        };
+
+        var addMovimentacao = function(movimentacao) {
+            DataService.addMovimentacao(movimentacao).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Movimentação', {timeOut: 4000});
+                } else {
+                    $scope.certidao = response;
+                    proximoPasso();
+                    $scope.descricao = '';
+                    $scope.hasAddMovimentacao = false;
+                    toastr.success('Movimentação realizada com sucesso!', 'Movimentação', {timeOut: 3000});
+                }
+            });
         };
 
         $scope.addDescricao = function(descricao) {
-            var d = new Date();
-            var datestring = d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();
-            var movimentacao = {
-                numero: $scope.certidao.movimentacoes.length + 1,
-                descricao: descricao,
-                usuario: App.user.nome,
-                data: datestring
-            };
-            $scope.certidao.movimentacoes.push(movimentacao);
-            $scope.descricao = '';
+            ModalService.showModal({
+                templateUrl: "templates/confirmar-movimentacao.html",
+                controller: function($scope, close) {
+                    $scope.close = function(result) {
+                        close(result, 500);
+                    };
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                    if(result) {
+                        var movimentacao = {
+                            descricao: descricao,
+                            pedido_id: $scope.certidao.pedido_id
+                        };
+                        addMovimentacao(movimentacao);
+                    }
+                });
+            });
         };
     }
 

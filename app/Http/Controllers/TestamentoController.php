@@ -10,19 +10,19 @@ use Illuminate\Http\Exception\HttpResponseException;
 
 class TestamentoController extends BaseController{
 
-    public function estados(Request $request) {
-        $estados = new \App\Data\Testamento();
+    public function getTestamentos(Request $request) {
+        $testamentos = new \App\Data\Testamento();
 
-        $res = $estados->getEstados();
+        $res = $testamentos->getTestamentos();
 
         echo json_encode($res);
         exit;
     }
 
-    public function cidades(Request $request) {
-        $cidades = new \App\Data\Testamento();
+    public function getTestamento(Request $request) {
+        $testamento = new \App\Data\Testamento();
 
-        $res = $cidades->getCidades($request->input('id'));
+        $res = $testamento->getTestamento($request->input('id'));
 
         echo json_encode($res);
         exit;

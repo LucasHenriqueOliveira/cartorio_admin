@@ -5,59 +5,66 @@
         .module('app')
         .controller('UsuariosController', UsuariosController);
 
-    UsuariosController.$inject = ['$scope', '$rootScope', '$location'];
+    UsuariosController.$inject = ['$scope', 'App', '$location', 'DataService', 'ModalService'];
 
-    function UsuariosController($scope, $rootScope, $location) {
+    function UsuariosController($scope, App, $location, DataService, ModalService) {
+        App.setCurrentUsuario({});
 
-        $scope.usuarios = [{
-            nome: 'Lucas Henrique',
-            email: 'lucas@gmail.com',
-            perfil: 'Administrador',
-            perfil_id: 1
-        },{
-            nome: 'Lucas Henrique',
-            email: 'lucas@gmail.com',
-            perfil: 'Gerente',
-            perfil_id: 2
-        },{
-            nome: 'Lucas Henrique',
-            email: 'lucas@gmail.com',
-            perfil: 'Analista',
-            perfil_id: 3
-        },{
-            nome: 'Lucas Henrique',
-            email: 'lucas@gmail.com',
-            perfil: 'Atendimento',
-            perfil_id: 4
-        }];
+        var getUsuarios = function(){
+            DataService.getUsuarios({id: App.user.id}).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Certidão', {timeOut: 4000});
+                    $location.path('/dashboard');
+                } else {
+                    $scope.usuarios = response;
 
-        jQuery(document).ready(function(){
-            $('table.display').DataTable( {
-                "aaSorting": []
-            } );
-        });
-
-        var openModal = function() {
-            ModalService.showModal({
-                templateUrl: "templates/detalhes-usuario.html",
-                controller: function() {
-
+                    jQuery(document).ready(function(){
+                        $scope.table = $('table.display').DataTable( {
+                            "aaSorting": []
+                        } );
+                    });
                 }
-            }).then(function(modal) {
-                modal.element.modal();
             });
         };
+        getUsuarios();
 
         $scope.novo = function() {
-            $rootScope.usuario = {};
             $location.path('/usuario');
         };
 
         $scope.editar = function(usuario) {
-            $rootScope.usuario = usuario;
-            openModal();
+            App.setCurrentUsuario(usuario);
+            $location.path('/usuario').search({id: usuario.users_id});
         };
 
+        $scope.remover = function(usuario) {
+            ModalService.showModal({
+                templateUrl: "templates/excluir-usuario.html",
+                controller: function($scope, close) {
+                    $scope.close = function(result) {
+                        close(result, 500);
+                    };
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                    if(result) {
+                        DataService.removeUsuario({id: usuario.users_id, user_id: App.user.id}).then(function(response) {
+                            toastr.success('Usuário excluído com sucesso!', 'Usuário', {timeOut: 3000});
+                            $scope.usuarios = response;
+
+                            $scope.table.destroy();
+
+                            jQuery(document).ready(function(){
+                                $('table.display').DataTable( {
+                                    "aaSorting": []
+                                } );
+                            });
+                        });
+                    }
+                });
+            });
+        };
     }
 
 })();

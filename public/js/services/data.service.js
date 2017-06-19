@@ -29,12 +29,13 @@
 
                 return deferred.promise;
             },
-            getCertidao: function() {
+            getCertidao: function(params) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'GET',
-                    url: App.api + 'certidao'
+                    url: App.api + 'certidao',
+                    params: params
                 })
                 .then(function(response) {
 
@@ -46,12 +47,30 @@
 
                 return deferred.promise;
             },
-            getProcuracao: function() {
+            getCertidoes: function() {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'GET',
-                    url: App.api + 'procuracao'
+                    url: App.api + 'certidoes'
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao buscar as certidões e traslados', 'Certidão e Traslados', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            getProcuracao: function(params) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'procuracao',
+                    params: params
                 })
                     .then(function(response) {
 
@@ -63,12 +82,47 @@
 
                 return deferred.promise;
             },
-            getTestamento: function() {
+            getProcuracoes: function() {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'GET',
-                    url: App.api + 'testamento'
+                    url: App.api + 'procuracoes'
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao buscar as procurações', 'Procuração', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            getTestamento: function(params) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'testamento',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao buscar os testamentos', 'Testamento', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            getTestamentos: function() {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'testamentos'
                 })
                     .then(function(response) {
 
@@ -86,7 +140,7 @@
 
                 $http({
                     method: 'POST',
-                    url: App.api + 'usuario',
+                    url: App.api + 'movimentar',
                     params: params
                 })
                     .then(function(response) {
@@ -116,12 +170,13 @@
 
                 return deferred.promise;
             },
-            getUsuario: function() {
+            getUsuario: function(params) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'GET',
-                    url: App.api + 'usuario'
+                    url: App.api + 'usuario',
+                    params: params
                 })
                     .then(function(response) {
 

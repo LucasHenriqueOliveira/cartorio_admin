@@ -5,150 +5,113 @@
         .module('app')
         .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ['$scope', '$rootScope', 'DataService', 'App', '$location'];
+    DashboardController.$inject = ['$scope', '$rootScope', 'DataService', 'App', '$location', 'ModalService'];
 
-    function DashboardController($scope, $rootScope, DataService, App, $location) {
-
-        $scope.certidoes = [{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Aguardando',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Aguardando',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            }]
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            cpf: '072.430.124-43',
-            pedido_por: 'Lucas',
-            tipo: 'Escritura',
-            livro: '35B',
-            ato: 'ADC',
-            outorgante: 'Lucas Henrique',
-            outorgado: 'Tiago Ferreira',
-            data_hora: '20/04/2017 09:10',
-            status: 'Aguardando',
-            movimentacoes: [{
-                numero: 1,
-                descricao: 'Solicitação de certidão',
-                usuario: 'Lucas Henrique',
-                data: '01/06/2017 15:00'
-            }]
-        }];
-
-        $scope.procuracoes = $scope.certidoes;
-        $scope.testamentos = $scope.certidoes;
-
+    function DashboardController($scope, $rootScope, DataService, App, $location, ModalService) {
         $scope.mes = {};
-        $scope.mes.certidao = 1;
-        $scope.mes.procuracao = 2;
-        $scope.mes.testamento = 3;
-        $scope.mes.total = 6;
 
         $scope.detalhesCertidao = function(certidao) {
-            certidao.proximo_passo = '';
-            switch (certidao.status) {
-                case 'Aguardando':
-                    certidao.proximo_passo = "Iniciar Análise";
-                    break;
-                case 'Em análise':
-                    certidao.proximo_passo = "Documento pronto";
-                    break;
-                case 'Pronto':
-                    certidao.proximo_passo = "Realizar a entrega";
-                    break;
-            }
-
             App.setCurrentCertidao(certidao);
-
-            $location.path('/detalhes-certidao');
+            $location.path('/detalhes-certidao').search({id: certidao.pedido_id});
         };
 
         $scope.detalhesProcuracao = function(procuracao) {
-            procuracao.proximo_passo = '';
-            switch (procuracao.status) {
+            App.setCurrentProcuracao(procuracao);
+            $location.path('/detalhes-procuracao').search({id: procuracao.pedido_id});
+        };
+
+        $scope.detalhesTestamento = function(testamento) {
+            App.setCurrentTestamento(testamento);
+            $location.path('/detalhes-testamento').search({id: testamento.pedido_id});
+        };
+
+        $scope.query = {
+            start: '',
+            end: ''
+        };
+
+        var curr = new Date;
+        var dd = curr.getDate();
+        var mm = curr.getMonth()+1;
+        var yyyy = curr.getFullYear();
+        var first = '1';
+
+        $scope.query.start = yyyy + '-' + mm + '-' + first;
+        $scope.query.end = yyyy + '-' + mm + '-' + dd;
+
+        var getDashboard = function() {
+            DataService.getDashboard($scope.query).then(function(response) {
+                if(response.error === false) {
+                    $scope.certidoes = response.certidoes;
+                    $scope.procuracoes = response.procuracoes;
+                    $scope.testamentos = response.testamentos;
+
+                    $scope.mes.certidao = response.quantitativo.qtd_certidoes;
+                    $scope.mes.procuracao = response.quantitativo.qtd_procuracoes;
+                    $scope.mes.testamento = response.quantitativo.qtd_testamentos;
+                    $scope.mes.total = response.quantitativo.total;
+
+                } else {
+                    $scope.message = response.message;
+                }
+            });
+        };
+
+        getDashboard();
+
+        $scope.movimentar = function(pedido) {
+            var descricao = '';
+
+            switch (pedido.status) {
                 case 'Aguardando':
-                    procuracao.proximo_passo = "Iniciar Análise";
+                    descricao = "Iniciar Análise";
                     break;
                 case 'Em análise':
-                    procuracao.proximo_passo = "Documento pronto";
+                    descricao = "Documento pronto";
                     break;
                 case 'Pronto':
-                    procuracao.proximo_passo = "Realizar a entrega";
+                    descricao = "Realizar a entrega";
                     break;
             }
 
-            App.setCurrentProcuracao(procuracao);
+            ModalService.showModal({
+                templateUrl: "templates/confirmar-movimentacao.html",
+                controller: function($scope, close) {
+                    $scope.close = function(result) {
+                        close(result, 500);
+                    };
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                    if(result) {
+                        var movimentacao = {
+                            descricao: descricao,
+                            pedido_id: pedido.pedido_id
+                        };
 
-            $location.path('/detalhes-procuracao');
+                        DataService.addMovimentacao(movimentacao).then(function(response) {
+                            if(response.error) {
+                                toastr.error(response.message, 'Movimentação', {timeOut: 4000});
+                            } else {
+                                toastr.success('Movimentação realizada com sucesso!', 'Movimentação', {timeOut: 3000});
+                                switch (pedido.tipo) {
+                                    case 'Certidão':
+                                        $scope.detalhesCertidao(response);
+                                        break;
+                                    case 'Procuração':
+                                        $scope.detalhesProcuracao(response);
+                                        break;
+                                    case 'Testamento':
+                                        $scope.detalhesTestamento(response);
+                                        break;
+                                }
+                            }
+                        });
+                    }
+                });
+            });
         };
-
-        //var getDashboard = function() {
-        //    DataService.getDashboard($scope.query).then(function(response) {
-        //        if(response.error === false) {
-        //            $scope.produtos = response.estatisticas.produtos;
-        //            $scope.fornecedores = response.estatisticas.fornecedores;
-        //            $scope.nf_entrada_valor = parseFloat(response.estatisticas.nf_entrada_valor).toLocaleString('pt-BR');
-        //            $scope.nf_entrada = response.estatisticas.nf_entrada;
-        //            $scope.notas = response.notas;
-        //
-        //            // notas de entrada
-        //            $scope.labels = [];
-        //            $scope.data = [];
-        //            if($scope.notas) {
-        //                $scope.notas.forEach(function(entry){
-        //                    $scope.labels.push(entry.data);
-        //                    $scope.data.push(parseInt(entry.nota));
-        //                });
-        //            }
-        //
-        //            $scope.data = [$scope.data];
-        //            $scope.series = ['Notas de Entrada'];
-        //            $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
-        //            $scope.options = options;
-        //
-        //        } else {
-        //            $scope.message = response.message;
-        //        }
-        //    });
-        //};
-        //
-        //getDashboard();
     }
 
 })();

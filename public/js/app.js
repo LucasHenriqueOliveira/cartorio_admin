@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'chart.js', 'ngResource', 'ui.utils.masks', 'idf.br-filters', 'angularModalService'])
+        .module('app', ['ngRoute', 'chart.js', 'ngResource', 'ui.utils.masks', 'idf.br-filters', 'angularModalService', 'ngAnimate'])
         .config(config)
         .run(run);
 
@@ -10,6 +10,7 @@
     function config($routeProvider, $httpProvider) {
 
         $httpProvider.interceptors.push('TokenInterceptor');
+        $httpProvider.interceptors.push('HttpInterceptor');
 
         $routeProvider
 

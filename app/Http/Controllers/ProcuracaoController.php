@@ -10,19 +10,19 @@ use Illuminate\Http\Exception\HttpResponseException;
 
 class ProcuracaoController extends BaseController{
 
-    public function estados(Request $request) {
-        $estados = new \App\Data\Procuracao();
+    public function getProcuracoes(Request $request) {
+        $procuracoes = new \App\Data\Procuracao();
 
-        $res = $estados->getEstados();
+        $res = $procuracoes->getProcuracoes();
 
         echo json_encode($res);
         exit;
     }
 
-    public function cidades(Request $request) {
-        $cidades = new \App\Data\Procuracao();
+    public function getProcuracao(Request $request) {
+        $procuracao = new \App\Data\Procuracao();
 
-        $res = $cidades->getCidades($request->input('id'));
+        $res = $procuracao->getProcuracao($request->input('id'));
 
         echo json_encode($res);
         exit;

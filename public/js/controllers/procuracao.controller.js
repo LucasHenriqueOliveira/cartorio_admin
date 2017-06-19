@@ -5,91 +5,60 @@
         .module('app')
         .controller('ProcuracaoController', ProcuracaoController);
 
-    ProcuracaoController.$inject = ['$scope', '$location', 'App'];
+    ProcuracaoController.$inject = ['$scope', '$location', 'App', 'DataService'];
 
-    function ProcuracaoController($scope, $location, App) {
+    function ProcuracaoController($scope, $location, App, DataService) {
 
-        $scope.procuracoes = [{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Aguardando'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Em análise'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Pronto'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Entregue'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Em análise'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Aguardando'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Entregue'
-        },{
-            nome: 'Lucas Henrique',
-            telefone: '31992833234',
-            email: 'lucas@gmail.com',
-            rg: 'MG-12.983.328',
-            pedido_por: 'Lucas',
-            status: 'Em análise'
-        }];
+        var getProcuracoes = function(){
+            DataService.getProcuracoes({id: App.user.id}).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Procuração', {timeOut: 4000});
+                    $location.path('/dashboard');
+                } else {
+                    $scope.procuracoes = response;
 
-        jQuery(document).ready(function(){
-            $('table.display').DataTable( {
-                "aaSorting": []
-            } );
-        });
+                    jQuery(document).ready(function(){
+                        $('table.display').DataTable( {
+                            "aaSorting": []
+                        } );
+                    });
+                }
+            });
+        };
+        getProcuracoes();
 
         $scope.detalhesProcuracao = function(procuracao) {
-            procuracao.proximo_passo = '';
+            App.setCurrentProcuracao(procuracao);
+            $location.path('/detalhes-procuracao').search({id: procuracao.pedido_id});
+        };
+
+        $scope.movimentar = function(procuracao) {
+            var descricao = '';
+
             switch (procuracao.status) {
                 case 'Aguardando':
-                    procuracao.proximo_passo = "Iniciar Análise";
+                    descricao = "Iniciar Análise";
                     break;
                 case 'Em análise':
-                    procuracao.proximo_passo = "Documento pronto";
+                    descricao = "Documento pronto";
                     break;
                 case 'Pronto':
-                    procuracao.proximo_passo = "Realizar a entrega";
+                    descricao = "Realizar a entrega";
                     break;
             }
+            var movimentacao = {
+                descricao: descricao,
+                pedido_id: procuracao.pedido_id
+            };
 
-            App.setCurrentProcuracao(procuracao);
-
-            $location.path('/detalhes-procuracao');
+            DataService.addMovimentacao(movimentacao).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Movimentação', {timeOut: 4000});
+                } else {
+                    toastr.success('Movimentação realizada com sucesso!', 'Movimentação', {timeOut: 3000});
+                    $scope.detalhesProcuracao(response);
+                }
+            });
         };
     }
 

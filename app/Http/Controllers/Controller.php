@@ -21,4 +21,13 @@ class Controller extends BaseController{
         echo json_encode($res);
         exit;
     }
+
+    public function movimentar(Request $request) {
+        $pedido = new \App\Data\Pedido();
+
+        $res = $pedido->movimentar($request->input('pedido_id'), $request->input('descricao'));
+
+        echo json_encode($res);
+        exit;
+    }
 }

@@ -1,6 +1,17 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
@@ -101,7 +112,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(certidao)">
                                                 <i class="fa fa-chevron-right"></i> Iniciar Análise
                                             </a>
                                         </li>
@@ -156,7 +167,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(procuracao)">
                                                 <i class="fa fa-arrow-right"></i> Iniciar Análise
                                             </a>
                                         </li>
@@ -181,7 +192,7 @@
                     <h2>Testamento</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content" ng-hide="!certidoes.length">
+                <div class="x_content" ng-hide="!testamentos.length">
                     <table class="table table-striped display">
                         <thead>
                         <tr>
@@ -192,10 +203,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="certidao in certidoes">
-                            <td>{{certidao.nome}}</td>
-                            <td class="text-center">{{certidao.telefone | brPhoneNumber}}</td>
-                            <td class="text-center">{{certidao.email}}</td>
+                        <tr ng-repeat="testamento in testamentos">
+                            <td>{{testamento.nome}}</td>
+                            <td class="text-center">{{testamento.telefone | brPhoneNumber}}</td>
+                            <td class="text-center">{{testamento.email}}</td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -209,7 +220,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(testamento)">
                                                 <i class="fa fa-arrow-right"></i> Iniciar Análise
                                             </a>
                                         </li>
@@ -223,7 +234,7 @@
                         <a href="#/testamento"><span>Ver mais</span></a>
                     </div>
                 </div>
-                <div class="x_content text-center" ng-show="!certidoes.length">
+                <div class="x_content text-center" ng-show="!testamentos.length">
                     <span class="no-data-tables">Não possui nenhum testamento aguardando.</span>
                 </div>
             </div>

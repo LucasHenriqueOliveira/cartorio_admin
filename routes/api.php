@@ -31,7 +31,7 @@ $api->version('v1', function ($api) {
     ]);
 
     $api->post('/certidao', [
-        'uses' => 'App\Http\Controllers\CertidaoController@postCertidao',
+        'uses' => 'App\Http\Controllers\CertidaoController@addCertidao',
         'as' => 'api.certidao'
     ]);
 
@@ -86,8 +86,14 @@ $api->version('v1', function ($api) {
 
     // movimentar
     $api->post('/movimentar', [
-        'uses' => 'App\Http\Controllers\ProcessoController@movimentar',
+        'uses' => 'App\Http\Controllers\Controller@movimentar',
         'as' => 'api.movimentar'
+    ]);
+
+    // firma
+    $api->get('/firma', [
+        'uses' => 'App\Http\Controllers\FirmaController@getFirma',
+        'as' => 'api.firma'
     ]);
 
     // usuarios
@@ -103,12 +109,17 @@ $api->version('v1', function ($api) {
     ]);
 
     $api->post('/usuario', [
-        'uses' => 'App\Http\Controllers\UsuarioController@postUsuario',
+        'uses' => 'App\Http\Controllers\UsuarioController@addUsuario',
+        'as' => 'api.usuario'
+    ]);
+
+    $api->put('/usuario', [
+        'uses' => 'App\Http\Controllers\UsuarioController@editarUsuario',
         'as' => 'api.usuario'
     ]);
 
     $api->delete('/usuario', [
-        'uses' => 'App\Http\Controllers\UsuarioController@removeUsuario',
+        'uses' => 'App\Http\Controllers\UsuarioController@removerUsuario',
         'as' => 'api.usuario'
     ]);
 

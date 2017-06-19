@@ -1,6 +1,17 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
@@ -60,17 +71,17 @@
                                             </a>
                                         </li>
                                         <li ng-if="procuracao.status == 'Aguardando'">
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(procuracao)">
                                                 <i class="fa fa-chevron-right"></i> Iniciar Análise
                                             </a>
                                         </li>
                                         <li ng-if="procuracao.status == 'Em análise'">
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(procuracao)">
                                                 <i class="fa fa-chevron-right"></i> Documento Pronto
                                             </a>
                                         </li>
                                         <li ng-if="procuracao.status == 'Pronto'">
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(procuracao)">
                                                 <i class="fa fa-chevron-right"></i> Entreguar
                                             </a>
                                         </li>

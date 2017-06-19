@@ -1,6 +1,17 @@
 <ng-include src="'templates/sidebar.html'"></ng-include>
 <ng-include src="'templates/header.html'"></ng-include>
 
+<div id="loaderDiv" loader>
+    <div class="ajax-loader">
+        Carregando
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+
 <!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
@@ -25,7 +36,7 @@
                             <th>Nome</th>
                             <th class="text-center">Telefone</th>
                             <th class="text-center">Email</th>
-                            <th class="text-center">RG</th>
+                            <th class="text-center">CPF</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Ações</th>
                         </tr>
@@ -35,7 +46,7 @@
                             <td>{{certidao.nome}}</td>
                             <td class="text-center">{{certidao.telefone | brPhoneNumber}}</td>
                             <td class="text-center">{{certidao.email}}</td>
-                            <td class="text-center">{{certidao.rg}}</td>
+                            <td class="text-center">{{certidao.cpf}}</td>
                             <td class="text-center">
                                 <span class="label" ng-class="{'label-danger': certidao.status == 'Aguardando',
                                 'label-warning': certidao.status == 'Em análise',
@@ -57,17 +68,17 @@
                                             </a>
                                         </li>
                                         <li ng-if="certidao.status == 'Aguardando'">
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(certidao)">
                                                 <i class="fa fa-chevron-right"></i> Iniciar Análise
                                             </a>
                                         </li>
                                         <li ng-if="certidao.status == 'Em análise'">
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(certidao)">
                                                 <i class="fa fa-chevron-right"></i> Documento Pronto
                                             </a>
                                         </li>
                                         <li ng-if="certidao.status == 'Pronto'">
-                                            <a href="javascript:;">
+                                            <a ng-click="movimentar(certidao)" href="javascript:;">
                                                 <i class="fa fa-chevron-right"></i> Entreguar
                                             </a>
                                         </li>

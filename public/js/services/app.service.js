@@ -12,6 +12,7 @@
         var currentCertidao = {};
         var currentProcuracao = {};
         var currentTestamento = {};
+        var currentUsuario = {};
 
         function clearData() {
             $localStorage.destroy('token');
@@ -42,6 +43,14 @@
             return currentTestamento;
         }
 
+        function setCurrentUsuario(usuario) {
+            currentUsuario = usuario;
+        }
+
+        function getCurrentUsuario() {
+            return currentUsuario;
+        }
+
         return {
             api: 'api/',
             user: false,
@@ -52,7 +61,9 @@
             setCurrentProcuracao: setCurrentProcuracao,
             getCurrentProcuracao: getCurrentProcuracao,
             setCurrentTestamento: setCurrentTestamento,
-            getCurrentTestamento: getCurrentTestamento
+            getCurrentTestamento: getCurrentTestamento,
+            setCurrentUsuario: setCurrentUsuario,
+            getCurrentUsuario: getCurrentUsuario
         };
 
     }
