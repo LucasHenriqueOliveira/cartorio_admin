@@ -22,7 +22,7 @@ class Pedido extends Utils {
                         return $res;
                     }
 
-                    $this->logStatus($pedido_id, $pedido->status, 'Em análise', date('Y-m-d h:i:s'));
+                    $this->logStatus($pedido_id, $pedido->status, 'Em análise', date('Y-m-d H:i:s'));
                     $this->atualizarStatus($pedido_id, 'Em análise');
                     $descricao = 'Análise iniciada';
                     break;
@@ -35,7 +35,7 @@ class Pedido extends Utils {
                         return $res;
                     }
 
-                    $this->logStatus($pedido_id, $pedido->status, 'Pronto', date('Y-m-d h:i:s'));
+                    $this->logStatus($pedido_id, $pedido->status, 'Pronto', date('Y-m-d H:i:s'));
                     $this->atualizarStatus($pedido_id, 'Pronto');
                     break;
                 case 'Realizar a entrega':
@@ -47,7 +47,7 @@ class Pedido extends Utils {
                         return $res;
                     }
 
-                    $this->logStatus($pedido_id, $pedido->status, 'Entregue', date('Y-m-d h:i:s'));
+                    $this->logStatus($pedido_id, $pedido->status, 'Entregue', date('Y-m-d H:i:s'));
                     $this->atualizarStatus($pedido_id, 'Entregue');
                     $descricao = 'Entrega realizada';
                     break;
@@ -56,7 +56,7 @@ class Pedido extends Utils {
             $result = DB::select("SELECT (sequencia + 1) AS sequencia FROM `movimentacao`WHERE `pedido_id` = ? ORDER BY sequencia DESC LIMIT 1", [$pedido_id])[0];
 
             DB::insert('INSERT INTO `movimentacao` (pedido_id, user_id, data_hora, sequencia, descricao) VALUES (?, ?, ?, ?, ?)',
-                       [$pedido_id, $this->getUserId()->id, date('Y-m-d h:i:s'), $result->sequencia, $descricao]);
+                       [$pedido_id, $this->getUserId()->id, date('Y-m-d H:i:s'), $result->sequencia, $descricao]);
 
             DB::commit();
 

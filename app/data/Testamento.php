@@ -38,4 +38,9 @@ class Testamento extends Utils {
             return $res;
         }
     }
+
+    public function addTestamento($rg, $cpf, $casamento, $date, $user_id) {
+        return DB::insert('INSERT INTO `pedido` (`tipo`, `rg`, `cpf`, `casamento`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        ['Testamento', $rg, $cpf, $casamento, $date, $user_id, 'Aguardando']);
+    }
 }

@@ -40,4 +40,8 @@ class Certidao extends Utils {
             return $res;
         }
     }
+
+    public function addCertidao($ato, $livro, $folha, $outorgante, $outorgado, $date, $user_id) {
+    	return $this->addPedido('Certidão', $ato, $livro, $folha, $outorgante, $outorgado, $date, $user_id, 'Aguardando');
+    }
 }

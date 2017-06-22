@@ -53,7 +53,7 @@ $api->version('v1', function ($api) {
     ]);
 
     $api->post('/procuracao', [
-        'uses' => 'App\Http\Controllers\ProcuracaoController@postProcuracao',
+        'uses' => 'App\Http\Controllers\ProcuracaoController@addProcuracao',
         'as' => 'api.procuracao'
     ]);
 
@@ -61,6 +61,16 @@ $api->version('v1', function ($api) {
         'uses' => 'App\Http\Controllers\ProcuracaoController@removeProcuracao',
         'as' => 'api.procuracao'
     ]);
+
+	$api->get('/procuracao/tipos', [
+		'uses' => 'App\Http\Controllers\ProcuracaoController@getTiposProcuracao',
+		'as' => 'api.tipos.procuracao'
+	]);
+
+	$api->get('/procuracao/tipos/documentos', [
+		'uses' => 'App\Http\Controllers\ProcuracaoController@getDocumentosProcuracao',
+		'as' => 'api.documentos.procuracao'
+	]);
 
     // testamentos
     $api->get('/testamentos', [
@@ -75,7 +85,7 @@ $api->version('v1', function ($api) {
     ]);
 
     $api->post('/testamento', [
-        'uses' => 'App\Http\Controllers\TestamentoController@postTestamento',
+        'uses' => 'App\Http\Controllers\TestamentoController@addTestamento',
         'as' => 'api.testamento'
     ]);
 
@@ -90,9 +100,15 @@ $api->version('v1', function ($api) {
         'as' => 'api.movimentar'
     ]);
 
+	// histórico
+	$api->get('/historico', [
+		'uses' => 'App\Http\Controllers\Controller@historico',
+		'as' => 'api.historico'
+	]);
+
     // firma
     $api->get('/firma', [
-        'uses' => 'App\Http\Controllers\FirmaController@getFirma',
+        'uses' => 'App\Http\Controllers\Controller@getFirma',
         'as' => 'api.firma'
     ]);
 
@@ -112,6 +128,12 @@ $api->version('v1', function ($api) {
         'uses' => 'App\Http\Controllers\UsuarioController@addUsuario',
         'as' => 'api.usuario'
     ]);
+
+	// signup
+	$api->post('/signup', [
+		'uses' => 'App\Http\Controllers\UsuarioController@addUsuarioApp',
+		'as' => 'api.usuario'
+	]);
 
     $api->put('/usuario', [
         'uses' => 'App\Http\Controllers\UsuarioController@editarUsuario',
@@ -145,8 +167,7 @@ $api->version('v1', function ($api) {
         'as' => 'api.dashboard'
     ]);
 
-
-    // authentication
+    // authentication user
     $api->post('/auth/login', [
         'as' => 'api.auth.login',
         'uses' => 'App\Http\Controllers\Auth\AuthController@postLogin',

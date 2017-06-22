@@ -35,7 +35,7 @@
                             <label class="label-bold">Tipo:</label> {{certidao.tipo}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Livro:</label> {{certidao.livro}}
+                            <label class="label-bold">Livro/Folha:</label> {{certidao.livro}}/{{certidao.folha}}
                         </div>
                     </div>
                     <div class="row">
@@ -43,7 +43,7 @@
                             <label class="label-bold">Ato:</label> {{certidao.ato}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">CPF:</label> {{certidao.cpf}}
+                            <label class="label-bold">CPF:</label> {{certidao.cpf | brCpf}}
                         </div>
                     </div>
                     <div class="row">

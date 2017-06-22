@@ -40,15 +40,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">CPF:</label> <a ng-href="testamento.cpf"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">RG:</label> <a ng-href="testamento.rg"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> RG</span></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">Certidão de Casamento:</label> <a ng-href="testamento.casamento"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> Casamento</span></a>
+                            <label class="label-bold">CPF:</label> {{testamento.cpf | brCpf}}
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <label class="label-bold">Telefone:</label> {{testamento.telefone | brPhoneNumber}}
@@ -57,6 +49,9 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <label class="label-bold">Data/Hora:</label> {{testamento.data}}
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="label-bold">Agendamento:</label> {{testamento.agendamento}}
                         </div>
                     </div>
                 </div>

@@ -27,4 +27,32 @@ class ProcuracaoController extends BaseController{
         echo json_encode($res);
         exit;
     }
+
+    public function addProcuracao(Request $request) {
+        $procuracao = new \App\Data\Procuracao();
+
+        $res = $procuracao->addProcuracao($request->input('rg'), $request->input('cpf'),
+                                        date('Y-m-d H:i:s'), $request->input('cliente_id'));
+
+        echo json_encode($res);
+        exit;
+    }
+
+	public function getTiposProcuracao(Request $request) {
+		$tipos_procuracao = new \App\Data\Procuracao();
+
+		$res = $tipos_procuracao->getTiposProcuracao();
+
+		echo json_encode($res);
+		exit;
+	}
+
+	public function getDocumentosProcuracao(Request $request) {
+		$documentos_procuracao = new \App\Data\Procuracao();
+
+		$res = $documentos_procuracao->getDocumentosProcuracao($request->input('id'));
+
+		echo json_encode($res);
+		exit;
+	}
 }

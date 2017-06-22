@@ -30,4 +30,22 @@ class Controller extends BaseController{
         echo json_encode($res);
         exit;
     }
+
+    public function getFirma(Request $request) {
+		$pedido = new \App\Data\Utils();
+
+		$res = $pedido->getFirma($request->input('nome'), $request->input('cpf'));
+
+		echo json_encode($res);
+		exit;
+	}
+
+	public function historico(Request $request) {
+		$pedidos = new \App\Data\Utils();
+
+		$res = $pedidos->historico($request->input('user_id'));
+
+		echo json_encode($res);
+		exit;
+	}
 }

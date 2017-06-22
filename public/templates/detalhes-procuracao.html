@@ -31,6 +31,11 @@
                 </div>
                 <div class="x_content">
                     <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="label-bold">Tipo:</label> {{procuracao.nome_procuracao}}
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <label class="label-bold">Nome:</label> {{procuracao.nome}}
                         </div>
@@ -43,7 +48,7 @@
                             <label class="label-bold">RG:</label> {{procuracao.rg}} <a ng-href="procuracao.rg"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> RG</span></a>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label class="label-bold">CPF:</label> {{certidao.cpf}} <a ng-href="certidao.cpf"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
+                            <label class="label-bold">CPF:</label> {{certidao.cpf | brCpf}} <a ng-href="certidao.cpf"><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
                         </div>
                     </div>
                     <div class="row">

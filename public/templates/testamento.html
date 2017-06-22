@@ -36,7 +36,7 @@
                             <th>Nome</th>
                             <th class="text-center">Telefone</th>
                             <th class="text-center">Email</th>
-                            <th class="text-center">Documentos</th>
+                            <th class="text-center">Agendamento</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Ações</th>
                         </tr>
@@ -47,9 +47,7 @@
                             <td class="text-center">{{testamento.telefone | brPhoneNumber}}</td>
                             <td class="text-center">{{testamento.email}}</td>
                             <td class="text-center">
-                                <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> RG</span></a>
-                                <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
-                                <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> Casamento</span></a>
+                                {{testamento.agendamento}}
                             </td>
                             <td class="text-center">
                                 <span class="label" ng-class="{'label-danger': testamento.status == 'Aguardando',

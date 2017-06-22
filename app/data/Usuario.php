@@ -10,7 +10,7 @@ class Usuario extends Utils {
         $result = $this->checkPermissão('usuarios');
 
         if($result) {
-            return DB::select("SELECT u.`nome`, u.`email`, p.*  FROM `users` AS u INNER JOIN `permissao` AS p ON u.`id` = p.`users_id` WHERE u.`ativo` = 1");
+            return DB::select("SELECT u.`nome`, u.`email`, p.*  FROM `users` AS u INNER JOIN `permissao` AS p ON u.`id` = p.`user_id` WHERE u.`ativo` = 1");
 
         } else {
             $res['error'] = true;
@@ -23,7 +23,7 @@ class Usuario extends Utils {
         $result = $this->checkPermissão('usuarios');
 
         if($result) {
-            return DB::select("SELECT u.`nome`, u.`email`, p.*  FROM `users` AS u INNER JOIN `permissao` AS p ON u.`id` = p.`users_id` WHERE u.`id` = ?", [$id])[0];
+            return DB::select("SELECT u.`nome`, u.`email`, p.*  FROM `users` AS u INNER JOIN `permissao` AS p ON u.`id` = p.`user_id` WHERE u.`id` = ?", [$id])[0];
 
         } else {
             $res['error'] = true;
@@ -50,18 +50,18 @@ class Usuario extends Utils {
 
                 if ($response) {
 
-                    DB::update('UPDATE `users` AS u INNER JOIN `permissao` AS p ON u.id = p.users_id
+                    DB::update('UPDATE `users` AS u INNER JOIN `permissao` AS p ON u.id = p.user_id
                         SET u.`nome` = ?, u.`password` = ?, u.`remember_token` = ?, u.`ativo` = ?, u.`updated_at` = ?, p.`certidao` = ?, p.`procuracao` = ?, p.`testamento` = ?, p.`usuarios` = ?, p.`usuarios_add` = ?, p.`usuarios_editar` = ?, p.`usuarios_remover` = ?, p.`relatorios` = ?, p.`dashboard` = ? WHERE u.`email` = ?',
                     [$nome, $password, $remember_token, 1, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard, $email]);
 
                 } else {
 
-                    DB::insert('INSERT INTO `users` (`nome`, `email`, `password`, `remember_token`, `created_at`) VALUES (?, ?, ?, ?, ?)',
-                    [$nome, $email, $password, $remember_token, $date]);
+                    DB::insert('INSERT INTO `users` (`nome`, `email`, `password`, `remember_token`, `created_at`, `app`) VALUES (?, ?, ?, ?, ?, ?)',
+                    [$nome, $email, $password, $remember_token, $date, 0]);
 
                     $last_id = DB::getPdo()->lastInsertId();
 
-                    DB::insert('INSERT INTO `permissao` (`users_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    DB::insert('INSERT INTO `permissao` (`user_id`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                     [$last_id, $certidao, $procuracao, $testamento , $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard]);
 
                 }
@@ -82,6 +82,30 @@ class Usuario extends Utils {
         }
     }
 
+	public function addUsuarioApp($nome, $email, $cpf, $telefone, $senha, $token, $date) {
+
+		try {
+			$response = DB::select("SELECT * FROM `users` WHERE `email` = ?", [$email]);
+
+			if ($response) {
+				$res['error'] = true;
+				$res['message'] = 'Usuário ' . $email . ' já cadastrado.';
+				return $res;
+			}
+
+			DB::insert('INSERT INTO `users` (`nome`, `email`, `telefone`, `cpf`, `password`, `remember_token`, `created_at`, `login_default`, `app`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				[$nome, $email, $telefone, $cpf, $senha, $token, $date, 0, 1]);
+
+		} catch (\Exception $e) {
+			$res['error'] = true;
+			$res['message'] = 'Erro ao cadastrar o usuário';
+			return $res;
+		}
+
+		$res['error'] = false;
+		return $res;
+	}
+
     public function editarUsuario($users_id, $nome, $email, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard) {
 
         $result = $this->checkPermissão('usuarios_editar');
@@ -90,14 +114,14 @@ class Usuario extends Utils {
             try {
                 DB::beginTransaction();
 
-                $result = DB::select("SELECT * FROM `permissao` WHERE `users_id` = ?", [$users_id])[0];
+                $result = DB::select("SELECT * FROM `permissao` WHERE `user_id` = ?", [$users_id])[0];
 
                 if($result) {
                     DB::insert('INSERT INTO `log_permissao` (`permissao_id`,`users_id_responsavel`, `certidao`, `procuracao`, `testamento`, `usuarios`, `usuarios_add`, `usuarios_editar`, `usuarios_remover`, `relatorios`, `dashboard`, `data_hora`, `ip`, `proxy`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                     [$result->permissao_id, $this->getUserId()->id, $result->certidao, $result->procuracao, $result->testamento , $result->usuarios, $result->usuarios_add, $result->usuarios_editar, $result->usuarios_remover, $result->relatorios, $result->dashboard, $date, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR']]);
                 }
 
-                DB::update('UPDATE `users` AS u INNER JOIN `permissao` AS p ON u.id = p.users_id
+                DB::update('UPDATE `users` AS u INNER JOIN `permissao` AS p ON u.id = p.user_id
                     SET u.`nome` = ?, u.`email` = ?, u.`updated_at` = ?, p.`certidao` = ?, p.`procuracao` = ?, p.`testamento` = ?, p.`usuarios` = ?, p.`usuarios_add` = ?, p.`usuarios_editar` = ?, p.`usuarios_remover` = ?, p.`relatorios` = ?, p.`dashboard` = ? WHERE u.`id` = ?',
                 [$nome, $email, $date, $certidao, $procuracao, $testamento, $usuarios, $usuarios_add, $usuarios_editar, $usuarios_remover, $relatorios, $dashboard, $users_id]);
 
@@ -136,6 +160,6 @@ class Usuario extends Utils {
 
     public function logSession() {
         return DB::insert('INSERT INTO `log_session` (`user_id`, `ip`, `proxy`, `data_hora`) VALUES (?, ?, ?, ?)',
-        [$this->getUserId()->id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], date('Y-m-d h:i:s')]);
+        [$this->getUserId()->id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], date('Y-m-d H:i:s')]);
     }
 }

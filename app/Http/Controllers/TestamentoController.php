@@ -27,4 +27,14 @@ class TestamentoController extends BaseController{
         echo json_encode($res);
         exit;
     }
+
+    public function addTestamento(Request $request) {
+        $testamento = new \App\Data\Testamento();
+
+        $res = $testamento->addTestamento($request->input('rg'), $request->input('cpf'), $request->input('casamento'),
+                                        date('Y-m-d H:i:s'), $request->input('cliente_id'));
+
+        echo json_encode($res);
+        exit;
+    }
 }

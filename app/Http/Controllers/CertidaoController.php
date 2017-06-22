@@ -31,9 +31,9 @@ class CertidaoController extends BaseController{
     public function addCertidao(Request $request) {
         $certidao = new \App\Data\Certidao();
 
-        $res = $certidao->addCertidao($request->input('tipo'), $request->input('ato'), $request->input('livro'),
+        $res = $certidao->addCertidao($request->input('ato'), $request->input('livro'),
                                         $request->input('folha'), $request->input('outorgante'), $request->input('outorgado'),
-                                        date('Y-m-d h:i:s'), $request->input('cliente_id'));
+                                        date('Y-m-d H:i:s'), $request->input('user_id'));
 
         echo json_encode($res);
         exit;

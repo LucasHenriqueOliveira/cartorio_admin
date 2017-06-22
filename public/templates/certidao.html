@@ -46,7 +46,7 @@
                             <td>{{certidao.nome}}</td>
                             <td class="text-center">{{certidao.telefone | brPhoneNumber}}</td>
                             <td class="text-center">{{certidao.email}}</td>
-                            <td class="text-center">{{certidao.cpf}}</td>
+                            <td class="text-center">{{certidao.cpf | brCpf}}</td>
                             <td class="text-center">
                                 <span class="label" ng-class="{'label-danger': certidao.status == 'Aguardando',
                                 'label-warning': certidao.status == 'Em análise',

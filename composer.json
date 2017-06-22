@@ -1,5 +1,5 @@
 {
-    "name": "PublisherDesk",
+    "name": "CartorioApp",
     "require": {
         "php": ">=5.6.4",
         "laravel/lumen-framework": "5.3.*",

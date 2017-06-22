@@ -1,7 +1,7 @@
 {
-  "name": "publisher-desk",
+  "name": "cartorioapp",
   "version": "1.0.0",
-  "description": "Publisher Desk",
+  "description": "Cartorio App",
   "readme": "README.md",
   "dependencies": {
     "bower": "^1.8.0",

@@ -61,7 +61,7 @@ class Dashboard extends Utils {
 
         // Testamentos
         $result = $this->checkPermissão('testamento');
-        $procuracoes = '';
+		$testamentos = '';
         if($result) {
             $testamentos = $this->getPedidosDashboard('Testamento');
             foreach ($testamentos as $pedido) {
