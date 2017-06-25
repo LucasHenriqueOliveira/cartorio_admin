@@ -94,6 +94,11 @@ $api->version('v1', function ($api) {
         'as' => 'api.testamento'
     ]);
 
+	$api->get('/testamento/datas', [
+		'uses' => 'App\Http\Controllers\TestamentoController@getDatasTestamento',
+		'as' => 'api.datas.testamento'
+	]);
+
     // movimentar
     $api->post('/movimentar', [
         'uses' => 'App\Http\Controllers\Controller@movimentar',

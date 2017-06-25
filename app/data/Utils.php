@@ -89,4 +89,13 @@ class Utils {
 	public function historico($id) {
 		return DB::select("SELECT tipo, status, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y') as data, DATE_FORMAT(p.`data_hora`, '%H:%i') as hora FROM `pedido` AS p WHERE p.`user_id` = ? ORDER BY p.`data_hora` DESC LIMIT 5", [$id]);
 	}
+
+	public function checkCalendarioRestricao($data, $hora) {
+		return DB::select("SELECT * FROM `calendario_restricoes` WHERE `data` = ? AND `hora` = ?", [$data, $hora])[0];
+	}
+
+	public function addCalendarioRestricao($data, $hora) {
+		return DB::insert('INSERT INTO `calendario_restricoes` (`data`, `hora`) VALUES (?, ?)',
+			[$data, $hora]);
+	}
 }
