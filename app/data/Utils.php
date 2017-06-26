@@ -43,7 +43,7 @@ class Utils {
     }
 
     public function getStatus($id) {
-        return DB::select("SELECT `status` FROM `pedido` WHERE `pedido_id` = ?", [$id])[0];
+        return DB::select("SELECT * FROM `pedido` WHERE `pedido_id` = ?", [$id])[0];
     }
 
     public function checkPermissão($tipo) {

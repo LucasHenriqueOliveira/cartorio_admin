@@ -167,6 +167,7 @@ class Usuario extends Utils {
 		$texto = '<br /> Prezado(a) ' . $nome . ',';
 		$texto .= '<br /><br />O seu cadastro no Cartório App foi realizado com sucesso!';
 		$texto .= '<br /><br /> Att, <br />Cartório App';
+		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		$this->sendEmail($email, 'Cadastro de Usuário', $texto);
 	}
 }

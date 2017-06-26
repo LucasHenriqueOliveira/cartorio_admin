@@ -95,6 +95,7 @@ class Testamento extends Utils {
 		$texto .= '<br /><br />O seu pedido de agendamento de entrevista de testamento está confirmado!';
 		$texto .= '<br /><br /> Compareça ao cartório no dia '.$data.' às '.$hora.'.';
 		$texto .= '<br /><br /> Att, <br />Cartório App';
+		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		$this->sendEmail($user->email, 'Agendamento de Testamento', $texto);
 	}
 

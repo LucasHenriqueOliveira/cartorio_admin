@@ -37,6 +37,9 @@ class Pedido extends Utils {
 
                     $this->logStatus($pedido_id, $pedido->status, 'Pronto', date('Y-m-d H:i:s'));
                     $this->atualizarStatus($pedido_id, 'Pronto');
+					if($pedido->tipo != 'Testamento') {
+						$this->email($pedido->user_id, $pedido->tipo);
+					}
                     break;
                 case 'Realizar a entrega':
                     $pedido = $this->getStatus($pedido_id);
@@ -73,4 +76,13 @@ class Pedido extends Utils {
             return $res;
         }
     }
+
+	public function email($user_id, $tipo) {
+		$user = $this->getUser($user_id);
+		$texto = '<br /> Prezado(a) '.$user->nome.',';
+		$texto .= '<br /><br />O seu pedido de '.$tipo.' está pronto!';
+		$texto .= '<br /><br /> Att, <br />Cartório App';
+		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
+		$this->sendEmail($user->email, 'Pedido Pronto', $texto);
+	}
 }

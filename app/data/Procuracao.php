@@ -59,6 +59,7 @@ class Procuracao extends Utils {
 		$texto .= '<br /><br />O seu pedido de procuração está confirmado!';
 		$texto .= '<br /><br /> Acompanhe o andamento do seu pedido pelo aplicativo. Você receberá um email quando o documento estiver pronto.';
 		$texto .= '<br /><br /> Att, <br />Cartório App';
+		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		$this->sendEmail($user->email, 'Solicitação de Procuração', $texto);
 	}
 }
