@@ -104,13 +104,19 @@ class Utils {
 			[$data, $hora]);
 	}
 
+	public function formatDateBr($date) {
+		$newDate = explode( "-" , $date);
+		return $newDate[2]."/".$newDate[1]."/".$newDate[0];
+	}
+
 	public function sendEmail($email, $assunto, $texto) {
 		$mg = Mailgun::create(getenv("MAILGUN_KEY"));
 
 		$mg->messages()->send(getenv("MAILGUN_DOMAIN"), [
+			'from' => "CartorioApp <postmaster@cartorioapp.com>",
 			'to'      => $email,
 			'subject' => $assunto,
-			'text'    => $texto
+			'html'    => $texto
 		]);
 	}
 }

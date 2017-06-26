@@ -56,6 +56,7 @@ class UsuarioController extends BaseController{
 			str_random(10), date('Y-m-d H:i:s'));
 
 		$res = $this->getToken($request);
+		$usuario->email($request->input('nome'),$request->input('email'));
 
 		echo json_encode($res);
 		exit;

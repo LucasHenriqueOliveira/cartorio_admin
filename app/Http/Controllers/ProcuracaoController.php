@@ -34,6 +34,8 @@ class ProcuracaoController extends BaseController{
         $res = $procuracao->addProcuracao($request->input('rg'), $request->input('cpf'),
                                         date('Y-m-d H:i:s'), $request->input('cliente_id'));
 
+		$procuracao->email($request->input('user_id'));
+
         echo json_encode($res);
         exit;
     }

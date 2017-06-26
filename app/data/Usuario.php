@@ -162,4 +162,11 @@ class Usuario extends Utils {
         return DB::insert('INSERT INTO `log_session` (`user_id`, `ip`, `proxy`, `data_hora`) VALUES (?, ?, ?, ?)',
         [$this->getUserId()->id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], date('Y-m-d H:i:s')]);
     }
+
+	public function email($nome, $email) {
+		$texto = '<br /> Prezado(a) ' . $nome . ',';
+		$texto .= '<br /><br />O seu cadastro no Cartório App foi realizado com sucesso!';
+		$texto .= '<br /><br /> Att, <br />Cartório App';
+		$this->sendEmail($email, 'Cadastro de Usuário', $texto);
+	}
 }
