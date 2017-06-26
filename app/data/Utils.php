@@ -4,6 +4,7 @@ namespace App\Data;
 
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Mailgun\Mailgun;
 
 class Utils {
 
@@ -54,6 +55,10 @@ class Utils {
         return JWTAuth::parseToken()->authenticate();
     }
 
+	public function getUser($id) {
+		return DB::select("SELECT * FROM `users` WHERE `id` = ?", [$id])[0];
+	}
+
     public function addPedido($tipo, $ato, $livro, $folha, $outorgante, $outorgado, $date, $user_id, $status) {
 		DB::insert('INSERT INTO `pedido` (`tipo`, `ato`, `livro`, `folha`, `outorgante`, `outorgado`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			[$tipo, $ato, $livro, $folha, $outorgante, $outorgado, $date, $user_id, $status]);
@@ -97,5 +102,15 @@ class Utils {
 	public function addCalendarioRestricao($data, $hora) {
 		return DB::insert('INSERT INTO `calendario_restricoes` (`data`, `hora`) VALUES (?, ?)',
 			[$data, $hora]);
+	}
+
+	public function sendEmail($email, $assunto, $texto) {
+		$mg = Mailgun::create(getenv("MAILGUN_KEY"));
+
+		$mg->messages()->send(getenv("MAILGUN_DOMAIN"), [
+			'to'      => $email,
+			'subject' => $assunto,
+			'text'    => $texto
+		]);
 	}
 }

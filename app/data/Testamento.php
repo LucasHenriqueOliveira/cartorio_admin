@@ -51,8 +51,14 @@ class Testamento extends Utils {
 
 		$this->addCalendarioRestricao($date, $hour);
 
-        return DB::insert('INSERT INTO `pedido` (`tipo`, `data_hora`, `user_id`, `agendamento`, `status`) VALUES (?, ?, ?, ?, ?)',
+        DB::insert('INSERT INTO `pedido` (`tipo`, `data_hora`, `user_id`, `agendamento`, `status`) VALUES (?, ?, ?, ?, ?)',
         ['Testamento', date('Y-m-d H:i:s'), $user_id, $date.' '. $hour, 'Aguardando']);
+
+		$pedido_id = DB::getPdo()->lastInsertId();
+		$descricao = 'Agendamento de Entrevista';
+
+		return DB::insert('INSERT INTO `movimentacao` (`pedido_id`, `user_id`, `data_hora`, `sequencia`, `descricao`) VALUES (?, ?, ?, ?, ?)',
+			[$pedido_id, $user_id, date('Y-m-d H:i:s'), 1, $descricao]);
     }
 
 	public function getDatasTestamento() {
@@ -80,6 +86,13 @@ class Testamento extends Utils {
 			}
 		}
 		return $arr;
+	}
+
+	public function email($user_id, $data, $hora) {
+		$user = $this->getUser($user_id);
+		$texto = 'Confirmado o agendamento da entrevista de testamento no dia '.$data.' às '.$hora;
+		$texto .= '<br /><br /> Cartório App';
+		$this->sendEmail($user->email, 'Agendamento de Testamento', $texto);
 	}
 
 	private function getWednesday($day) {
