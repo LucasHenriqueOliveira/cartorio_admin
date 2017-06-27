@@ -130,8 +130,11 @@ class UsuarioController extends BaseController{
 	public function signupUsuarioSocial(Request $request) {
 		$usuario = new \App\Data\Usuario();
 
-		$res = $usuario->signupUsuarioSocial($request->input('id'), $request->input('nome'), $request->input('email'),
+		$usuario->signupUsuarioSocial($request->input('id'), $request->input('nome'), $request->input('email'),
 			$request->input('tipo'), $request->input('telefone'), $request->input('cpf'), str_random(10), date('Y-m-d H:i:s'));
+
+		$result = $usuario->checkUsuarioSocial($request->input('id'), $request->input('email'), $request->input('tipo'));
+		$res = $this->getTokenSocial($result[0]);
 
 		echo json_encode($res);
 		exit;

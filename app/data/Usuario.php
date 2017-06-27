@@ -177,5 +177,17 @@ class Usuario extends Utils {
 
 	public function signupUsuarioSocial($id, $nome, $email, $tipo, $telefone, $cpf, $remember_token, $date) {
 
+		$result = DB::select("SELECT * FROM `users` WHERE `email` = ?", [$email])[0];
+
+		if($result) {
+			DB::insert('INSERT INTO `auth` (`user_id`, `tipo`, `valor`) VALUES (?, ?, ?)', [$result->id, $tipo, $id]);
+		} else {
+			DB::insert('UPDATE `users` AS u SET u.`nome` = ?, u.`email` = ?, u.`created_at` = ?, u.`remember_token` = ?, u.`cpf` = ?, u.`telefone` = ?, u.`app` = ?',
+				[$nome, $email, $date, $remember_token, $cpf, $telefone, 1]);
+
+			$user_id = DB::getPdo()->lastInsertId();
+
+			DB::insert('INSERT INTO `auth` (`user_id`, `tipo`, `valor`) VALUES (?, ?, ?)', [$user_id, $tipo, $id]);
+		}
 	}
 }
