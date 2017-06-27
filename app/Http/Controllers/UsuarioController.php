@@ -117,6 +117,10 @@ class UsuarioController extends BaseController{
 
 		if(count($res)) {
 			$res = $this->getTokenSocial($res[0]);
+		} else {
+			$res = [
+				'message' => 'not_user'
+			];
 		}
 
 		echo json_encode($res);
