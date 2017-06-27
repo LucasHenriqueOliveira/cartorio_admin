@@ -182,7 +182,7 @@ class Usuario extends Utils {
 		if($result) {
 			DB::insert('INSERT INTO `auth` (`user_id`, `tipo`, `valor`) VALUES (?, ?, ?)', [$result->id, $tipo, $id]);
 		} else {
-			DB::insert('UPDATE `users` AS u SET u.`nome` = ?, u.`email` = ?, u.`created_at` = ?, u.`remember_token` = ?, u.`cpf` = ?, u.`telefone` = ?, u.`app` = ?',
+			DB::insert('INSERT INTO `users` (`nome`, `email`, `created_at`, `remember_token`, `cpf`, `telefone`, `app`) VALUES (?, ?, ?, ?, ?, ?, ?)',
 				[$nome, $email, $date, $remember_token, $cpf, $telefone, 1]);
 
 			$user_id = DB::getPdo()->lastInsertId();
