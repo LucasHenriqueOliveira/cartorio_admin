@@ -140,6 +140,16 @@ $api->version('v1', function ($api) {
 		'as' => 'api.usuario'
 	]);
 
+	$api->post('/check-social', [
+		'uses' => 'App\Http\Controllers\UsuarioController@checkUsuarioSocial',
+		'as' => 'api.check.usuario'
+	]);
+
+	$api->post('/signup-social', [
+		'uses' => 'App\Http\Controllers\UsuarioController@signupUsuarioSocial',
+		'as' => 'api.signup.usuario'
+	]);
+
     $api->put('/usuario', [
         'uses' => 'App\Http\Controllers\UsuarioController@editarUsuario',
         'as' => 'api.usuario'

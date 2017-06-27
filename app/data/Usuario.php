@@ -170,4 +170,12 @@ class Usuario extends Utils {
 		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		$this->sendEmail($email, 'Cadastro de Usuário', $texto);
 	}
+
+	public function checkUsuarioSocial($id, $email, $tipo) {
+		return DB::select("SELECT * FROM `users` AS p INNER JOIN `auth` AS a ON p.`id` = a.`user_id` WHERE p.`email` = ? AND a.`tipo` = ? AND a.`valor` = ? LIMIT 1", [$email, $tipo, $id]);
+	}
+
+	public function signupUsuarioSocial($id, $nome, $email, $tipo, $telefone, $cpf, $remember_token, $date) {
+
+	}
 }

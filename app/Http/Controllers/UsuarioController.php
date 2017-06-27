@@ -87,6 +87,52 @@ class UsuarioController extends BaseController{
 		];
 	}
 
+	protected function getTokenSocial($user) {
+		try {
+			// Attempt to verify the credentials and create a token for the user
+			if (!$token = JWTAuth::fromUser($user)) {
+				return new JsonResponse([
+					'message' => 'invalid_credentials'
+				], Response::HTTP_UNAUTHORIZED);
+			}
+		} catch (JWTException $e) {
+			// Something went wrong whilst attempting to encode the token
+			return new JsonResponse([
+				'message' => 'could_not_create_token'
+			], Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+
+		return [
+			'message' => 'token_generated',
+			'data' => [
+				'token' => $token,
+			]
+		];
+	}
+
+	public function checkUsuarioSocial(Request $request) {
+		$usuario = new \App\Data\Usuario();
+
+		$res = $usuario->checkUsuarioSocial($request->input('id'), $request->input('email'), $request->input('tipo'));
+
+		if(count($res)) {
+			$res = $this->getTokenSocial($res[0]);
+		}
+
+		echo json_encode($res);
+		exit;
+	}
+
+	public function signupUsuarioSocial(Request $request) {
+		$usuario = new \App\Data\Usuario();
+
+		$res = $usuario->signupUsuarioSocial($request->input('id'), $request->input('nome'), $request->input('email'),
+			$request->input('tipo'), $request->input('telefone'), $request->input('cpf'), str_random(10), date('Y-m-d H:i:s'));
+
+		echo json_encode($res);
+		exit;
+	}
+
 	protected function getCredentials(Request $request) {
 		return $request->only('email', 'password');
 	}
