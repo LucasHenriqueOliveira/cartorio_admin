@@ -10,7 +10,8 @@
         "flipbox/lumen-generator": "^5.3",
         "mailgun/mailgun-php": "^2.3",
         "php-http/guzzle6-adapter": "^1.1",
-        "php-http/message": "^1.5"
+        "php-http/message": "^1.5",
+        "aws/aws-sdk-php-laravel": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -5,6 +5,7 @@ namespace App\Data;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Mailgun\Mailgun;
+use Aws\S3\S3Client;
 
 class Utils {
 
@@ -118,5 +119,78 @@ class Utils {
 			'subject' => $assunto,
 			'html'    => $texto
 		]);
+	}
+
+	public function uploadBase64($content, $name, $pedido_id) {
+		if($content){
+			$content = explode(',', $content);
+			$content = str_replace(' ', '+', $content);
+			$data = base64_decode($content[1]);
+			$extension = $this->getImageMimeType($data);
+
+			if($extension){
+				$cartorio = getenv("cartorio");
+				$path = $cartorio . '/' . $pedido_id . '/' . $name . '.' . $extension;
+				return $this->uploadToS3($data, ['path'=>$path,'extension'=>$extension]);
+			}
+		}
+		return false;
+	}
+
+	public static function uploadToS3($data, $params=[]) {
+		$temp = tempnam('/tmp','image');
+		$success = file_put_contents($temp, $data);
+		rename($temp, $temp.'.'.$params['extension']);
+		$file = $temp.'.'.$params['extension'];
+		$fileInfo = pathinfo($file);
+		$fullPath = trim($fileInfo['dirname'].'/'.$fileInfo['basename']);
+		$fileName = trim($fileInfo['basename']);
+		$body = fopen($fullPath, 'r');
+		$path = ( $params['path'] ) ? $params['path'] : $fileName;
+
+		$options = [
+			'region' => getenv("AWS_REGION"),
+			'version' => 'latest'
+		];
+
+		$s3 = new S3Client($options);
+
+		try {
+			$s3->putObject(array(
+				'Bucket' => getenv("AWS_BUCKET"),
+				'Key' => $path,
+				'Body' => $body,
+				'ACL' => 'public-read'
+			));
+			unlink($temp.'.'.$params['extension']);
+		} catch (Aws\S3\Exception\S3Exception $e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function getBytesFromHexString($hexdata){
+		for($count = 0; $count < strlen($hexdata); $count+=2)
+			$bytes[] = chr(hexdec(substr($hexdata, $count, 2)));
+		return implode($bytes);
+	}
+
+	public function getImageMimeType($imagedata){
+		$imagemimetypes = array(
+			"jpeg" => "FFD8",
+			"png" => "89504E470D0A1A0A",
+			"gif" => "474946",
+			"bmp" => "424D",
+			"tiff" => "4949",
+			"tiff" => "4D4D"
+		);
+		foreach ($imagemimetypes as $mime => $hexbytes){
+			$bytes = $this->getBytesFromHexString($hexbytes);
+			if (substr($imagedata, 0, strlen($bytes)) == $bytes)
+				return $mime;
+		}
+
+		return NULL;
 	}
 }

@@ -40,9 +40,35 @@ class Procuracao extends Utils {
         }
     }
 
-    public function addProcuracao($rg, $cpf, $date, $user_id) {
-        return DB::insert('INSERT INTO `pedido` (`tipo`, `rg`, `cpf`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?, ?)',
-        ['Procuração', $rg, $cpf, $date, $user_id, 'Aguardando']);
+    public function addProcuracao($tipo, $files, $date, $user_id) {
+
+		try {
+			$documentos = $this->getDocumentosProcuracao($tipo['tipo_procuracao_id']);
+
+			$res = DB::insert('INSERT INTO `pedido` (`tipo`, `tipo_procuracao`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?)',
+			['Procuração', $tipo['tipo_procuracao_id'], $date, $user_id, 'Aguardando']);
+
+			$pedido_id = DB::getPdo()->lastInsertId();
+
+			DB::insert('INSERT INTO `movimentacao` (`pedido_id`, `user_id`, `data_hora`, `sequencia`, `descricao`) VALUES (?, ?, ?, ?, ?)',
+				[$pedido_id, $user_id, $date, 1, 'Solicitação de Procuração']);
+
+			foreach ($documentos as $documento) {
+				$result = $this->uploadBase64($files[$documento->nome_campo], $documento->nome_campo, $pedido_id);
+
+				if(!$result) {
+					$res['error'] = true;
+					$res['message'] = 'Erro ao solicitar a Procuração';
+					return $res;
+				}
+			}
+			return $res;
+
+		} catch (\Exception $e) {
+			$res['error'] = true;
+			$res['message'] = 'Erro ao solicitar a Procuração';
+			return $res;
+		}
     }
 
 	public function getTiposProcuracao() {

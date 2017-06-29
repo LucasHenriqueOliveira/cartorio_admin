@@ -31,8 +31,8 @@ class ProcuracaoController extends BaseController{
     public function addProcuracao(Request $request) {
         $procuracao = new \App\Data\Procuracao();
 
-        $res = $procuracao->addProcuracao($request->input('rg'), $request->input('cpf'),
-                                        date('Y-m-d H:i:s'), $request->input('cliente_id'));
+        $res = $procuracao->addProcuracao($request->input('tipo'), $request->input('files'),
+                                        date('Y-m-d H:i:s'), $request->input('user_id'));
 
 		$procuracao->email($request->input('user_id'));
 
