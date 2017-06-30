@@ -74,6 +74,7 @@ class Utils {
 	public function getFirma($nome, $cpf) {
 		$search = "";
 		if($nome) {
+			$nome = strtoupper($nome);
 			$search .= " AND nome LIKE '%$nome%' ";
 		}
 		if($cpf) {
