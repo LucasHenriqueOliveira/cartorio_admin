@@ -193,4 +193,27 @@ class Utils {
 
 		return NULL;
 	}
+
+	public function script() {
+		ini_set('max_execution_time', 300);
+
+		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes 2017-06-29 18;05;12.csv");
+		$rows = explode("\n",$data);
+		foreach($rows as $row) {
+			$string = str_getcsv($row)[0];
+			$pos = strpos($string, ';');
+
+			if($pos) {
+				$data = explode(";", $string);
+
+				if($data[0] && trim($data[1])) {
+					DB::insert('INSERT INTO `firma` (`cpf`, `nome`, `data_hora`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE `data_hora`= "'.date('Y-m-d H:i:s').'"', [trim($data[1]), utf8_encode($data[0]), date('Y-m-d H:i:s')]);
+				}
+			}
+		}
+
+		return [
+			'message' => 'Firmas cadastradas.'
+		];
+	}
 }

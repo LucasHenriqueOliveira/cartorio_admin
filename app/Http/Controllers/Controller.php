@@ -48,4 +48,13 @@ class Controller extends BaseController{
 		echo json_encode($res);
 		exit;
 	}
+
+	public function script(Request $request) {
+		$pedidos = new \App\Data\Utils();
+
+		$res = $pedidos->script();
+
+		echo json_encode($res);
+		exit;
+	}
 }

@@ -192,6 +192,11 @@ $api->version('v1', function ($api) {
         die('/auth/login');
     });
 
+	// script
+	$api->get('/dev/script', [
+		'uses' => 'App\Http\Controllers\Controller@script',
+		'as' => 'api.script'
+	]);
 
     $api->group([
         'middleware' => 'api.auth',
