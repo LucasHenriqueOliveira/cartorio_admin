@@ -92,7 +92,12 @@ class Testamento extends Utils {
 		$user = $this->getUser($user_id);
 		$data = $this->formatDateBr($data);
 		$texto = '<br /> Prezado(a) '.$user->nome.',';
-		$texto .= '<br /><br />O seu pedido de agendamento de entrevista de testamento está confirmado!';
+		$texto .= '<br /><br />O seu pedido de agendamento de entrevista de testamento está confirmado no '.getenv('nome_cartorio').'!';
+		$texto .= '<br /><br />Endereço: ';
+		$texto .= '<br />'.getenv('endereco_cartorio');
+		$texto .= '<br />'.getenv('cidade_cartorio');
+		$texto .= '<br /> Telefone: '.getenv('telefone_cartorio');
+		$texto .= '<br /> Atendimento de '.getenv('atendimento_cartorio');
 		$texto .= '<br /><br /> Compareça ao cartório no dia '.$data.' às '.$hora.'.';
 		$texto .= '<br /><br /> Att, <br />Cartório App';
 		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
