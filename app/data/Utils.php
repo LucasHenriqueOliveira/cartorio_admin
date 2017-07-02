@@ -75,7 +75,7 @@ class Utils {
 		$search = "";
 		if($nome) {
 			$nome = strtoupper($nome);
-			$search .= " AND nome LIKE '%$nome%' ";
+			$search .= " AND nome = '$nome' ";
 		}
 		if($cpf) {
 			$search .= " AND cpf = '$cpf' ";
