@@ -17,13 +17,19 @@
                     App.token = res.data.token;
                     $localStorage.set('token', res.data.token);
 
-                    User.getUser(function (res) {
+                    User.getUser({desk: 1},function (res) {
+                        if(res.error) {
+                            App.clearData();
+                            $rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
+                            return false;
+                        }
                         App.user = res.data;
                         $localStorage.setObject('user', App.user);
                         $rootScope.$broadcast('user', App.user);
                         $location.path('/dashboard');
                     }, function (error) {
                         // error
+                        App.clearData();
                         $rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
                     });
                 }, function (error) {
@@ -33,7 +39,12 @@
             },
             isAuthenticated: function(){
                 if (!App.user) {
-                    User.getUser(function (res) {
+                    User.getUser({desk: 1},function (res) {
+                        if(res.error) {
+                            App.clearData();
+                            $rootScope.$broadcast('error-login', {message: 'Usuário não encontrado!'});
+                            return false;
+                        }
                         App.user = res.data;
                         $localStorage.setObject('user', App.user);
                         $rootScope.$broadcast('user', App.user);

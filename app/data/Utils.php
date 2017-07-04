@@ -168,7 +168,34 @@ class Utils {
 			return false;
 		}
 
-		return true;
+		return $params['path'];
+	}
+
+	public function getUrl($path) {
+		$options = [
+			'region' => getenv("AWS_REGION"),
+			'version' => 'latest'
+		];
+
+		$s3 = new S3Client($options);
+
+		$signedUrl = $s3->getCommand('GetObject',[
+			'Bucket' => getenv("AWS_BUCKET"),
+			'Key'    => $path
+		]);
+		$request = $s3->createPresignedRequest($signedUrl, '+30 minutes');
+		$presignedUrl = (string) $request->getUri();
+
+		if($presignedUrl) {
+			return [
+				'url' => $presignedUrl
+			];
+		} else {
+			return [
+				'error' => true,
+				'message' => 'Documento não encontrado!'
+			];
+		}
 	}
 
 	public function getBytesFromHexString($hexdata){

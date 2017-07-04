@@ -38,9 +38,15 @@ class Usuario extends Utils {
 
         if($result) {
             try {
-                $response = DB::select("SELECT * FROM `users` WHERE `email` = ? AND `ativo` = ?", [$email, 1]);
+                $response = DB::select("SELECT * FROM `users` WHERE `email` = ? AND `ativo` = ?", [$email, 1])[0];
 
                 if ($response) {
+					if($response->app) {
+						DB::update('UPDATE `users` SET `app` = ? WHERE `users_id` = ?', [0, $response->users_id]);
+						$res['error'] = false;
+						$res['message'] = 'Usuário adicionado com sucesso!';
+						return $res;
+					}
                     $res['error'] = true;
                     $res['message'] = 'Usuário ' . $email . ' já cadastrado.';
                     return $res;
@@ -165,7 +171,7 @@ class Usuario extends Utils {
 
 	public function email($nome, $email) {
 		$texto = '<br /> Prezado(a) ' . $nome . ',';
-		$texto .= '<br /><br />O seu cadastro no Cartório App foi realizado com sucesso!';
+		$texto .= '<br /><br />O seu cadastro no '.getenv("nome_cartorio").' - Cartório App foi realizado com sucesso!';
 		$texto .= '<br /><br /> Att, <br />Cartório App';
 		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		$this->sendEmail($email, 'Cadastro de Usuário', $texto);
@@ -182,8 +188,8 @@ class Usuario extends Utils {
 		if($result) {
 			DB::insert('INSERT INTO `auth` (`user_id`, `tipo`, `valor`) VALUES (?, ?, ?)', [$result->id, $tipo, $id]);
 		} else {
-			DB::insert('INSERT INTO `users` (`nome`, `email`, `created_at`, `remember_token`, `cpf`, `telefone`, `app`) VALUES (?, ?, ?, ?, ?, ?, ?)',
-				[$nome, $email, $date, $remember_token, $cpf, $telefone, 1]);
+			DB::insert('INSERT INTO `users` (`nome`, `email`, `created_at`, `remember_token`, `cpf`, `telefone`, `app`, `login_default`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+				[$nome, $email, $date, $remember_token, $cpf, $telefone, 1, 0]);
 
 			$user_id = DB::getPdo()->lastInsertId();
 

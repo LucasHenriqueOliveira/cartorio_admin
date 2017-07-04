@@ -54,12 +54,9 @@ class Procuracao extends Utils {
 				[$pedido_id, $user_id, $date, 1, 'Solicitação de Procuração']);
 
 			foreach ($documentos as $documento) {
-				$result = $this->uploadBase64($files[$documento->nome_campo], $documento->nome_campo, $pedido_id);
-
-				if(!$result) {
-					$res['error'] = true;
-					$res['message'] = 'Erro ao solicitar a Procuração';
-					return $res;
+				$path = $this->uploadBase64($files[$documento->nome_campo], $documento->nome_campo, $pedido_id);
+				if($path) {
+					DB::update('UPDATE `pedido` SET '.$documento->nome_campo.' = ? WHERE `pedido_id` = ?', [$path, $pedido_id]);
 				}
 			}
 			return $res;
@@ -92,5 +89,11 @@ class Procuracao extends Utils {
 		$texto .= '<br /><br /> Att, <br />Cartório App';
 		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		$this->sendEmail($user->email, 'Solicitação de Procuração', $texto);
+	}
+
+	public function getDocumento($documento, $pedido_id) {
+		$result = DB::select("SELECT $documento FROM `pedido` WHERE `pedido_id` = ?", [$pedido_id])[0];
+		$documento = $result->{$documento};
+		return $this->getUrl($documento);
 	}
 }

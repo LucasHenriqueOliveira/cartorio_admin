@@ -73,6 +73,24 @@
                 });
             });
         };
+
+        $scope.getDocumento = function(documento) {
+            var data = {
+                documento: documento,
+                pedido_id: $scope.procuracao.pedido_id
+            };
+
+            DataService.getDocumento(data).then(function(response) {
+                if(response.error) {
+                    toastr.error(response.message, 'Documento', {timeOut: 4000});
+                } else {
+                    var a = document.createElement("a");
+                    a.target = "_blank";
+                    a.href = response.url;
+                    a.click();
+                }
+            });
+        }
     }
 
 })();

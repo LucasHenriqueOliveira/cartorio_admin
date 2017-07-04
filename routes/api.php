@@ -62,6 +62,11 @@ $api->version('v1', function ($api) {
         'as' => 'api.procuracao'
     ]);
 
+	$api->get('/procuracao/documento', [
+		'uses' => 'App\Http\Controllers\ProcuracaoController@getDocumento',
+		'as' => 'api.documento.procuracao'
+	]);
+
 	$api->get('/procuracao/tipos', [
 		'uses' => 'App\Http\Controllers\ProcuracaoController@getTiposProcuracao',
 		'as' => 'api.tipos.procuracao'

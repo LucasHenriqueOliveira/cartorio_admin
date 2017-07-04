@@ -160,7 +160,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getUser()
+    public function getUser(Request $request)
     {
         $usuario = new \App\Data\Usuario();
         $usuario->logSession();
@@ -171,6 +171,12 @@ class AuthController extends Controller
 		if(!$data->app) {
 			$permissao = $user->getPermissions($data->id);
 			$data->permissao = $permissao;
+		} else {
+			if($request->input('desk')) {
+				return new JsonResponse([
+					'error' => true
+				]);
+			}
 		}
 
         return new JsonResponse([

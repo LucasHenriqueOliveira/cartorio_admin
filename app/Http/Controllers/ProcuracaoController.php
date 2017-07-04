@@ -57,4 +57,13 @@ class ProcuracaoController extends BaseController{
 		echo json_encode($res);
 		exit;
 	}
+
+	public function getDocumento(Request $request) {
+		$documento_procuracao = new \App\Data\Procuracao();
+
+		$res = $documento_procuracao->getDocumento($request->input('documento'), $request->input('pedido_id'));
+
+		echo json_encode($res);
+		exit;
+	}
 }

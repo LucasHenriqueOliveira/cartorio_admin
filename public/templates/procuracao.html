@@ -36,7 +36,6 @@
                             <th>Nome</th>
                             <th class="text-center">Telefone</th>
                             <th class="text-center">Email</th>
-                            <th class="text-center">Documentos</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Ações</th>
                         </tr>
@@ -46,10 +45,6 @@
                             <td>{{procuracao.nome}}</td>
                             <td class="text-center">{{procuracao.telefone | brPhoneNumber}}</td>
                             <td class="text-center">{{procuracao.email}}</td>
-                            <td class="text-center">
-                                <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> RG</span></a>
-                                <a href=""><span class="label label-default"><span class="glyphicon glyphicon-save"></span> CPF</span></a>
-                            </td>
                             <td class="text-center">
                                 <span class="label" ng-class="{'label-danger': procuracao.status == 'Aguardando',
                                 'label-warning': procuracao.status == 'Em análise',
