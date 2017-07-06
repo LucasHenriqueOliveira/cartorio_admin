@@ -147,7 +147,7 @@ class UsuarioController extends BaseController{
     public function editarUsuario(Request $request) {
         $usuario = new \App\Data\Usuario();
 
-        $res = $usuario->editarUsuario($request->input('users_id'), $request->input('nome'),$request->input('email'),
+        $res = $usuario->editarUsuario($request->input('user_id'), $request->input('nome'),$request->input('email'),
                                        date('Y-m-d H:i:s'), $request->input('certidao'), $request->input('procuracao'),
                                        $request->input('testamento'), $request->input('usuarios'), $request->input('usuarios_add'),
                                        $request->input('usuarios_editar'), $request->input('usuarios_remover'),

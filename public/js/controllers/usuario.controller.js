@@ -17,7 +17,7 @@
         }
 
         $scope.salvar = function(usuario) {
-            if(usuario.users_id) {
+            if(usuario.user_id) {
                 DataService.editarUsuario(usuario).then(function(response) {
                     if(response.error){
                         toastr.error(response.message, 'Usuário', {timeOut: 3000});

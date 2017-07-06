@@ -139,6 +139,16 @@ $api->version('v1', function ($api) {
         'as' => 'api.usuario'
     ]);
 
+	$api->put('/usuario', [
+		'uses' => 'App\Http\Controllers\UsuarioController@editarUsuario',
+		'as' => 'api.usuario'
+	]);
+
+	$api->delete('/usuario', [
+		'uses' => 'App\Http\Controllers\UsuarioController@removerUsuario',
+		'as' => 'api.usuario'
+	]);
+
 	// signup
 	$api->post('/signup', [
 		'uses' => 'App\Http\Controllers\UsuarioController@addUsuarioApp',
@@ -154,16 +164,6 @@ $api->version('v1', function ($api) {
 		'uses' => 'App\Http\Controllers\UsuarioController@signupUsuarioSocial',
 		'as' => 'api.signup.usuario'
 	]);
-
-    $api->put('/usuario', [
-        'uses' => 'App\Http\Controllers\UsuarioController@editarUsuario',
-        'as' => 'api.usuario'
-    ]);
-
-    $api->delete('/usuario', [
-        'uses' => 'App\Http\Controllers\UsuarioController@removerUsuario',
-        'as' => 'api.usuario'
-    ]);
 
     $api->post('/troca-senha', [
         'uses' => 'App\Http\Controllers\UsuarioController@trocaSenha',
