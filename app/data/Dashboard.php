@@ -14,8 +14,8 @@ class Dashboard extends Utils {
 
         //setup queries
         $d = [
-            'date1' => $params['start'],
-            'date2' => $params['end']
+            'date1' => $params['start'] . ' 00:00:00',
+            'date2' => $params['end'] . ' 23:59:59'
         ];
 
         $estatisticas['qtd_certidoes'] = $estatisticas['qtd_procuracoes'] = $estatisticas['qtd_testamentos'] = 0;
