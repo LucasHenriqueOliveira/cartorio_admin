@@ -98,6 +98,6 @@ class Procuracao extends Utils {
 	}
 
 	public function logDocumento($documento, $pedido_id, $date) {
-		return $this->logDocumento($documento, $pedido_id, $date);
+		return $this->addLogDocumento($documento, $pedido_id, $date);
 	}
 }

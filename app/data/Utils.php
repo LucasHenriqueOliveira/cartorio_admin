@@ -245,7 +245,7 @@ class Utils {
 		];
 	}
 
-	public function logDocumento($documento, $pedido_id, $date) {
+	public function addLogDocumento($documento, $pedido_id, $date) {
 		return DB::insert('INSERT INTO `log_documento` (`user_id`, `pedido_id`, `documento`, `date`, `ip`, `proxy`) VALUES (?, ?, ?, ?, ?, ?)',
 			[$this->getUserId()->id, $pedido_id, $documento, $date, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR']]);
 	}
