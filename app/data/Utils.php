@@ -84,11 +84,13 @@ class Utils {
 
 		if(count($result)) {
 			return [
-				'message' => 'O usuário possui firma neste cartório.'
+				'message' => 'O usuário possui firma neste cartório.',
+				'hasFirma' => true
 				];
 		} else {
 			return [
-				'message' => 'O usuário não possui firma neste cartório.'
+				'message' => 'O usuário não possui firma neste cartório.',
+				'hasFirma' => false
 			];
 		}
 	}
