@@ -17,7 +17,6 @@ class Dashboard extends Utils {
             'date1' => $params['start'],
             'date2' => $params['end']
         ];
-		print_r($d);
 
         $estatisticas['qtd_certidoes'] = $estatisticas['qtd_procuracoes'] = $estatisticas['qtd_testamentos'] = 0;
         $result = $this->checkPermissão('dashboard');
