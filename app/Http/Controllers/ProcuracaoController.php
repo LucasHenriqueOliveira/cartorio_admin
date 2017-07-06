@@ -63,9 +63,9 @@ class ProcuracaoController extends BaseController{
 
 		$res = $documento_procuracao->getDocumento($request->input('documento'), $request->input('pedido_id'));
 
-		if (array_key_exists("url", $res)) {
-			$documento_procuracao->logDocumento($request->input('documento'), $request->input('pedido_id'), date('Y-m-d H:i:s'));
-		}
+//		if (array_key_exists("url", $res)) {
+//			$documento_procuracao->logDocumento($request->input('documento'), $request->input('pedido_id'), date('Y-m-d H:i:s'));
+//		}
 
 		echo json_encode($res);
 		exit;
