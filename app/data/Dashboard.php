@@ -10,13 +10,14 @@ class Dashboard extends Utils {
         $res['error'] = false;
 
         $params['start'] = (new \DateTime($params['start']))->format('Y-m-d H:i:s');
-        $params['end'] = (new \DateTime($params['end']))->format('Y-m-d H:i:s');
+        $params['end'] = (new \DateTime($params['end']))->format('Y-m-d 23:59:59');
 
         //setup queries
         $d = [
-            'date1' => $params['start'] . ' 00:00:00',
-            'date2' => $params['end'] . ' 23:59:59'
+            'date1' => $params['start'],
+            'date2' => $params['end']
         ];
+		print_r($d);
 
         $estatisticas['qtd_certidoes'] = $estatisticas['qtd_procuracoes'] = $estatisticas['qtd_testamentos'] = 0;
         $result = $this->checkPermissão('dashboard');
