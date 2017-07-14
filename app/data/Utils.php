@@ -227,7 +227,7 @@ class Utils {
 	public function script() {
 		ini_set('max_execution_time', 300);
 
-		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes 2017-06-29 18;05;12.csv");
+		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes 2017-07-13_18;05.csv");
 		$rows = explode("\n",$data);
 		foreach($rows as $row) {
 			$string = str_getcsv($row)[0];
