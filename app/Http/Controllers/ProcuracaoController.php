@@ -31,7 +31,7 @@ class ProcuracaoController extends BaseController{
     public function addProcuracao(Request $request) {
         $procuracao = new \App\Data\Procuracao();
 
-        $res = $procuracao->addProcuracao($request->input('tipo'), $request->input('files'),
+        $res = $procuracao->addProcuracao($request->input('tipo'), $request->input('Outorgante'), $request->input('Outorgado'), $request->input('OutrosDocs'),
                                         date('Y-m-d H:i:s'), $request->input('user_id'));
 
 		$procuracao->email($request->input('user_id'));
@@ -52,7 +52,7 @@ class ProcuracaoController extends BaseController{
 	public function getDocumentosProcuracao(Request $request) {
 		$documentos_procuracao = new \App\Data\Procuracao();
 
-		$res = $documentos_procuracao->getDocumentosProcuracao($request->input('id'));
+		$res = $documentos_procuracao->getDocumentos($request->input('id'));
 
 		echo json_encode($res);
 		exit;

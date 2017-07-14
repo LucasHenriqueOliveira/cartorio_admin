@@ -40,25 +40,26 @@ class Procuracao extends Utils {
         }
     }
 
-    public function addProcuracao($tipo, $files, $date, $user_id) {
+    public function addProcuracao($tipo, $outorgante, $outorgado, $docs, $date, $user_id) {
 
 		try {
-			$documentos = $this->getDocumentosProcuracao($tipo['tipo_procuracao_id']);
-
-			$res = DB::insert('INSERT INTO `pedido` (`tipo`, `tipo_procuracao`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?)',
-			['Procuração', $tipo['tipo_procuracao_id'], $date, $user_id, 'Aguardando']);
-
-			$pedido_id = DB::getPdo()->lastInsertId();
-
-			DB::insert('INSERT INTO `movimentacao` (`pedido_id`, `user_id`, `data_hora`, `sequencia`, `descricao`) VALUES (?, ?, ?, ?, ?)',
-				[$pedido_id, $user_id, $date, 1, 'Solicitação de Procuração']);
-
-			foreach ($documentos as $documento) {
-				$path = $this->uploadBase64($files[$documento->nome_campo], $documento->nome_campo, $pedido_id);
-				if($path) {
-					DB::update('UPDATE `pedido` SET '.$documento->nome_campo.' = ? WHERE `pedido_id` = ?', [$path, $pedido_id]);
-				}
-			}
+//			$documentos = $this->getDocumentosProcuracao($tipo['tipo_procuracao_id']);
+//
+//			$res = DB::insert('INSERT INTO `pedido` (`tipo`, `tipo_procuracao`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?)',
+//			['Procuração', $tipo['tipo_procuracao_id'], $date, $user_id, 'Aguardando']);
+//
+//			$pedido_id = DB::getPdo()->lastInsertId();
+//
+//			DB::insert('INSERT INTO `movimentacao` (`pedido_id`, `user_id`, `data_hora`, `sequencia`, `descricao`) VALUES (?, ?, ?, ?, ?)',
+//				[$pedido_id, $user_id, $date, 1, 'Solicitação de Procuração']);
+//
+//			foreach ($documentos as $documento) {
+//				$path = $this->uploadBase64($files[$documento->nome_campo], $documento->nome_campo, $pedido_id);
+//				if($path) {
+//					DB::update('UPDATE `pedido` SET '.$documento->nome_campo.' = ? WHERE `pedido_id` = ?', [$path, $pedido_id]);
+//				}
+//			}
+			$res['error'] = false;
 			return $res;
 
 		} catch (\Exception $e) {
@@ -70,6 +71,21 @@ class Procuracao extends Utils {
 
 	public function getTiposProcuracao() {
 		return DB::select("SELECT * FROM `tipo_procuracao`");
+	}
+
+	public function getDocumentos($id) {
+		$documentos = DB::select("SELECT * FROM `documento_tipo_procuracao` AS dt INNER JOIN `documento` AS d ON dt.`documento_id` = d.`documento_id` WHERE `tipo_procuracao_id` = ?", [$id]);
+
+		$arr = array();
+		foreach ($documentos as $documento) {
+			if (!array_key_exists($documento->tipo, $arr)) {
+				$arr[$documento->tipo]['documentos'] = [];
+			}
+			$arr[$documento->tipo]['icone'] = $documento->icone;
+			array_push($arr[$documento->tipo]['documentos'],$documento);
+		}
+
+		return $arr;
 	}
 
 	public function getDocumentosProcuracao($id) {
