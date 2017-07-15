@@ -51,12 +51,14 @@ class UsuarioController extends BaseController{
 	public function addUsuarioApp(Request $request) {
 		$usuario = new \App\Data\Usuario();
 
-		$usuario->addUsuarioApp($request->input('nome'),$request->input('email'), $request->input('cpf'),
+		$res = $usuario->addUsuarioApp($request->input('nome'),$request->input('email'), $request->input('cpf'),
 			$request->input('telefone'), Hash::make(stripslashes($request->input('password'))),
 			str_random(10), date('Y-m-d H:i:s'));
 
-		$res = $this->getToken($request);
-		$usuario->email($request->input('nome'),$request->input('email'));
+		if(!$res['error']) {
+			$res = $this->getToken($request);
+			$usuario->email($request->input('nome'),$request->input('email'));
+		}
 
 		echo json_encode($res);
 		exit;
