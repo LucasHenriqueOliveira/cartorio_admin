@@ -164,9 +164,9 @@ class Usuario extends Utils {
         }
     }
 
-    public function logSession() {
+    public function logSession($id) {
         return DB::insert('INSERT INTO `log_session` (`user_id`, `ip`, `proxy`, `data_hora`) VALUES (?, ?, ?, ?)',
-        [$this->getUserId()->id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], date('Y-m-d H:i:s')]);
+        [$id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], date('Y-m-d H:i:s')]);
     }
 
 	public function email($nome, $email) {

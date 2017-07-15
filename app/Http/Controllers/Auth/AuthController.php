@@ -162,11 +162,12 @@ class AuthController extends Controller
      */
     public function getUser(Request $request)
     {
-        $usuario = new \App\Data\Usuario();
-        $usuario->logSession();
 
         $data = JWTAuth::parseToken()->authenticate();
         $user = JWTAuth::parseToken()->toUser();
+
+		$usuario = new \App\Data\Usuario();
+		$usuario->logSession($data->id);
 
 		if(!$data->app) {
 			$permissao = $user->getPermissions($data->id);
