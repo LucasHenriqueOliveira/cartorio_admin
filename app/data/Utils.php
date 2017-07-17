@@ -124,7 +124,7 @@ class Utils {
 		]);
 	}
 
-	public function uploadBase64($content, $name, $pedido_id) {
+	public function uploadBase64($content, $name, $pedido_id, $parte_id = '') {
 		if($content){
 			$content = explode(',', $content);
 			$content = str_replace(' ', '+', $content);
@@ -133,7 +133,12 @@ class Utils {
 
 			if($extension){
 				$cartorio = getenv("cartorio");
-				$path = $cartorio . '/' . $pedido_id . '/' . $name . '.' . $extension;
+				if($parte_id) {
+					$path = $cartorio . '/' . $pedido_id . '/' . $parte_id . '/' . $name . '.' . $extension;
+				} else {
+					$path = $cartorio . '/' . $pedido_id . '/' . $name . '.' . $extension;
+				}
+
 				return $this->uploadToS3($data, ['path'=>$path,'extension'=>$extension]);
 			}
 		}

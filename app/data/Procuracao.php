@@ -40,26 +40,59 @@ class Procuracao extends Utils {
         }
     }
 
-    public function addProcuracao($tipo, $outorgante, $outorgado, $docs, $date, $user_id) {
+    public function addProcuracao($tipo, $outorgantes, $outorgados, $docs, $date, $user_id) {
 
 		try {
-//			$documentos = $this->getDocumentosProcuracao($tipo['tipo_procuracao_id']);
-//
-//			$res = DB::insert('INSERT INTO `pedido` (`tipo`, `tipo_procuracao`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?)',
-//			['Procuração', $tipo['tipo_procuracao_id'], $date, $user_id, 'Aguardando']);
-//
-//			$pedido_id = DB::getPdo()->lastInsertId();
-//
-//			DB::insert('INSERT INTO `movimentacao` (`pedido_id`, `user_id`, `data_hora`, `sequencia`, `descricao`) VALUES (?, ?, ?, ?, ?)',
-//				[$pedido_id, $user_id, $date, 1, 'Solicitação de Procuração']);
-//
-//			foreach ($documentos as $documento) {
-//				$path = $this->uploadBase64($files[$documento->nome_campo], $documento->nome_campo, $pedido_id);
-//				if($path) {
-//					DB::update('UPDATE `pedido` SET '.$documento->nome_campo.' = ? WHERE `pedido_id` = ?', [$path, $pedido_id]);
-//				}
-//			}
-			$res['error'] = false;
+
+			$res = DB::insert('INSERT INTO `pedido` (`tipo`, `tipo_procuracao`, `data_hora`, `user_id`, `status`) VALUES (?, ?, ?, ?, ?)',
+			['Procuração', $tipo['tipo_procuracao_id'], $date, $user_id, 'Aguardando']);
+
+			$pedido_id = DB::getPdo()->lastInsertId();
+
+			DB::insert('INSERT INTO `movimentacao` (`pedido_id`, `user_id`, `data_hora`, `sequencia`, `descricao`) VALUES (?, ?, ?, ?, ?)',
+				[$pedido_id, $user_id, $date, 1, 'Solicitação de Procuração']);
+
+			foreach ($outorgantes as $outorgante) {
+
+				DB::insert('INSERT INTO `parte` (`tipo`, `nome`, `estado_civil`, `nacionalidade`, `profissao`, `cep`, `logradouro`, `numero`, `complemento`, `bairro`, `cidade`, `estado`, `data_hora`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+					['Outorgante', $outorgante['nome'], $outorgante['estado_civil'], $outorgante['nacionalidade'], $outorgante['profissao'], $outorgante['cep'], $outorgante['logradouro'], $outorgante['numero'], $outorgante['complemento'], $outorgante['bairro'], $outorgante['cidade'], $outorgante['estado'], $date]);
+
+				$parte_id = DB::getPdo()->lastInsertId();
+
+				DB::insert('INSERT INTO `pedido_parte` (`pedido_id`, `parte_id`) VALUES (?, ?)', [$pedido_id, $parte_id]);
+
+				foreach ($outorgante['documentos'] as $name => $file) {
+					$path = $this->uploadBase64($file, $name, $pedido_id, $parte_id);
+					if($path) {
+						DB::update('UPDATE `parte` SET '.$name.' = ? WHERE `parte_id` = ?', [$path, $parte_id]);
+					}
+				}
+			}
+
+			foreach ($outorgados as $outorgado) {
+
+				DB::insert('INSERT INTO `parte` (`tipo`, `nome`, `estado_civil`, `nacionalidade`, `profissao`, `cep`, `logradouro`, `numero`, `complemento`, `bairro`, `cidade`, `estado`, `data_hora`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+					['Outorgado', $outorgado['nome'], $outorgado['estado_civil'], $outorgado['nacionalidade'], $outorgado['profissao'], $outorgado['cep'], $outorgado['logradouro'], $outorgado['numero'], $outorgado['complemento'], $outorgado['bairro'], $outorgado['cidade'], $outorgado['estado'], $date]);
+
+				$parte_id = DB::getPdo()->lastInsertId();
+
+				DB::insert('INSERT INTO `pedido_parte` (`pedido_id`, `parte_id`) VALUES (?, ?)', [$pedido_id, $parte_id]);
+
+				foreach ($outorgado['documentos'] as $name => $file) {
+					$path = $this->uploadBase64($file, $name, $pedido_id, $parte_id);
+					if($path) {
+						DB::update('UPDATE `parte` SET '.$name.' = ? WHERE `parte_id` = ?', [$path, $parte_id]);
+					}
+				}
+			}
+
+			foreach ($docs as $doc) {
+				$path = $this->uploadBase64($doc['file'], $doc['name'], $pedido_id);
+				if($path) {
+					DB::update('UPDATE `pedido` SET '.$doc['name'].' = ? WHERE `pedido_id` = ?', [$path, $pedido_id]);
+				}
+			}
+
 			return $res;
 
 		} catch (\Exception $e) {
