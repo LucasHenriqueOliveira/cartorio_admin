@@ -27,6 +27,10 @@ class Utils {
         return DB::select("SELECT *, DATE_FORMAT(m.`data_hora`, '%d/%m/%Y %H:%i') as data FROM `movimentacao` AS m LEFT JOIN `users` AS u ON m.`user_id` = u.`id` WHERE m.pedido_id = ? ORDER BY m.`sequencia` ASC", [$id]);
     }
 
+	public function getPartes($id) {
+		return DB::select("SELECT * FROM `pedido_parte` AS pp INNER JOIN `parte` AS p ON pp.`parte_id` = p.`parte_id` WHERE pp.pedido_id = ?", [$id]);
+	}
+
     public function getPedido($id, $tipo = '') {
         if($tipo == 'Procuração') {
             return DB::select("SELECT *, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y %H:%i') as data FROM `pedido` AS p INNER JOIN `users` AS u ON p.`user_id` = u.`id` INNER JOIN `tipo_procuracao` AS t ON p.`tipo_procuracao` = t.`tipo_procuracao_id` WHERE p.`pedido_id` = ?", [$id])[0];

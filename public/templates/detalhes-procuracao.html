@@ -115,6 +115,101 @@
                     </div>
                 </div>
                 <div class="x_title">
+                    <h2>Partes</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div ng-repeat="parte in procuracao.partes">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label class="label-bold">Tipo:</label> {{parte.tipo}}
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label class="label-bold">Nome:</label> {{parte.nome}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12" ng-if="parte.rg_outorgante_frente">
+                                <label class="label-bold">RG Outorgante Frente:</label>
+                                <a ng-click="getDocumento('rg_outorgante_frente', parte.parte_id)">
+                                    <span class="label label-default label-documento"><span class="glyphicon glyphicon-save"></span> RG Frente</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" ng-if="parte.rg_outorgante_verso">
+                                <label class="label-bold">RG Outorgante Verso:</label>
+                                <a ng-click="getDocumento('rg_outorgante_verso', parte.parte_id)">
+                                    <span class="label label-default label-documento"><span class="glyphicon glyphicon-save"></span> RG Verso</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" ng-if="parte.cpf_outorgante">
+                                <label class="label-bold">CPF Outorgante:</label>
+                                <a ng-click="getDocumento('cpf_outorgante', parte.parte_id)">
+                                    <span class="label label-default label-documento"><span class="glyphicon glyphicon-save"></span> CPF</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" ng-if="parte.rg_outorgado_frente">
+                                <label class="label-bold">RG Outorgado:</label>
+                                <a ng-click="getDocumento('rg_outorgado_frente', parte.parte_id)">
+                                    <span class="label label-default label-documento"><span class="glyphicon glyphicon-save"></span> RG Frente</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" ng-if="parte.rg_outorgado_verso">
+                                <label class="label-bold">RG Outorgado:</label>
+                                <a ng-click="getDocumento('rg_outorgado_verso', parte.parte_id)">
+                                    <span class="label label-default label-documento"><span class="glyphicon glyphicon-save"></span> RG Verso</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" ng-if="parte.cpf_outorgado">
+                                <label class="label-bold">CPF Outorgado:</label>
+                                <a ng-click="getDocumento('cpf_outorgado', parte.parte_id)">
+                                    <span class="label label-default label-documento"><span class="glyphicon glyphicon-save"></span> CPF</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Estado Civil:</label> {{parte.estado_civil}}
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Nacionalidade:</label> {{parte.nacionalidade}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Profissão:</label> {{parte.profissao}}
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">CEP:</label> {{parte.cep}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Logradouro:</label> {{parte.logradouro}}
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Número:</label> {{parte.numero}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Complemento:</label> {{parte.complemento}}
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Bairro:</label> {{parte.bairro}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Cidade:</label> {{parte.cidade}}
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="label-bold">Estado:</label> {{parte.estado}}
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+                <div class="x_title">
                     <h2 style="margin-top: 15px;">Movimentações</h2>
                     <div class="clearfix"></div>
                 </div>

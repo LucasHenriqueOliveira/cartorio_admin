@@ -61,7 +61,7 @@ class ProcuracaoController extends BaseController{
 	public function getDocumento(Request $request) {
 		$documento_procuracao = new \App\Data\Procuracao();
 
-		$res = $documento_procuracao->getDocumento($request->input('documento'), $request->input('pedido_id'));
+		$res = $documento_procuracao->getDocumento($request->input('documento'), $request->input('pedido_id'), $request->input('parte_id'));
 
 		if ($res["url"]) {
 			$documento_procuracao->logDocumento($request->input('documento'), $request->input('pedido_id'), date('Y-m-d H:i:s'));

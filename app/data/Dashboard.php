@@ -55,6 +55,7 @@ class Dashboard extends Utils {
             $procuracoes = $this->getPedidosDashboard('Procuração');
             foreach ($procuracoes as $pedido) {
                 $pedido->movimentacoes = $this->getMovimentacoes($pedido->pedido_id);
+				$pedido->partes = $this->getPartes($pedido->pedido_id);
             }
         }
         $res['procuracoes'] = $procuracoes;

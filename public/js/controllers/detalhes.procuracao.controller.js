@@ -74,10 +74,11 @@
             });
         };
 
-        $scope.getDocumento = function(documento) {
+        $scope.getDocumento = function(documento, parte_id) {
             var data = {
                 documento: documento,
-                pedido_id: $scope.procuracao.pedido_id
+                pedido_id: $scope.procuracao.pedido_id,
+                parte_id: parte_id
             };
 
             DataService.getDocumento(data).then(function(response) {

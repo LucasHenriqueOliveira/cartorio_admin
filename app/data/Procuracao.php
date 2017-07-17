@@ -14,6 +14,7 @@ class Procuracao extends Utils {
 
             foreach ($pedidos as $pedido) {
                 $pedido->movimentacoes = $this->getMovimentacoes($pedido->pedido_id);
+				$pedido->partes = $this->getPartes($pedido->pedido_id);
             }
 
             return $pedidos;
@@ -31,6 +32,7 @@ class Procuracao extends Utils {
         if($result) {
             $pedido = $this->getPedido($id, 'Procuração');
             $pedido->movimentacoes = $this->getMovimentacoes($id);
+			$pedido->partes = $this->getPartes($id);
 
             return $pedido;
         } else {
@@ -55,7 +57,7 @@ class Procuracao extends Utils {
 			foreach ($outorgantes as $outorgante) {
 
 				DB::insert('INSERT INTO `parte` (`tipo`, `nome`, `estado_civil`, `nacionalidade`, `profissao`, `cep`, `logradouro`, `numero`, `complemento`, `bairro`, `cidade`, `estado`, `data_hora`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-					['Outorgante', $outorgante['nome'], $outorgante['estado_civil'], $outorgante['nacionalidade'], $outorgante['profissao'], $outorgante['cep'], $outorgante['logradouro'], $outorgante['numero'], $outorgante['complemento'], $outorgante['bairro'], $outorgante['cidade'], $outorgante['estado'], $date]);
+					['Outorgante', $outorgante['nome'], $outorgante['estado_civil'], $outorgante['nacionalidade'], $outorgante['profissao'], $outorgante['endereco']['cep'], $outorgante['endereco']['logradouro'], $outorgante['endereco']['numero'], $outorgante['endereco']['complemento'], $outorgante['endereco']['bairro'], $outorgante['endereco']['localidade'], $outorgante['endereco']['uf'], $date]);
 
 				$parte_id = DB::getPdo()->lastInsertId();
 
@@ -72,7 +74,7 @@ class Procuracao extends Utils {
 			foreach ($outorgados as $outorgado) {
 
 				DB::insert('INSERT INTO `parte` (`tipo`, `nome`, `estado_civil`, `nacionalidade`, `profissao`, `cep`, `logradouro`, `numero`, `complemento`, `bairro`, `cidade`, `estado`, `data_hora`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-					['Outorgado', $outorgado['nome'], $outorgado['estado_civil'], $outorgado['nacionalidade'], $outorgado['profissao'], $outorgado['cep'], $outorgado['logradouro'], $outorgado['numero'], $outorgado['complemento'], $outorgado['bairro'], $outorgado['cidade'], $outorgado['estado'], $date]);
+					['Outorgado', $outorgado['nome'], $outorgado['estado_civil'], $outorgado['nacionalidade'], $outorgado['profissao'], $outorgado['endereco']['cep'], $outorgado['endereco']['logradouro'], $outorgado['endereco']['numero'], $outorgado['endereco']['complemento'], $outorgado['endereco']['bairro'], $outorgado['endereco']['localidade'], $outorgado['endereco']['uf'], $date]);
 
 				$parte_id = DB::getPdo()->lastInsertId();
 
@@ -140,8 +142,12 @@ class Procuracao extends Utils {
 		$this->sendEmail($user->email, 'Solicitação de Procuração', $texto);
 	}
 
-	public function getDocumento($documento, $pedido_id) {
-		$result = DB::select("SELECT $documento FROM `pedido` WHERE `pedido_id` = ?", [$pedido_id])[0];
+	public function getDocumento($documento, $pedido_id, $parte_id) {
+		if($parte_id) {
+			$result = DB::select("SELECT $documento FROM `parte` WHERE `parte_id` = ?", [$parte_id])[0];
+		} else {
+			$result = DB::select("SELECT $documento FROM `pedido` WHERE `pedido_id` = ?", [$pedido_id])[0];
+		}
 		$documento = $result->{$documento};
 		return $this->getUrl($documento);
 	}
