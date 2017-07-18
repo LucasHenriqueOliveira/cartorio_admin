@@ -78,6 +78,14 @@
                 cache: false
             })
 
+            .when('/agenda-testamento', {
+                controller: 'AgendaTestamentoController',
+                templateUrl: 'templates/agenda-testamento.html',
+                controllerAs: 'vm',
+                action: 'agenda-testamento',
+                cache: false
+            })
+
             .when('/usuarios', {
                 controller: 'UsuariosController',
                 templateUrl: 'templates/usuarios.html',

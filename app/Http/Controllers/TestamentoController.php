@@ -46,4 +46,13 @@ class TestamentoController extends BaseController{
 		echo json_encode($res);
 		exit;
 	}
+
+	public function setBloquearAgenda(Request $request) {
+		$testamento = new \App\Data\Testamento();
+
+		$res = $testamento->setBloquearAgenda($request->input('data'), $request->input('horas'));
+
+		echo json_encode($res);
+		exit;
+	}
 }

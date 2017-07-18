@@ -109,4 +109,27 @@ class Testamento extends Utils {
 		$date->modify('next wednesday');
 		return $date->format('Y-m-d');
 	}
+
+	public function setBloquearAgenda($data, $horas) {
+		$result = $this->checkPermissão('agenda_testamento');
+
+		if($result) {
+			$horas = json_decode($horas);
+			try {
+				foreach ($horas as $hora) {
+					DB::insert('INSERT INTO `calendario_restricoes` (`data`, `hora`) VALUES (?, ?)', [$data, $hora]);
+				}
+				$res['error'] = false;
+				return $res;
+			} catch (\Exception $e) {
+				$res['error'] = true;
+				$res['message'] = 'Erro ao bloquear a agenda.';
+				return $res;
+			}
+		} else {
+			$res['error'] = true;
+			$res['message'] = 'Usuário sem permissão.';
+			return $res;
+		}
+	}
 }

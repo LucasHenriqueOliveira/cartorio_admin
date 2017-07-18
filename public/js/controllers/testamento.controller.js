@@ -59,7 +59,10 @@
                     $scope.detalhesTestamento(response);
                 }
             });
+        };
 
+        $scope.agenda = function() {
+            $location.path('/agenda-testamento');
         };
     }
 

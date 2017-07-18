@@ -104,6 +104,11 @@ $api->version('v1', function ($api) {
 		'as' => 'api.datas.testamento'
 	]);
 
+	$api->post('/testamento/bloquear-agenda', [
+		'uses' => 'App\Http\Controllers\TestamentoController@setBloquearAgenda',
+		'as' => 'api.agenda.testamento'
+	]);
+
     // movimentar
     $api->post('/movimentar', [
         'uses' => 'App\Http\Controllers\Controller@movimentar',

@@ -302,6 +302,43 @@
 
                 return deferred.promise;
             },
+            getAgenda: function() {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'GET',
+                    url: App.api + 'testamento/datas'
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao consultar a agenda', 'Testamento', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
+            setBloquearAgenda: function(params) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: App.api + 'testamento/bloquear-agenda',
+                    params: params
+                })
+                    .then(function(response) {
+
+                        deferred.resolve(response.data);
+
+                    }, function(error) {
+                        toastr.error('Erro ao bloquear a agenda', 'Testamento', {timeOut: 3000});
+                    });
+
+                return deferred.promise;
+            },
             getEstados: function() {
 
                 var deferred = $q.defer();
