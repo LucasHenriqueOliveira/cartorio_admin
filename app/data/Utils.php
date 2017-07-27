@@ -239,9 +239,6 @@ class Utils {
 		$hour = date("H");
 		$minute = date("i");
 
-		echo "http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes ".$date."_".$hour.";".$minute.".csv";
-		die;
-
 		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes ".$date."_".$hour.";".$minute.".csv");
 		$rows = explode("\n",$data);
 		foreach($rows as $row) {
