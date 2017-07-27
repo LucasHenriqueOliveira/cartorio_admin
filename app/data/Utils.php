@@ -233,10 +233,13 @@ class Utils {
 		return NULL;
 	}
 
-	public function script() {
+	public static function script() {
 		ini_set('max_execution_time', 300);
+		$date = date("Y-m-d");
+		$hour = date("H");
+		$minute = date("i");
 
-		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes 2017-07-13_18;05.csv");
+		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes ".$date."_".$hour.";".$minute.".csv");
 		$rows = explode("\n",$data);
 		foreach($rows as $row) {
 			$string = str_getcsv($row)[0];
