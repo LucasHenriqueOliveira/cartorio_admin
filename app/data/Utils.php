@@ -17,10 +17,17 @@ class Utils {
     }
 
     public function getPedidos($tipo) {
-        if($tipo == 'Procuração') {
-            return DB::select("SELECT *, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y %H:%i') as data FROM `pedido` AS p INNER JOIN `users` AS u ON p.`user_id` = u.`id` INNER JOIN `tipo_procuracao` AS t ON p.`tipo_procuracao` = t.`tipo_procuracao_id` WHERE p.`tipo` = ? ORDER BY p.data_hora LIMIT 100", [$tipo]);
-        }
-        return DB::select("SELECT *, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y %H:%i') as data, DATE_FORMAT(p.`agendamento`, '%d/%m/%Y %H:%i') as agendamento FROM `pedido` AS p INNER JOIN `users` AS u ON p.`user_id` = u.`id` WHERE p.`tipo` = ? ORDER BY p.data_hora LIMIT 100", [$tipo]);
+		switch ($tipo) {
+			case 'Procuração':
+				return DB::select("SELECT *, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y %H:%i') as data FROM `pedido` AS p INNER JOIN `users` AS u ON p.`user_id` = u.`id` INNER JOIN `tipo_procuracao` AS t ON p.`tipo_procuracao` = t.`tipo_procuracao_id` WHERE p.`tipo` = ? ORDER BY p.data_hora LIMIT 100", [$tipo]);
+				break;
+			case 'Testamento':
+				return DB::select("SELECT *, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y %H:%i') as data, DATE_FORMAT(p.`agendamento`, '%d/%m/%Y %H:%i') as agendamento FROM `pedido` AS p INNER JOIN `users` AS u ON p.`user_id` = u.`id` WHERE p.`tipo` = ? ORDER BY p.agendamento DESC LIMIT 100", [$tipo]);
+				break;
+			case 'Certidão':
+				return DB::select("SELECT *, DATE_FORMAT(p.`data_hora`, '%d/%m/%Y %H:%i') as data, DATE_FORMAT(p.`agendamento`, '%d/%m/%Y %H:%i') as agendamento FROM `pedido` AS p INNER JOIN `users` AS u ON p.`user_id` = u.`id` WHERE p.`tipo` = ? ORDER BY p.data_hora LIMIT 100", [$tipo]);
+				break;
+		}
     }
 
     public function getMovimentacoes($id) {
