@@ -63,14 +63,20 @@ class Testamento extends Utils {
 
 	public function getDatasTestamento() {
 		$arrDates = array();
+		$arrHours = array();
 		$dates = array();
 		$arr = array();
+
+		$hours = DB::select("SELECT DATE_FORMAT(`hora`, '%H:%i') as hora FROM `hora` WHERE `ativo` = ?", [1]);
+
+		foreach ($hours as $hour) {
+			array_push($arrHours, $hour->hora);
+		}
+
 		for($i = 0; $i < 8; $i++) {
 			$date = $i == 0 ? $this->getWednesday(date('Y-m-d')) : $this->getWednesday($dates[$i - 1]);
 			array_push($dates, $date);
-
-			// @TODO - remover hard-code do horário 13:00 as 16:00
-			$arrDates[$date] = array("13:00","13:30","14:00","14:30","15:00","15:30","16:00");
+			$arrDates[$date] = $arrHours;
 		}
 
 		foreach ($arrDates as $key => $value) {
