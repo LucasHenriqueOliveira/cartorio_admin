@@ -245,7 +245,7 @@ class Utils {
 		$date = date("Y-m-d");
 		$hour = date("H");
 
-		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes ".$date."_".$hour.";30.csv");
+		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes ".$date."_".$hour.";05.csv");
 		$rows = explode("\n",$data);
 		foreach($rows as $row) {
 			$string = str_getcsv($row)[0];
