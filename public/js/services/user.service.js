@@ -12,11 +12,16 @@
         return $resource(App.api + 'user/:id', {}, {
             login: {
                 url: App.api + 'auth/login',
-                'method': 'POST',
+                method: 'POST',
                 params: {}
             },
             getUser: {
                 url: App.api + 'auth/user',
+                params: {}
+            },
+            reset: {
+                url: App.api + 'auth/user',
+                method: 'POST',
                 params: {}
             }
         });

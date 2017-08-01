@@ -2,7 +2,7 @@
     <div class="login_wrapper">
         <div class="form login_form">
             <section class="login_content">
-                <form name="formLogin" ng-submit="login()">
+                <form name="formLogin" ng-submit="login(email,password)" ng-if="!resetPassword">
                     <h1><i class="fa fa-bank"></i> Cartório App</h1>
                     <div class="form-group has-feedback" ng-class="{ 'has-error': formLogin.email.$dirty && formLogin.email.$error.required }">
                         <input type="text" class="form-control has-feedback-left" name="email" id="email" ng-model="email" placeholder="Email" required />
@@ -18,15 +18,38 @@
                         </div>
                     </div>
                     <div>
-                        <button class="btn btn-default submit" ng-click="login()" ng-disabled="formLogin.$invalid">
+                        <button class="btn btn-default submit" ng-click="login(email,password)" ng-disabled="formLogin.$invalid">
                             <span ng-show="loading">
                                 <i class="glyphicon glyphicon-refresh spinning"></i>
                             </span>
                             <span ng-bind="loginButtonText"></span>
                         </button>
-                        <!--<a class="reset_pass" href="#">Esqueceu a senha?</a>-->
+                        <a class="reset_pass" ng-click="esqueceuSenha()">Esqueceu a senha?</a>
                     </div>
 
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+                            <p>©2017 Todos os direitos reservados.</p>
+                        </div>
+                    </div>
+                </form>
+                <form name="formResetPassword" ng-submit="reset(email_reset)" ng-if="resetPassword">
+                    <h1 ng-click="goLogin()"><i class="fa fa-bank"></i> Cartório App</h1>
+                    <h6>Informe o email para recuperar a senha</h6>
+                    <div class="form-group has-feedback" ng-class="{ 'has-error': formResetPassword.email.$dirty && formResetPassword.email.$error.required }">
+                        <input type="text" class="form-control has-feedback-left" name="email_reset" id="email_reset" ng-model="email_reset" placeholder="Email" required />
+                        <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    <div>
+                        <button class="btn btn-default submit" ng-click="reset(email_reset)" ng-disabled="formResetPassword.$invalid">
+                            Recuperar senha
+                        </button>
+                    </div>
                     <div class="clearfix"></div>
 
                     <div class="separator">
