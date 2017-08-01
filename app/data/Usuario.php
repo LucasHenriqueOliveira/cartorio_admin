@@ -3,6 +3,7 @@
 namespace App\Data;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Usuario extends Utils {
 
@@ -194,6 +195,41 @@ class Usuario extends Utils {
 			$user_id = DB::getPdo()->lastInsertId();
 
 			DB::insert('INSERT INTO `auth` (`user_id`, `tipo`, `valor`) VALUES (?, ?, ?)', [$user_id, $tipo, $id]);
+		}
+	}
+
+	public function resetPasswordUsuario($email) {
+
+		$result = DB::select("SELECT * FROM `users` WHERE `email` = ?", [$email])[0];
+
+		if($result) {
+			$password = str_random(6);
+			$hash_password = Hash::make(stripslashes($password));
+			$remember_token = str_random(10);
+
+			$texto = '<br /> Prezado(a) ' . $result->nome . ',';
+			$texto .= '<br /><br />Conforme solicitado, segue sua senha de acesso provisória para o '.getenv("nome_cartorio").' - Cartório App.';
+			$texto .= '<br /><br />Senha: '.$password;
+			$texto .= '<br /><br /> Att, <br />Cartório App';
+			$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
+
+			$mg = Mailgun::create(getenv("MAILGUN_KEY"));
+
+			$mg->messages()->send(getenv("MAILGUN_DOMAIN"), [
+				'from' => "CartorioApp <postmaster@cartorioapp.com>",
+				'to'      => $email,
+				'subject' => 'Esqueceu a senha',
+				'html'    => $texto
+			]);
+
+			DB::update('UPDATE users SET `login_default` = ?, `password` = ?, remember_token = ? WHERE id = ?', [1, $hash_password, $remember_token, $result->id]);
+
+			$res['error'] = false;
+			return $res;
+		} else {
+			$res['error'] = true;
+			$res['message'] = 'Email não encontrado.';
+			return $res;
 		}
 	}
 }

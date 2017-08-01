@@ -54,9 +54,11 @@
                     $scope.password = '';
                     return false;
                 }
+                toastr.success('Enviamos um email com informações da nova senha!', 'Esqueceu a senha', {timeOut: 3000});
+                $scope.resetPassword = false;
 
             }, function(error) {
-                $scope.message = res.message;
+                $scope.message = 'Erro ao recuperar a senha do usuário!';
                 $scope.loading = false;
                 $scope.resetPassword = false;
                 $scope.loginButtonText = "Entrar";

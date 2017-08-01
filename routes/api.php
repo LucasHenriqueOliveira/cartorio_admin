@@ -144,6 +144,11 @@ $api->version('v1', function ($api) {
         'as' => 'api.usuario'
     ]);
 
+	$api->post('/usuario/reset', [
+		'uses' => 'App\Http\Controllers\UsuarioController@resetPasswordUsuario',
+		'as' => 'api.reset.usuario'
+	]);
+
 	$api->put('/usuario', [
 		'uses' => 'App\Http\Controllers\UsuarioController@editarUsuario',
 		'as' => 'api.usuario'

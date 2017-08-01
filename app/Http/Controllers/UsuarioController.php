@@ -168,4 +168,13 @@ class UsuarioController extends BaseController{
         echo json_encode($res);
         exit;
     }
+
+    public function resetPasswordUsuario(Request $request) {
+		$usuario = new \App\Data\Usuario();
+
+		$res = $usuario->resetPasswordUsuario($request->input('email'));
+
+		echo json_encode($res);
+		exit;
+	}
 }

@@ -20,7 +20,7 @@
                 params: {}
             },
             reset: {
-                url: App.api + 'auth/user',
+                url: App.api + 'usuario/reset',
                 method: 'POST',
                 params: {}
             }
