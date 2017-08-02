@@ -246,6 +246,7 @@ class Usuario extends Utils {
 			$obj_user->save();
 
 			$res['error'] = false;
+			$res['message'] = 'Senha alterada com sucesso.';
 			return $res;
 
 		} else {
