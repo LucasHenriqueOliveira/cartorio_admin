@@ -173,7 +173,7 @@ class AuthController extends Controller
 			$permissao = $user->getPermissions($data->id);
 			$data->permissao = $permissao;
 		} else {
-			if($request->input('desk')) {
+			if($request->input('desk') && !$data->login_default) {
 				return new JsonResponse([
 					'error' => true
 				]);
