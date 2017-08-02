@@ -29,7 +29,8 @@
                         toastr.success(data.message, 'Troca senha', {timeOut: 3000});
                         $localStorage.destroy('user');
                         $localStorage.set('user', data);
-                        $location.path('/');
+                        App.user = data;
+                        $location.path('/dashboard');
                     }
                 });
             }
