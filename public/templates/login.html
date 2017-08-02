@@ -39,7 +39,7 @@
                     </div>
                 </form>
                 <form name="formResetPassword" ng-submit="reset(email_reset)" ng-if="resetPassword">
-                    <h1 ng-click="goLogin()"><i class="fa fa-bank"></i> Cartório App</h1>
+                    <h1 ng-click="goLogin()"><img src="../images/logo.svg" width="40px"> Cartório App</h1>
                     <h6>Informe o email para recuperar a senha</h6>
                     <div class="form-group has-feedback" ng-class="{ 'has-error': formResetPassword.email.$dirty && formResetPassword.email.$error.required }">
                         <input type="text" class="form-control has-feedback-left" name="email_reset" id="email_reset" ng-model="email_reset" placeholder="Email" required />
