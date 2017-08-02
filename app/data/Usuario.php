@@ -242,6 +242,7 @@ class Usuario extends Utils {
 		if(Hash::check($password, $user->password)) {
 			$obj_user = User::find($user->id);
 			$obj_user->password = Hash::make(stripslashes($new_password));
+			$obj_user->login_default = 0;
 			$obj_user->save();
 
 			$res['error'] = false;
