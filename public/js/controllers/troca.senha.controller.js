@@ -16,9 +16,7 @@
                 toastr.error('Nova senha não corresponde a senha confirmada', 'Troca senha', {timeOut: 4000});
                 $scope.usuario.confirm_password = '';
             } else {
-                var id = App.user ? App.user.id : $localStorage.get('user').id;
                 var dataUser = {
-                    id: id,
                     password: $scope.usuario.password,
                     new_password: $scope.usuario.new_password,
                     confirm_password: $scope.usuario.confirm_password

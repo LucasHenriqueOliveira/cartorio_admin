@@ -176,7 +176,7 @@ $api->version('v1', function ($api) {
 	]);
 
     $api->post('/troca-senha', [
-        'uses' => 'App\Http\Controllers\UsuarioController@trocaSenha',
+        'uses' => 'App\Http\Controllers\UsuarioController@changePassword',
         'as' => 'api.usuario.troca.senha'
     ]);
 

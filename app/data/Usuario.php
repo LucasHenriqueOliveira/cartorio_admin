@@ -5,6 +5,8 @@ namespace App\Data;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Mailgun\Mailgun;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\User;
 
 class Usuario extends Utils {
 
@@ -230,6 +232,24 @@ class Usuario extends Utils {
 		} else {
 			$res['error'] = true;
 			$res['message'] = 'Email não encontrado.';
+			return $res;
+		}
+	}
+
+	public function changePassword($password, $new_password) {
+		$user = JWTAuth::parseToken()->toUser();
+
+		if(Hash::check($password, $user->password)) {
+			$obj_user = User::find($user->id);
+			$obj_user->password = Hash::make(stripslashes($new_password));
+			$obj_user->save();
+
+			$res['error'] = false;
+			return $res;
+
+		} else {
+			$res['error'] = true;
+			$res['message'] = 'Senha atual está incorreta.';
 			return $res;
 		}
 	}
