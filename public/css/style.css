@@ -3493,7 +3493,6 @@ form:after {
 }
 .login_content h1 {
     font: normal 25px Helvetica, Arial, sans-serif;
-    letter-spacing: -0.05em;
     line-height: 20px;
     margin: 10px 0 30px
 }
@@ -3520,7 +3519,7 @@ form:after {
     content: "";
     height: 1px;
     position: absolute;
-    top: 10px;
+    top: 20px;
     width: 20%
 }
 .login_content h1:after {

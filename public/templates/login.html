@@ -3,7 +3,7 @@
         <div class="form login_form">
             <section class="login_content">
                 <form name="formLogin" ng-submit="login(email,password)" ng-if="!resetPassword">
-                    <h1><i class="fa fa-bank"></i> Cartório App</h1>
+                    <h1><img src="../images/logo.svg" width="40px"> Cartório App</h1>
                     <div class="form-group has-feedback" ng-class="{ 'has-error': formLogin.email.$dirty && formLogin.email.$error.required }">
                         <input type="text" class="form-control has-feedback-left" name="email" id="email" ng-model="email" placeholder="Email" required />
                         <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
