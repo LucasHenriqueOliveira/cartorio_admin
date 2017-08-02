@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div>
-                        <button class="btn btn-default submit" ng-click="login(email,password)" ng-disabled="formLogin.$invalid">
+                        <button class="btn btn-default submit" ng-disabled="formLogin.$invalid">
                             <span ng-show="loading">
                                 <i class="glyphicon glyphicon-refresh spinning"></i>
                             </span>
@@ -46,7 +46,10 @@
                         <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
                     </div>
                     <div>
-                        <button class="btn btn-default submit" ng-click="reset(email_reset)" ng-disabled="formResetPassword.$invalid">
+                        <button class="btn btn-default submit" ng-disabled="formResetPassword.$invalid">
+                            <span ng-show="loading_reset">
+                                <i class="glyphicon glyphicon-refresh spinning"></i>
+                            </span>
                             Recuperar senha
                         </button>
                     </div>

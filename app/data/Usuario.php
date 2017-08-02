@@ -4,6 +4,7 @@ namespace App\Data;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Mailgun\Mailgun;
 
 class Usuario extends Utils {
 

@@ -11,6 +11,7 @@
         $scope.loginButtonText = "Entrar";
         $scope.resetPassword = false;
         $scope.loading = false;
+        $scope.loading_reset = false;
         $scope.message = '';
 
         $scope.login = function(email, password) {
@@ -45,10 +46,13 @@
         };
 
         $scope.reset = function(email) {
+            $scope.loading_reset = true;
+
             User.reset({email: email},function (res) {
                 if(res.error) {
                     $scope.message = res.message;
                     $scope.loading = false;
+                    $scope.loading_reset = false;
                     $scope.resetPassword = false;
                     $scope.loginButtonText = "Entrar";
                     $scope.password = '';
@@ -56,10 +60,12 @@
                 }
                 toastr.success('Enviamos um email com informações da nova senha!', 'Esqueceu a senha', {timeOut: 3000});
                 $scope.resetPassword = false;
+                $scope.loading_reset = false;
 
             }, function(error) {
                 $scope.message = 'Erro ao recuperar a senha do usuário!';
                 $scope.loading = false;
+                $scope.loading_reset = false;
                 $scope.resetPassword = false;
                 $scope.loginButtonText = "Entrar";
                 $scope.password = '';
