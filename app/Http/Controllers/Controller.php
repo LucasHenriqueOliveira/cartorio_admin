@@ -25,7 +25,7 @@ class Controller extends BaseController{
     public function movimentar(Request $request) {
         $pedido = new \App\Data\Pedido();
 
-        $res = $pedido->movimentar($request->input('pedido_id'), $request->input('descricao'));
+        $res = $pedido->movimentar($request->input('pedido_id'), $request->input('descricao'), $request->input('alerta'));
 
         echo json_encode($res);
         exit;

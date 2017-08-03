@@ -52,7 +52,7 @@
             });
         };
 
-        $scope.addDescricao = function(descricao) {
+        $scope.addDescricao = function(descricao, alerta) {
             ModalService.showModal({
                 templateUrl: "templates/confirmar-movimentacao.html",
                 controller: function($scope, close) {
@@ -66,6 +66,7 @@
                     if(result) {
                         var movimentacao = {
                             descricao: descricao,
+                            alerta: alerta,
                             pedido_id: $scope.testamento.pedido_id
                         };
                         addMovimentacao(movimentacao);

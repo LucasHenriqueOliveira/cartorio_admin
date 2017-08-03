@@ -6,15 +6,15 @@ use Illuminate\Support\Facades\DB;
 
 class Pedido extends Utils {
 
-    public function movimentar($pedido_id, $descricao) {
+    public function movimentar($pedido_id, $descricao, $alerta) {
 
         try {
 
             DB::beginTransaction();
 
+			$pedido = $this->getStatus($pedido_id);
             switch ($descricao) {
                 case 'Iniciar Análise':
-                    $pedido = $this->getStatus($pedido_id);
 
                     if($pedido->status == 'Em análise') {
                         $res['error'] = true;
@@ -27,7 +27,6 @@ class Pedido extends Utils {
                     $descricao = 'Análise iniciada';
                     break;
                 case 'Documento pronto':
-                    $pedido = $this->getStatus($pedido_id);
 
                     if($pedido->status == 'Pronto') {
                         $res['error'] = true;
@@ -42,7 +41,6 @@ class Pedido extends Utils {
 					}
                     break;
                 case 'Realizar a entrega':
-                    $pedido = $this->getStatus($pedido_id);
 
                     if($pedido->status == 'Entregue') {
                         $res['error'] = true;
@@ -62,6 +60,16 @@ class Pedido extends Utils {
                        [$pedido_id, $this->getUserId()->id, date('Y-m-d H:i:s'), $result->sequencia, $descricao]);
 
             DB::commit();
+
+			if($alerta) {
+				$user = $this->getUser($pedido->user_id);
+				$texto = '<br /> Prezado(a) '.$user->nome.',';
+				$texto .= '<br /><br />O seu pedido de '.$pedido->tipo.' no '.getenv('nome_cartorio').' teve a seguinte movimentação:';
+				$texto .= '<br /><br />- '. $descricao;
+				$texto .= '<br /><br /> Att, <br />Cartório App';
+				$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
+				$this->sendEmail($user->email, 'Movimentação', $texto);
+			}
 
             $pedido = $this->getPedido($pedido_id);
             $pedido->movimentacoes = $this->getMovimentacoes($pedido_id);
