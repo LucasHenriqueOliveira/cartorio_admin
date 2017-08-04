@@ -84,12 +84,11 @@ class Utils {
 
 	public function getFirma($nome, $cpf) {
 		$search = "";
-		if($nome) {
-			$nome = strtoupper($nome);
-			$search .= " AND nome = '$nome' ";
-		}
 		if($cpf) {
 			$search .= " AND cpf = '$cpf' ";
+		} else if($nome) {
+			$nome = strtoupper($nome);
+			$search .= " AND nome = '$nome' ";
 		}
 		$result = DB::select("SELECT * FROM `firma` WHERE `data_hora` BETWEEN ? AND NOW()" . $search . "LIMIT 1", ['2017-01-01']);
 
