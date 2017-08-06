@@ -49,7 +49,7 @@
                 modal.element.modal();
                 modal.close.then(function(result) {
                     if(result) {
-                        DataService.removeUsuario({id: usuario.users_id, user_id: App.user.id}).then(function(response) {
+                        DataService.removeUsuario({id: usuario.user_id, user_id: App.user.id}).then(function(response) {
                             toastr.success('Usuário excluído com sucesso!', 'Usuário', {timeOut: 3000});
                             $scope.usuarios = response;
 
