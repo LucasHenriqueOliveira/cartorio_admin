@@ -110,6 +110,14 @@
                 cache: false
             })
 
+            .when('/ajuda', {
+                controller: 'AjudaController',
+                templateUrl: 'templates/ajuda.html',
+                controllerAs: 'vm',
+                action: 'ajuda',
+                cache: false
+            })
+
             .when('/relatorios', {
                 controller: 'RelatoriosController',
                 templateUrl: 'templates/relatorios.html',
