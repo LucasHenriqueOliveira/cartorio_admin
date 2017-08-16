@@ -115,6 +115,7 @@ class Testamento extends Utils {
 		$texto = '<br /> Agendado entrevista de testamento no '.getenv('nome_cartorio').' para o dia '.$data.' às '.$hora.'.';
 		$texto .= '<br /><br /> Att, <br />Cartório App';
 		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
+		// @todo remove hardcode
 		$this->sendEmail('walquiria@cartorionotas.com.br', 'Agendamento de Testamento', $texto);
 	}
 
