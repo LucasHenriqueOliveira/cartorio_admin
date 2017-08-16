@@ -110,6 +110,14 @@ class Testamento extends Utils {
 		$this->sendEmail($user->email, 'Agendamento de Testamento', $texto);
 	}
 
+	public function emailCartorio($data, $hora) {
+		$data = $this->formatDateBr($data);
+		$texto = '<br /> Agendado entrevista de testamento no '.getenv('nome_cartorio').' para o dia '.$data.' às '.$hora.'.';
+		$texto .= '<br /><br /> Att, <br />Cartório App';
+		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
+		$this->sendEmail('walquiria@cartorionotas.com.br', 'Agendamento de Testamento', $texto);
+	}
+
 	private function getWednesday($day) {
 		$date = new DateTime($day);
 		$date->modify('next wednesday');
