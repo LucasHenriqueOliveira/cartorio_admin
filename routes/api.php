@@ -12,6 +12,7 @@
 */
 
 error_reporting(E_ALL & ~E_NOTICE);
+ini_set('memory_limit', '1024M');
 
 $api = $app->make(Dingo\Api\Routing\Router::class);
 
