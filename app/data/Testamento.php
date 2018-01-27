@@ -110,9 +110,14 @@ class Testamento extends Utils {
 		$this->sendEmail($user->email, 'Agendamento de Testamento', $texto);
 	}
 
-	public function emailCartorio($data, $hora) {
+	public function emailCartorio($user_id, $data, $hora) {
+		$user = $this->getUser($user_id);
 		$data = $this->formatDateBr($data);
 		$texto = '<br /> Agendado entrevista de testamento no '.getenv('nome_cartorio').' para o dia '.$data.' às '.$hora.'.';
+		$texto .= '<br /><br /> Nome: '.$user->nome;
+		$texto .= '<br /> Email: '.$user->email;
+		$texto .= '<br /> CPF: '.$user->cpf;
+		$texto .= '<br /> Telefone: '.$user->telefone;
 		$texto .= '<br /><br /> Att, <br />Cartório App';
 		$texto .= '<br /><br /> <h5>Não responda a este email. Os emails enviados a este endereço não serão respondidos.</h5>';
 		// @todo remove hardcode
