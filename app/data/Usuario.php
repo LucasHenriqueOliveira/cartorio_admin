@@ -46,7 +46,7 @@ class Usuario extends Utils {
 
                 if ($response) {
 					if($response->app) {
-						DB::update('UPDATE `users` SET `app` = ? WHERE `users_id` = ?', [0, $response->users_id]);
+						DB::update('UPDATE `users` SET `app` = ? WHERE `id` = ?', [0, $response->users_id]);
 						$res['error'] = false;
 						$res['message'] = 'Usuário adicionado com sucesso!';
 						return $res;
@@ -77,8 +77,7 @@ class Usuario extends Utils {
                 }
             } catch (\Exception $e) {
                 $res['error'] = true;
-				$res['message'] = $e;
-                // $res['message'] = 'Erro ao adicionar o usuário';
+				$res['message'] = 'Erro ao adicionar o usuário';
                 return $res;
             }
 
