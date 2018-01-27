@@ -77,7 +77,8 @@ class Usuario extends Utils {
                 }
             } catch (\Exception $e) {
                 $res['error'] = true;
-                $res['message'] = 'Erro ao adicionar o usuário';
+				$res['message'] = $e;
+                // $res['message'] = 'Erro ao adicionar o usuário';
                 return $res;
             }
 
