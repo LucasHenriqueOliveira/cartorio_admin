@@ -242,7 +242,7 @@ class Utils {
 	public static function script() {
 		ini_set('max_execution_time', 300);
 		$date = date("Y-m-d");
-		$hour = date("H");
+		$hour = date("H") - 3;
 
 		$data = file_get_contents("http://cartorioapp.com/".getenv("script")."/ResultadoDadosClientes ".$date."_".$hour.";05.csv");
 		$rows = explode("\n",$data);
